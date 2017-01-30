@@ -1,7 +1,6 @@
 package robot;
 
 import lejos.hardware.Button;
-import lejos.robotics.chassis.Chassis;
 
 public class Main {
 

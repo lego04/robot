@@ -6,14 +6,9 @@ import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3GyroSensor;
 import lejos.hardware.sensor.EV3IRSensor;
-import lejos.hardware.sensor.EV3SensorConstants;
 import lejos.hardware.sensor.EV3TouchSensor;
-import lejos.internal.ev3.EV3Port;
 import lejos.robotics.RegulatedMotor;
-import lejos.robotics.chassis.Wheel;
-import lejos.robotics.chassis.WheeledChassis;
-import lejos.robotics.chassis.WheeledChassis.Modeler;
-import lejos.robotics.navigation.MovePilot;
+import lejos.robotics.navigation.DifferentialPilot;
 
 /**
  * class representing robot
@@ -24,12 +19,13 @@ public class Robot {
 	
 	// wheel properties
 	
-	public static final double diameter = 0; //TODO
+	public static final double wheelDiameter = 0; //TODO
+	public static final double trackWidth = 0; //TODO
 	
 	
 	
 
-	private MovePilot pilot;
+	private DifferentialPilot pilot;
 	
 	// Motors
 	
@@ -53,11 +49,7 @@ public class Robot {
 	
 	public Robot() {
 		//TODO: set variables
-		Modeler left = new Modeler(leftWheel, diameter);
-		Modeler right = new Modeler(rightWheel, diameter);
-		Wheel[] wheels = new Wheel[] { left, right };
-		WheeledChassis chassis = new WheeledChassis(wheels, WheeledChassis.TYPE_DIFFERENTIAL);
-		pilot = new MovePilot(chassis);
+		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel);
 //		colorSensor = new EV3ColorSensor(colorSensorPort);
 //		irSensor = new EV3IRSensor(irSensorPort);
 //		gyroSensor = new EV3GyroSensor(gyroSensorPort);
@@ -70,7 +62,7 @@ public class Robot {
 	 * starts the robot
 	 */
 	public void start() {
-		//pilot.forward();
+//		pilot.forward();
 		System.out.println("Hello World");
 	}
 }
