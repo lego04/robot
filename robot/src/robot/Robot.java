@@ -35,7 +35,7 @@ public class Robot {
 	
 	//TODO: Ports der Motoren anpassen
 	private static final RegulatedMotor leftWheel = Motor.A;
-	private static final RegulatedMotor rightWheel = Motor.A;
+	private static final RegulatedMotor rightWheel = Motor.B;
 	
 	//Sensors
 	
@@ -58,11 +58,11 @@ public class Robot {
 		Wheel[] wheels = new Wheel[] { left, right };
 		WheeledChassis chassis = new WheeledChassis(wheels, WheeledChassis.TYPE_DIFFERENTIAL);
 		pilot = new MovePilot(chassis);
-		colorSensor = new EV3ColorSensor(colorSensorPort);
-		irSensor = new EV3IRSensor(irSensorPort);
-		gyroSensor = new EV3GyroSensor(gyroSensorPort);
-		touch1 = new EV3TouchSensor(touchSensor1Port);
-		touch2 = new EV3TouchSensor(touchSensor2Port);
+//		colorSensor = new EV3ColorSensor(colorSensorPort);
+//		irSensor = new EV3IRSensor(irSensorPort);
+//		gyroSensor = new EV3GyroSensor(gyroSensorPort);
+//		touch1 = new EV3TouchSensor(touchSensor1Port);
+//		touch2 = new EV3TouchSensor(touchSensor2Port);
 	}
 	
 	
@@ -70,6 +70,7 @@ public class Robot {
 	 * starts the robot
 	 */
 	public void start() {
+		//pilot.forward();
 		System.out.println("Hello World");
 	}
 }
