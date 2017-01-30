@@ -36,6 +36,6 @@ public class Robot {
 	 * starts the robot
 	 */
 	public void start() {
-	
+		System.out.println("Hello World");
 	}
 }
