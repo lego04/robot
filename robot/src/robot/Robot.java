@@ -9,6 +9,7 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3GyroSensor;
 import lejos.hardware.sensor.EV3IRSensor;
 import lejos.hardware.sensor.EV3TouchSensor;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.RangeFinderAdapter;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.navigation.DifferentialPilot;
@@ -16,6 +17,7 @@ import lejos.robotics.objectdetection.Feature;
 import lejos.robotics.objectdetection.FeatureDetector;
 import lejos.robotics.objectdetection.FeatureListener;
 import lejos.robotics.objectdetection.RangeFeatureDetector;
+import listeners.UltraSonicDistanceListener;
 
 /**
  * class representing robot
@@ -29,6 +31,10 @@ public class Robot {
 	public static final double wheelDiameter = 5; //TODO
 	public static final double trackWidth = 10; //TODO
 	
+	public static final float ultraSonicMaxDistanceCM = 40;
+	public static final int ultraSonicDelayMS = 250;
+	
+	public static final double ultraSonicStopDistanceM = 0.2;
 	
 	
 
@@ -48,17 +54,25 @@ public class Robot {
 	private Port touchSensor1Port = SensorPort.S1; //TODO
 	private Port touchSensor2Port = SensorPort.S1; //TODO
 	
+	//werden vermutlich nicht benötigt
+	/*
 	private EV3ColorSensor colorSensor;
-	private EV3IRSensor irSensor;
+	private EV3UltrasonicSensor irSensor;
 	private EV3GyroSensor gyroSensor;
 	private EV3TouchSensor touch1, touch2;
+	*/
+	
+	//Range detectors
+	private FeatureDetector ultraSonicDetector;
 	
 	
 	public Robot() {
-		//TODO: set variables
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel);
+		EV3UltrasonicSensor us = new EV3UltrasonicSensor(irSensorPort);
+		ultraSonicDetector = new RangeFeatureDetector(new RangeFinderAdapter(us), ultraSonicMaxDistanceCM, ultraSonicDelayMS);
+		ultraSonicDetector.addListener(new UltraSonicDistanceListener(pilot, ultraSonicStopDistanceM));
+		ultraSonicDetector.enableDetection(false);
 //		colorSensor = new EV3ColorSensor(colorSensorPort);
-		irSensor = new EV3IRSensor(irSensorPort);
 //		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 //		touch1 = new EV3TouchSensor(touchSensor1Port);
 //		touch2 = new EV3TouchSensor(touchSensor2Port);
@@ -69,15 +83,6 @@ public class Robot {
 	 * starts the robot
 	 */
 	public void start() {
- 		//pilot.forward();
- 		FeatureDetector detector = new RangeFeatureDetector(new RangeFinderAdapter(irSensor.getDistanceMode()), 40, 5000);
- 		detector.addListener(new FeatureListener() {
-			
-			@Override
-			public void featureDetected(Feature feature, FeatureDetector detector) {
-				System.out.println(feature.getRangeReading().getRange());
-			}
-		});
- 		
+ 		pilot.forward();
 	}
 }
