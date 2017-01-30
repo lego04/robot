@@ -19,8 +19,8 @@ public class Robot {
 	
 	// wheel properties
 	
-	public static final double wheelDiameter = 0; //TODO
-	public static final double trackWidth = 0; //TODO
+	public static final double wheelDiameter = 5; //TODO
+	public static final double trackWidth = 10; //TODO
 	
 	
 	
@@ -62,7 +62,6 @@ public class Robot {
 	 * starts the robot
 	 */
 	public void start() {
-//		pilot.forward();
-		System.out.println("Hello World");
+ 		pilot.travel(30);
 	}
 }
