@@ -48,13 +48,24 @@ public abstract class WallFollower {
 	private void controllTheDistanceToWall() {
 		updateDistanceToWall();
 		float diff = mustDistance - distanceToWall;
-		
+		double turnRate = distanceToTurnRate(diff);
+		pilot.steer(turnRate);
+	}
+	
+	/**
+	 * Converts distance values read from UltrasonicSensor to the turnRate values needed for pilot.steer() method.
+	 * @param distance : <b>float</b>, value read from UltrasonicSensor.
+	 * @return <b>double</b> value for turnRate.
+	 */
+	private double distanceToTurnRate(float distance) {
+		// FIXME: Factor must be set right.
+		return (1.0 * distance);
 	}
 	
 	/**
 	 * Updates the distance between the wall and the 
 	 */
-	private void updateDistanceToWall() {
+ 	private void updateDistanceToWall() {
 		this.distanceToWall = sensor.getLeftDistance();
 	}
 }
