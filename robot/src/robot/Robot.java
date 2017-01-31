@@ -76,6 +76,7 @@ public class Robot {
 //		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 //		touch1 = new EV3TouchSensor(touchSensor1Port);
 //		touch2 = new EV3TouchSensor(touchSensor2Port);
+		pilot.setTravelSpeed(10);
 	}
 	
 	
