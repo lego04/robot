@@ -1,5 +1,7 @@
 package robot;
 
+import java.time.*;
+import util.globalValues;
 import lejos.hardware.Button;
 import lejos.hardware.Key;
 import lejos.hardware.KeyListener;
@@ -16,32 +18,91 @@ public class LineFollower {
 	 * interface for color / light sensor
 	 */
 	private LightDetectorAdaptor detector;
+	private boolean leftEdge;
 
 	public LineFollower(Robot robot) {
 		this.robot = robot;
+		
 		detector = new LightDetectorAdaptor(robot.getColorSensor());
 		detector.setLow(0);
-		detector.setHigh(100);
+		detector.setHigh(1);
 		detector.setReflected(true);
 
 	}
-
+	
+	public void findLineFirst() {		//wird einmal zum Start aufgerufen
+		robot.getPilot().rotate(45);	// um 45 Grad nach rechts drehen
+		robot.getPilot().forward();
+		while (getCurrentNormalizedLightValue() < globalValues.MINLIGHT
+				// und die Stoßsensoren nicht aktiv sind
+				) {
+			robot.getPilot().stop();
+		}
+		//if (tastsensor.isActive()) {
+			robot.getPilot().travel(-10);
+			robot.getPilot().rotate(-90);
+			robot.getPilot().forward();
+			while (getCurrentNormalizedLightValue() < globalValues.MINLIGHT) {
+			}
+			robot.getPilot().stop();
+			leftEdge = false;
+		//}
+		//else {
+			leftEdge = true;
+			robot.getPilot().rotate(-45);
+		//}
+		adjustLine(leftEdge);
+	}
+	
 	public void followLine() {
 		
 	}
 	
-	public void findLine() {
-		
+	public void adjustLine(boolean leftEdge) {
+		if (leftEdge) {
+			while (true) {		//CAREFULL!
+				if (getCurrentNormalizedLightValue() < globalValues.MINLIGHT) {
+					robot.getPilot().steer(-10);
+					while (getCurrentNormalizedLightValue() < globalValues.MINLIGHT) {
+						try {
+							Thread.sleep(500);
+						}
+						catch (Exception e) {
+						}
+						System.out.println(getCurrentNormalizedLightValue());
+					}
+				}
+				else if (getCurrentNormalizedLightValue() > globalValues.MAXLIGHT) {
+					robot.getPilot().steer(10);
+					while (getCurrentNormalizedLightValue() > globalValues.MAXLIGHT) {
+						try {
+							Thread.sleep(500);
+						}
+						catch (Exception e) {
+						}
+						System.out.println(getCurrentNormalizedLightValue());
+					}
+				}
+				else {
+					robot.getPilot().forward();
+					while (globalValues.MINLIGHT < getCurrentNormalizedLightValue() &&
+							getCurrentNormalizedLightValue() < globalValues.MAXLIGHT) {
+						try {
+							Thread.sleep(500);
+						}
+						catch (Exception e) {
+						}
+						System.out.println(getCurrentNormalizedLightValue());
+					}
+				}
+			}
+		}
 	}
 	
-	public void adjustLine() {
-		
-	}
-	
-	
-	public void update(float lightValue) {
+	/*
+	public void lineHandle(float lightValue) {
 		if (lightValue < 0.1) {		//Pseudo Werte, TODO
-			findLine();
+			//findLine();
 		}
 		else if (lightValue > 0.3) {	//Pseudo Werte, TODO
 			adjustLine();
@@ -50,9 +111,10 @@ public class LineFollower {
 			followLine();
 		}
 	}
+	*/
 	
 	private float getCurrentNormalizedLightValue() {
-		float lv = detector.getNormalizedLightValue();
+		float lv = detector.getLightValue();
 		System.out.println("norm light value: " + lv);
 		return lv;
 	}
@@ -71,8 +133,8 @@ public class LineFollower {
 
 			@Override
 			public void keyPressed(Key k) {
-				if (k.getId() == Button.ID_DOWN) {
-					float light = detector.getNormalizedLightValue();
+				if (k.getId() == Button.ID_ENTER) {
+					float light = detector.getLightValue();
 					System.out.println(light);
 				}
 
