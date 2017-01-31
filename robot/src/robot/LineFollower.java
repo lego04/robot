@@ -37,7 +37,7 @@ public class LineFollower implements Actor {
 	public void findLineFirst() {		//wird einmal zum Start aufgerufen
 		robot.getPilot().rotate(45);	// um 45 Grad nach rechts drehen
 		robot.getPilot().forward();
-		while (getCurrentNormalizedLightValue() < globalValues.MINLIGHT
+		while (getCurrentLightValue() < globalValues.MINLIGHT
 				// und die Sto�sensoren nicht aktiv sind
 				) {
 			robot.getPilot().stop();
@@ -46,7 +46,7 @@ public class LineFollower implements Actor {
 			robot.getPilot().travel(-10);
 			robot.getPilot().rotate(-90);
 			robot.getPilot().forward();
-			while (getCurrentNormalizedLightValue() < globalValues.MINLIGHT) {
+			while (getCurrentLightValue() < globalValues.MINLIGHT) {
 			}
 			robot.getPilot().stop();
 			leftEdge = false;
@@ -65,40 +65,40 @@ public class LineFollower implements Actor {
 	public void adjustLine(boolean leftEdge) {
 		if (leftEdge) {
 			for (int i = 0; i < 20; i++) {		//for testing purpose
-				if (getCurrentNormalizedLightValue() < globalValues.MINLIGHT) {
+				if (getCurrentLightValue() < globalValues.MINLIGHT) {
 					robot.getPilot().steer(-15);
-					while (getCurrentNormalizedLightValue() < globalValues.MINLIGHT) {
+					while (getCurrentLightValue() < globalValues.MINLIGHT) {
 						try {
-							Thread.sleep(100);
+							Thread.sleep(200);
 						}
 						catch (Exception e) {
 						}
-						System.out.println("Right: " + getCurrentNormalizedLightValue());
+						System.out.println("Right: " + getCurrentLightValue());
 					}
 					//robot.getPilot().stop();
 				}
-				else if (getCurrentNormalizedLightValue() > globalValues.MAXLIGHT) {
+				else if (getCurrentLightValue() > globalValues.MAXLIGHT) {
 					robot.getPilot().steer(15);
-					while (getCurrentNormalizedLightValue() > globalValues.MAXLIGHT) {
+					while (getCurrentLightValue() > globalValues.MAXLIGHT) {
 						try {
 							Thread.sleep(100);
 						}
 						catch (Exception e) {
 						}
-						System.out.println("Left: " + getCurrentNormalizedLightValue());
+						System.out.println("Left: " + getCurrentLightValue());
 					}
 					//robot.getPilot().stop();
 				}
 				else {
 					robot.getPilot().forward();
-					while (globalValues.MINLIGHT < getCurrentNormalizedLightValue() &&
-							getCurrentNormalizedLightValue() < globalValues.MAXLIGHT) {
+					while (globalValues.MINLIGHT < getCurrentLightValue() &&
+							getCurrentLightValue() < globalValues.MAXLIGHT) {
 						try {
-							Thread.sleep(100);
+							Thread.sleep(200);
 						}
 						catch (Exception e) {
 						}
-						System.out.println("Go: " + getCurrentNormalizedLightValue());
+						System.out.println("Go: " + getCurrentLightValue());
 					}
 					//robot.getPilot().stop();
 				}
@@ -120,9 +120,9 @@ public class LineFollower implements Actor {
 	}
 	*/
 	
-	private float getCurrentNormalizedLightValue() {
+	private float getCurrentLightValue() {
 		float lv = detector.getLightValue();
-		System.out.println("norm light value: " + lv);
+		System.out.println(lv);
 		return lv;
 	}
 
@@ -151,13 +151,12 @@ public class LineFollower implements Actor {
 
 	@Override
 	public void act(TouchSensorID id) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public Robot getRobot() {
-		// TODO Auto-generated method stub
-		return null;
+		return robot;
 	}
 }
