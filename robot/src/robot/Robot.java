@@ -54,13 +54,12 @@ public class Robot {
 	private Port touchSensor1Port = SensorPort.S1; //TODO
 	private Port touchSensor2Port = SensorPort.S1; //TODO
 	
-	//werden vermutlich nicht benötigt
-	/*
+	
 	private EV3ColorSensor colorSensor;
-	private EV3UltrasonicSensor irSensor;
+	//private EV3UltrasonicSensor irSensor;
 	private EV3GyroSensor gyroSensor;
 	private EV3TouchSensor touch1, touch2;
-	*/
+	
 	
 	//Range detectors
 	private FeatureDetector ultraSonicDetector;
@@ -84,5 +83,17 @@ public class Robot {
 	 */
 	public void start() {
  		pilot.forward();
+	}
+	
+	//
+	// Getter
+	//
+	
+	public EV3ColorSensor getColorSensor() {
+		return colorSensor;
+	}
+	
+	public DifferentialPilot getPilot() {
+		return pilot;
 	}
 }
