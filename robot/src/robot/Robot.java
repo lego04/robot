@@ -45,7 +45,7 @@ public class Robot {
 	//TODO: Ports der Motoren anpassen
 	private static final RegulatedMotor leftWheel = Motor.A;
 	private static final RegulatedMotor rightWheel = Motor.B;
-	private static final RegulatedMotor ultrasonicMotor = Motor.C;
+	public static final RegulatedMotor ultrasonicMotor = Motor.C;
 	
 	//Sensors
 	
@@ -57,7 +57,7 @@ public class Robot {
 	
 	
 	private EV3ColorSensor colorSensor;
-	//private EV3UltrasonicSensor irSensor;
+	private EV3UltrasonicSensor usSensor;
 	private EV3GyroSensor gyroSensor;
 	private EV3TouchSensor touch1, touch2;
 	
@@ -76,6 +76,9 @@ public class Robot {
 //		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 //		touch1 = new EV3TouchSensor(touchSensor1Port);
 //		touch2 = new EV3TouchSensor(touchSensor2Port);
+		
+//		UltrasonicSensor us = new UltrasonicSensor(this);
+//		us.start();
 	}
 	
 	
@@ -94,6 +97,10 @@ public class Robot {
 	
 	public EV3ColorSensor getColorSensor() {
 		return colorSensor;
+	}
+	
+	public EV3UltrasonicSensor getUSSensor() {
+		return usSensor;
 	}
 	
 	public DifferentialPilot getPilot() {
