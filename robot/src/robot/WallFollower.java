@@ -48,8 +48,9 @@ public abstract class WallFollower {
 	private void controllTheDistanceToWall() {
 		updateDistanceToWall();
 		float diff = mustDistance - distanceToWall;
-		double turnRate = distanceToTurnRate(diff);
+		double turnRate = (-1.0) * (distanceToTurnRate(diff));
 		pilot.steer(turnRate);
+		pilot.travel(20.0);
 	}
 	
 	/**
@@ -58,8 +59,8 @@ public abstract class WallFollower {
 	 * @return <b>double</b> value for turnRate.
 	 */
 	private double distanceToTurnRate(float distance) {
-		// FIXME: Factor must be set right.
-		return (1.0 * distance);
+		// FIXME; Factor must be set right. 1.0 is wrong.
+		return Math.min(200, Math.max(-200, 1.0 * distance));
 	}
 	
 	/**
