@@ -60,40 +60,43 @@ public class LineFollower {
 	
 	public void adjustLine(boolean leftEdge) {
 		if (leftEdge) {
-			while (true) {		//CAREFULL!
+			for (int i = 0; i < 20; i++) {		//for testing purpose
 				if (getCurrentNormalizedLightValue() < globalValues.MINLIGHT) {
-					robot.getPilot().steer(-10);
+					robot.getPilot().steer(-15);
 					while (getCurrentNormalizedLightValue() < globalValues.MINLIGHT) {
 						try {
-							Thread.sleep(500);
+							Thread.sleep(100);
 						}
 						catch (Exception e) {
 						}
-						System.out.println(getCurrentNormalizedLightValue());
+						System.out.println("Right: " + getCurrentNormalizedLightValue());
 					}
+					//robot.getPilot().stop();
 				}
 				else if (getCurrentNormalizedLightValue() > globalValues.MAXLIGHT) {
-					robot.getPilot().steer(10);
+					robot.getPilot().steer(15);
 					while (getCurrentNormalizedLightValue() > globalValues.MAXLIGHT) {
 						try {
-							Thread.sleep(500);
+							Thread.sleep(100);
 						}
 						catch (Exception e) {
 						}
-						System.out.println(getCurrentNormalizedLightValue());
+						System.out.println("Left: " + getCurrentNormalizedLightValue());
 					}
+					//robot.getPilot().stop();
 				}
 				else {
 					robot.getPilot().forward();
 					while (globalValues.MINLIGHT < getCurrentNormalizedLightValue() &&
 							getCurrentNormalizedLightValue() < globalValues.MAXLIGHT) {
 						try {
-							Thread.sleep(500);
+							Thread.sleep(100);
 						}
 						catch (Exception e) {
 						}
-						System.out.println(getCurrentNormalizedLightValue());
+						System.out.println("Go: " + getCurrentNormalizedLightValue());
 					}
+					//robot.getPilot().stop();
 				}
 			}
 		}
