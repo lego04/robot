@@ -16,7 +16,7 @@ public class UltrasonicSensor {
 	public UltrasonicSensor(Robot robot) {
 		
 		this.robot = robot;
-		SampleProvider sampleProvider = robot.getUSSensor().getMode("Distance");
+		SampleProvider sampleProvider = robot.getUSSensor().getDistanceMode();
 		rangeFinder = new RangeFinderAdapter(sampleProvider);
 		//RangeFinderAdapter rfa = new RangeFinderAdapter(robot.getUSSensor());
 		//rotScanner = new RotatingRangeScanner(robot.ultrasonicMotor, rfa);
