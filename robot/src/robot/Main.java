@@ -10,12 +10,12 @@ public class Main {
 		Robot robot = new Robot();
 		robot.start();
 		//System.out.println("Hello World");
-		Button.waitForAnyPress();
+		Button.ESCAPE.waitForPress();
 		stop();
 	}
 	
 	private static void stop() {
-		Button.ENTER.simulateEvent(Key.KEY_PRESSED_AND_RELEASED);
+		Button.ESCAPE.simulateEvent(Key.KEY_PRESSED_AND_RELEASED);
 	}
 
 }

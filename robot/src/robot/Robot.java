@@ -82,7 +82,9 @@ public class Robot {
 	 * starts the robot
 	 */
 	public void start() {
- 		pilot.forward();
+ 		pilot.travel(50);
+ 		pilot.steer(50);
+ 		//new LineFollower(this).debug();
 	}
 	
 	//
