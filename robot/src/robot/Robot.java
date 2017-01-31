@@ -7,6 +7,7 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3GyroSensor;
 import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.robotics.RangeFinderAdapter;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.objectdetection.FeatureDetector;
@@ -75,8 +76,8 @@ public class Robot {
 //		touch1 = new EV3TouchSensor(touchSensor1Port);
 //		touch2 = new EV3TouchSensor(touchSensor2Port);
 		
-		UltrasonicSensor us = new UltrasonicSensor(this);
-		us.start();
+		UltrasonicSensor us1 = new UltrasonicSensor(this);
+		us1.start();
 
 		touch1 = new EV3TouchSensor(touchSensor1Port);
 		touch2 = new EV3TouchSensor(touchSensor2Port);
@@ -121,3 +122,4 @@ public class Robot {
 	}
 	
 }
+
