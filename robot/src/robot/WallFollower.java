@@ -12,14 +12,15 @@ public abstract class WallFollower {
 	private DifferentialPilot pilot;
 	private UltrasonicSensor sensor;
 	private float distanceToWall;
-	private final float acceptableDistance;
+	private final float mustDistance;
 	
 	public WallFollower(Robot robot, UltrasonicSensor sensor) {
 		this.pilot = robot.getPilot();
 		this.sensor = sensor;
 		this.distanceToWall = 0.0f;
 		updateDistanceToWall();
-		this.acceptableDistance = 0.0f;
+		// TODO: Need to find out the must distance via measuring.
+		this.mustDistance = 0.0f;
 	}
 	
 	/**
@@ -45,7 +46,9 @@ public abstract class WallFollower {
 	 * Controller, that tries to keep the robot at the wall.
 	 */
 	private void controllTheDistanceToWall() {
-		// TODO: Regler to follow the wall and at the same time keep the distance acceptable between them.
+		updateDistanceToWall();
+		float diff = mustDistance - distanceToWall;
+		
 	}
 	
 	/**
