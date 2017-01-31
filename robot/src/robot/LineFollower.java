@@ -5,6 +5,7 @@ import lejos.hardware.Key;
 import lejos.hardware.KeyListener;
 import lejos.robotics.LightDetectorAdaptor;
 import lejos.utility.DebugMessages;
+import listeners.LightSensorListener;
 
 public class LineFollower {
 	
@@ -27,8 +28,15 @@ public class LineFollower {
 		
 	}
 	
+	
+	
 	public void followLine() {
 		
+	}
+	
+	private void startLightSensorThread() {
+		Thread lightSensorThread = new Thread(new LightSensorListener(this));
+		lightSensorThread.start();
 	}
 	
 	public void update() {
@@ -52,7 +60,7 @@ Button.ENTER.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(Key k) {
 				if (k.getId() == Button.ID_DOWN) {
-					float light = detector.getLightValue();
+					float light = detector.getNormalizedLightValue();
 					System.out.println(light);
 				}
 				
