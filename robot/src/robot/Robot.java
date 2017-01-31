@@ -38,12 +38,13 @@ public class Robot {
 	//TODO: Ports der Motoren anpassen
 	private static final RegulatedMotor leftWheel = Motor.A;
 	private static final RegulatedMotor rightWheel = Motor.B;
+	private static final RegulatedMotor ultrasonicMotor = Motor.C;
 	
 	//Sensors
 	
 	private Port colorSensorPort = SensorPort.S3; //TODO
 	private Port irSensorPort = SensorPort.S4; //TODO
-	private Port gyroSensorPort = SensorPort.S1; //TODO
+//	private Port gyroSensorPort = SensorPort.S1; //TODO
 	private Port touchSensor1Port = SensorPort.S1; //TODO
 	private Port touchSensor2Port = SensorPort.S2; //TODO
 	
@@ -79,9 +80,9 @@ public class Robot {
 	 * starts the robot
 	 */
 	public void start() {
- 		pilot.forward();
- 		//pilot.steer(50);
- 		new LineFollower(this).debug();
+ 		//pilot.forward();
+		//pilot.steer(100);
+ 		new LineFollower(this).adjustLine(true);
 	}
 	
 	//
