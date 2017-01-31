@@ -34,20 +34,36 @@ public class LineFollower {
 		
 	}
 	
+	public void findLine() {
+		
+	}
+	
+	public void adjustLine() {
+		
+	}
+	
 	private void startLightSensorThread() {
 		Thread lightSensorThread = new Thread(new LightSensorListener(this));
 		lightSensorThread.start();
 	}
 	
-	public void update() {
-		
+	public void update(float lightValue) {
+		if (lightValue < 0.1) {		//Pseudo Werte, TODO
+			findLine();
+		}
+		else if (lightValue > 0.3) {	//Pseudo Werte, TODO
+			adjustLine();
+		}
+		else {
+			followLine();
+		}
 	}
 	
 	/**
 	 * shows current light value whenever enter is pressed
 	 */
 	public void debug() {
-Button.ENTER.addKeyListener(new KeyListener() {
+		Button.ENTER.addKeyListener(new KeyListener() {
 			
 			//private DebugMessages debug = new DebugMessages();
 			
