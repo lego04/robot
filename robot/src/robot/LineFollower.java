@@ -23,6 +23,7 @@ public class LineFollower {
 		detector = new LightDetectorAdaptor(robot.getColorSensor());
 		detector.setLow(0);
 		detector.setHigh(100);
+		detector.setReflected(true);
 		
 	}
 	
@@ -30,13 +31,17 @@ public class LineFollower {
 		
 	}
 	
+	public void update() {
+		
+	}
+	
 	/**
 	 * shows current light value whenever enter is pressed
 	 */
 	public void debug() {
-Button.DOWN.addKeyListener(new KeyListener() {
+Button.ENTER.addKeyListener(new KeyListener() {
 			
-			private DebugMessages debug = new DebugMessages();
+			//private DebugMessages debug = new DebugMessages();
 			
 			@Override
 			public void keyReleased(Key k) {
@@ -48,7 +53,7 @@ Button.DOWN.addKeyListener(new KeyListener() {
 			public void keyPressed(Key k) {
 				if (k.getId() == Button.ID_DOWN) {
 					float light = detector.getLightValue();
-					debug.echo((int) light); 
+					System.out.println(light);
 				}
 				
 			}

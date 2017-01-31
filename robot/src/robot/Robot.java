@@ -48,7 +48,7 @@ public class Robot {
 	
 	//Sensors
 	
-	private Port colorSensorPort = SensorPort.S1; //TODO
+	private Port colorSensorPort = SensorPort.S3; //TODO
 	private Port irSensorPort = SensorPort.S4; //TODO
 	private Port gyroSensorPort = SensorPort.S1; //TODO
 	private Port touchSensor1Port = SensorPort.S1; //TODO
@@ -67,11 +67,11 @@ public class Robot {
 	
 	public Robot() {
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel);
-		EV3UltrasonicSensor us = new EV3UltrasonicSensor(irSensorPort);
+		/*EV3UltrasonicSensor us = new EV3UltrasonicSensor(irSensorPort);
 		ultraSonicDetector = new RangeFeatureDetector(new RangeFinderAdapter(us), ultraSonicMaxDistanceCM, ultraSonicDelayMS);
 		ultraSonicDetector.addListener(new UltraSonicDistanceListener(pilot, ultraSonicStopDistanceM));
-		ultraSonicDetector.enableDetection(false);
-//		colorSensor = new EV3ColorSensor(colorSensorPort);
+		ultraSonicDetector.enableDetection(false);*/
+		colorSensor = new EV3ColorSensor(colorSensorPort);
 //		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 //		touch1 = new EV3TouchSensor(touchSensor1Port);
 //		touch2 = new EV3TouchSensor(touchSensor2Port);
@@ -82,9 +82,9 @@ public class Robot {
 	 * starts the robot
 	 */
 	public void start() {
- 		pilot.travel(50);
- 		pilot.steer(50);
- 		//new LineFollower(this).debug();
+ 		//pilot.travel(50);
+ 		//pilot.steer(50);
+ 		new LineFollower(this).debug();
 	}
 	
 	//
