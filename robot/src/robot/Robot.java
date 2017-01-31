@@ -1,23 +1,16 @@
 package robot;
 
-import java.beans.FeatureDescriptor;
-
 import lejos.hardware.motor.Motor;
 import lejos.hardware.port.Port;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3GyroSensor;
-import lejos.hardware.sensor.EV3IRSensor;
 import lejos.hardware.sensor.EV3TouchSensor;
-import lejos.hardware.sensor.EV3UltrasonicSensor;
-import lejos.robotics.RangeFinderAdapter;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.navigation.DifferentialPilot;
-import lejos.robotics.objectdetection.Feature;
 import lejos.robotics.objectdetection.FeatureDetector;
-import lejos.robotics.objectdetection.FeatureListener;
-import lejos.robotics.objectdetection.RangeFeatureDetector;
-import listeners.UltraSonicDistanceListener;
+import lejos.robotics.objectdetection.FusorDetector;
+import lejos.robotics.objectdetection.TouchFeatureDetector;
 
 /**
  * class representing robot
@@ -64,6 +57,7 @@ public class Robot {
 	
 	//Range detectors
 	private FeatureDetector ultraSonicDetector;
+	private FusorDetector touchDetector;
 	
 	
 	public Robot() {
@@ -72,23 +66,31 @@ public class Robot {
 		ultraSonicDetector = new RangeFeatureDetector(new RangeFinderAdapter(us), ultraSonicMaxDistanceCM, ultraSonicDelayMS);
 		ultraSonicDetector.addListener(new UltraSonicDistanceListener(pilot, ultraSonicStopDistanceM));
 		ultraSonicDetector.enableDetection(false);*/
-		colorSensor = new EV3ColorSensor(colorSensorPort);
+//		colorSensor = new EV3ColorSensor(colorSensorPort);
 //		gyroSensor = new EV3GyroSensor(gyroSensorPort);
+
 //		touch1 = new EV3TouchSensor(touchSensor1Port);
 //		touch2 = new EV3TouchSensor(touchSensor2Port);
 		
-//		UltrasonicSensor us = new UltrasonicSensor(this);
-//		us.start();
+		UltrasonicSensor us = new UltrasonicSensor(this);
+		us.start();
+
+		touch1 = new EV3TouchSensor(touchSensor1Port);
+		touch2 = new EV3TouchSensor(touchSensor2Port);
+		//touchDetector = new FusorDetector()
+//		pilot.setTravelSpeed(10);
+		
 	}
+	
 	
 	
 	/**
 	 * starts the robot
 	 */
 	public void start() {
- 		pilot.forward();
- 		//pilot.steer(50);
- 		new LineFollower(this).debug();
+ 		//pilot.forward();
+		//pilot.steer(100);
+ 		new LineFollower(this).adjustLine(true);
 	}
 	
 	//
@@ -106,4 +108,13 @@ public class Robot {
 	public DifferentialPilot getPilot() {
 		return pilot;
 	}
+	
+	public EV3TouchSensor getTouch1() {
+		return touch1;
+	}
+	
+	public EV3TouchSensor getTouch2() {
+		return touch2;
+	}
+	
 }
