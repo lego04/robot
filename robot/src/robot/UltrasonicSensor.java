@@ -1,6 +1,7 @@
 package robot;
 
 import lejos.robotics.RangeFinderAdapter;
+import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
 
 public class UltrasonicSensor {
@@ -8,6 +9,7 @@ public class UltrasonicSensor {
 	private Robot robot;
 	//private RotatingRangeScanner rotScanner;
 	private RangeFinderAdapter rangeFinder;
+	private RegulatedMotor usMotor;
 	
 // TODO: richtige Werte
 	private float leftDistance = 0;
@@ -15,45 +17,37 @@ public class UltrasonicSensor {
 	
 	public UltrasonicSensor(Robot robot) {
 		
-		this.robot = robot;
+		this.robot = robot;		
+		
 		SampleProvider sampleProvider = robot.getUSSensor().getDistanceMode();
 		rangeFinder = new RangeFinderAdapter(sampleProvider);
-		//RangeFinderAdapter rfa = new RangeFinderAdapter(robot.getUSSensor());
-		//rotScanner = new RotatingRangeScanner(robot.ultrasonicMotor, rfa);
+		
+		usMotor = robot.ultrasonicMotor;
 		
 	}
 	
 	public float getLeftDistance() {
-		return leftDistance;
+		return leftDistance; // in Metern
 	}
 	
 	public float getRightDistance() {
-		return rightDistance;
+		return rightDistance; // in Metern
 	}
 	
 	public void start() {
 		
+		usMotor.rotate(90);
 		for (int i = 0; i < 20; i++) {
-			System.out.println("Distance: " + rangeFinder.getRange());
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if (i % 2 == 0) {
+				usMotor.rotate(-180);
+				rightDistance = rangeFinder.getRange();
+				System.out.println("right: " + rightDistance);
+			} else {
+				usMotor.rotate(180);
+				leftDistance = rangeFinder.getRange();
+				System.out.println("left: " + leftDistance);
 			}
 		}
-		
-		/*
-		 * - ASSERT START POSITION (NEUTRAL, MIDDLE) -
-		 * rotate left (90�)
-		 * 
-		 * while(not interrupted) {
-		 * 	leftDistance = readDistance()
-		 * 	rotate right (180�)
-		 * 	rightDistance = readDistance()
-		 * 	rotate left (180�)
-		 */
-		
 	}
 
 }
