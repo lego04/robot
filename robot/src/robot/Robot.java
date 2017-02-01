@@ -14,6 +14,8 @@ import lejos.robotics.objectdetection.FeatureDetector;
 import lejos.robotics.objectdetection.FusorDetector;
 import lejos.robotics.objectdetection.RangeFeatureDetector;
 import lejos.robotics.objectdetection.TouchFeatureDetector;
+import sensorThreads.UltrasonicSensorThread;
+import test.USSensorTest;
 
 /**
  * class representing robot
@@ -55,8 +57,7 @@ public class Robot {
 	private EV3ColorSensor colorSensor;
 	private EV3UltrasonicSensor usSensor;
 	private EV3GyroSensor gyroSensor;
-	private EV3TouchSensor touch1, touch2;
-	
+	private EV3TouchSensor touch1, touch2;	
 	
 	//Range detectors
 	private FeatureDetector ultraSonicDetector;
@@ -73,6 +74,7 @@ public class Robot {
 		*/
 		colorSensor = new EV3ColorSensor(colorSensorPort);
 		usSensor = new EV3UltrasonicSensor(irSensorPort);
+		
 //		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 
 //		touch1 = new EV3TouchSensor(touchSensor1Port);

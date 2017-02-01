@@ -1,4 +1,4 @@
-package robot;
+package sensorThreads;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -6,9 +6,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import lejos.robotics.RangeFinderAdapter;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
+import robot.Robot;
 import util.globalValues;
 
-public class UltrasonicSensor implements Runnable{
+public class UltrasonicSensorThread implements Runnable{
 
 	public enum Modes {
 		Left,
@@ -29,9 +30,7 @@ public class UltrasonicSensor implements Runnable{
 	
 	private int angle;
 	
-	public UltrasonicSensor(Robot robot) {
-		
-		usSensorThread = new Thread(this);
+	public UltrasonicSensorThread(Robot robot) {
 		
 		mode = Modes.BothSides;
 		
@@ -57,6 +56,7 @@ public class UltrasonicSensor implements Runnable{
 	public void start(Modes mode, int angle) {
 		this.mode = mode;
 		this.angle = angle;
+		usSensorThread = new Thread(this);
 		usSensorThread.start();
 	}
 	
