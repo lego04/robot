@@ -54,7 +54,7 @@ public class WallFollower implements interfaces.Actor {
 		updateDistanceToWall();
 		int diff = 22 - distanceToWall;
 		System.out.println("diff: " + diff);
-		double turnRate = (double) (-1.0) * wallToFollow * distanceToTurnRate(diff);
+		double turnRate = (double) wallToFollow * distanceToTurnRate(diff);
 		System.out.println("turnRate: " + turnRate);
 		robot.getPilot().steer(turnRate);
 	}
