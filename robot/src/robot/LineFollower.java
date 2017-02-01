@@ -38,7 +38,6 @@ public class LineFollower implements Actor {
 		robot.getPilot().rotate(45);	// um 45 Grad nach rechts drehen
 		robot.getPilot().forward();
 		while (getCurrentLightValue() < globalValues.MINLIGHT
-				// und die Sto�sensoren nicht aktiv sind
 				) {
 			robot.getPilot().stop();
 		}
@@ -66,7 +65,7 @@ public class LineFollower implements Actor {
 		if (leftEdge) {
 			for (int i = 0; i < 20; i++) {		//for testing purpose
 				if (getCurrentLightValue() < globalValues.MINLIGHT) {
-					robot.getPilot().steer(-15);
+					robot.getPilot().steer(globalValues.RIGHT * 15);
 					while (getCurrentLightValue() < globalValues.MINLIGHT) {
 						try {
 							Thread.sleep(200);
@@ -78,7 +77,7 @@ public class LineFollower implements Actor {
 					//robot.getPilot().stop();
 				}
 				else if (getCurrentLightValue() > globalValues.MAXLIGHT) {
-					robot.getPilot().steer(15);
+					robot.getPilot().steer(globalValues.LEFT * 15);
 					while (getCurrentLightValue() > globalValues.MAXLIGHT) {
 						try {
 							Thread.sleep(100);
@@ -130,6 +129,7 @@ public class LineFollower implements Actor {
 	 * shows current light value whenever enter is pressed
 	 */
 	public void debug() {
+		robot.getPilot().forward();
 		Button.ENTER.addKeyListener(new KeyListener() {
 			
 			@Override
@@ -151,7 +151,7 @@ public class LineFollower implements Actor {
 
 	@Override
 	public void act(TouchSensorID id) {
-		
+		robot.getPilot().stop();
 		
 	}
 
