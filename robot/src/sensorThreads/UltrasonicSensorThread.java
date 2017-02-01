@@ -17,6 +17,11 @@ public class UltrasonicSensorThread implements Runnable{
 		BothSides
 	}
 	
+	public enum Directions {
+		Left,
+		Right
+	}
+	
 	private Modes mode;
 	
 	private RangeFinderAdapter rangeFinder;
@@ -29,6 +34,8 @@ public class UltrasonicSensorThread implements Runnable{
 	private AtomicInteger rightDistance;
 	
 	private int angle;
+	private AtomicBoolean lookingLeft;	
+	private AtomicBoolean movementEnabled;
 	
 	public UltrasonicSensorThread(Robot robot) {
 		
@@ -42,6 +49,8 @@ public class UltrasonicSensorThread implements Runnable{
 		leftDistance = new AtomicInteger(0);
 		rightDistance = new AtomicInteger(0);
 		active = new AtomicBoolean(true);
+		movementEnabled = new AtomicBoolean(true);
+		lookingLeft = new AtomicBoolean(true);
 		
 	}
 	
@@ -51,6 +60,23 @@ public class UltrasonicSensorThread implements Runnable{
 	
 	public int getRightDistance() {
 		return rightDistance.get(); // in cm?
+	}
+	
+	public boolean getLookingLeft() {
+		return lookingLeft.get();
+	}
+	
+	public void setMovementEnabled(boolean mv) {
+		movementEnabled.set(mv);;
+	}
+
+	public void moveTo(Directions dir) {
+		usMotor.rotateTo(0);
+		if (dir == Directions.Left) {
+			usMotor.rotate(angle);
+		} else {
+			usMotor.rotate(-angle);
+		}
 	}
 	
 	public void start(Modes mode, int angle) {
@@ -66,25 +92,36 @@ public class UltrasonicSensorThread implements Runnable{
 	
 	private void bothSides() {
 		usMotor.rotate(angle);
+		lookingLeft.set(true);;
 		boolean leftRight = true;
 		while (active.get()){
 			if (leftRight) {
-				usMotor.rotate(- (2 * angle));
+				if (movementEnabled.get()) {
+					usMotor.rotate(- (2 * angle));
+					lookingLeft.set(false);;
+					leftRight = !leftRight;
+				}				
 				int rightDistanceInt = (int) (rangeFinder.getRange() * globalValues.floatToInt);
 				rightDistance.set(rightDistanceInt);
 				System.out.println("right: " + rightDistance.get());
 			} else {
-				usMotor.rotate(2 * angle);
+				if (movementEnabled.get()) {
+					usMotor.rotate(2 * angle);
+					lookingLeft.set(true);;
+					leftRight = !leftRight;
+				}
+				
 				int leftDistanceInt = (int) (rangeFinder.getRange() * globalValues.floatToInt);
 				leftDistance.set(leftDistanceInt);
 				System.out.println("left: " + leftDistance.get());
 			}
-			leftRight = !leftRight;
+			
 		}
 	}
 	
 	private void leftSide() {
 		usMotor.rotate(angle);
+		lookingLeft.set(true);
 		
 		while (active.get()) {
 			int distanceInt = (int) (rangeFinder.getRange() * globalValues.floatToInt);
@@ -100,6 +137,7 @@ public class UltrasonicSensorThread implements Runnable{
 	
 	private void rightSide() {
 		usMotor.rotate(-angle);
+		lookingLeft.set(false);
 		
 		while (active.get()) {
 			int distanceInt = (int) (rangeFinder.getRange() * globalValues.floatToInt);

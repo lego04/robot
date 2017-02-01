@@ -1,16 +1,14 @@
 package robot;
 
-import org.jfree.chart.servlet.ServletUtilities;
-
 import sensorThreads.UltrasonicSensorThread;
+import sensorThreads.UltrasonicSensorThread.Directions;
 import sensorThreads.UltrasonicSensorThread.Modes;
+import util.globalValues;
 
 public class BridgeFollower {
 	
 	private Robot robot;
 	private UltrasonicSensorThread usSensor;
-	
-	private boolean active;
 	
 // TODO: anpassen
 	private final int DISTANCE_LIMIT = 30;
@@ -20,26 +18,79 @@ public class BridgeFollower {
 		this.robot = robot;
 		usSensor = new UltrasonicSensorThread(robot);
 		
-		active = false;
 	}
 	
 	public void start() {
 		
 		//wenden
 		robot.setUltraSonicFront();
-		usSensor.start(Modes.Left, 45);
+		usSensor.start(Modes.BothSides, 45);
 		
-		while (active) {
+		int distance = 0;
+		
+		robot.getLeftWheel().forward();
+		robot.getRightWheel().forward();
+		
+		while (true) {
 			
-			int distance = usSensor.getLeftDistance();
+			boolean lookingLeft = usSensor.getLookingLeft();
 			
-			if (distance < DISTANCE_LIMIT) {
-				// nach rechts drehen
-			} else if (distance > DISTANCE_LIMIT) {
-				// nach links drehen
+			if (lookingLeft) {
+				distance = usSensor.getLeftDistance();
+			} else {
+				distance = usSensor.getRightDistance();
+			}		
+			
+			
+			
+			if (distance <= DISTANCE_LIMIT) {
+				usSensor.setMovementEnabled(true);
+				//robot.getPilot().forward();
+				robot.getLeftWheel().setSpeed(globalValues.LINETRAVELSPEED * 25);
+				robot.getRightWheel().setSpeed(globalValues.LINETRAVELSPEED * 25);
+			} else {
+				usSensor.setMovementEnabled(false);
+				robot.getPilot().stop();
+				
+				// was wenn sich die ausrichtung des sensor inzwischen geändert hat?
+				if (lookingLeft != usSensor.getLookingLeft()) {
+					usSensor.moveTo(lookingLeft ? Directions.Left : Directions.Right);
+				}
+				
+				if (lookingLeft) {
+					// nach links korrigieren (Fahrtrichtung ist umgekehrt, aber Sensorrichtung bleibt gleich)
+// TODO: Wert anpassen
+					// robot.getPilot().rotate(20);
+					
+					robot.getLeftWheel().setSpeed(0);
+					robot.getRightWheel().setSpeed(globalValues.LINETRAVELSPEED * 25);
+				} else {
+					// nach rechts korrigieren
+// TODO: Wert anpassen
+					// robot.getPilot().rotate(-20);
+					robot.getLeftWheel().setSpeed(globalValues.LINETRAVELSPEED * 25);
+					robot.getRightWheel().setSpeed(0);
+				}
+			}
+			
+			/*
+			if (von Brücke runter) {
+				break;
+			}
+			 */
+			
+// TODO: besser?
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 			
 		}
+		
+		// wenden
+		// robot.setUltraSonicBack();
+		// nächster Schritt // Linie folgen?
 		
 		
 		
