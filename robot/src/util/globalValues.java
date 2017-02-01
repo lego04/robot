@@ -10,6 +10,10 @@ public final class globalValues {
 	public static final float LEFT = 1f;
 	public static final float RIGHT = -1f;
 	
+	//Wall Following
+	public static int WALL_DIST_MIN = 12;
+	public static int WALL_DIST_MAX = 25;
+	
 	//Line Travel Speed
 	public static final int LINETRAVELSPEED = 10; 
 	
