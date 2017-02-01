@@ -99,6 +99,20 @@ public class Robot {
  		new LineFollower(this, lst).adjustLine();
 	}
 	
+	/**
+	 * ultrasonic sensor is in front of robot. Set pilot to move backwards in order to get forwards.
+	 */
+	public void setUltraSonicFront() {
+		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel, true);
+	}
+	
+	/**
+	 * ultra sonic sensor is behind of robot. Set pilot to move forward in order to get forwards.
+	 */
+	public void setUltraSonicBack() {
+		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel);
+	}
+	
 	//
 	// Getter
 	//
