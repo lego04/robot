@@ -14,6 +14,7 @@ import lejos.robotics.objectdetection.FeatureDetector;
 import lejos.robotics.objectdetection.FusorDetector;
 import lejos.robotics.objectdetection.RangeFeatureDetector;
 import lejos.robotics.objectdetection.TouchFeatureDetector;
+import sensorThreads.LightSensorThread;
 
 /**
  * class representing robot
@@ -72,7 +73,7 @@ public class Robot {
 		ultraSonicDetector.enableDetection(false);
 		*/
 		colorSensor = new EV3ColorSensor(colorSensorPort);
-		usSensor = new EV3UltrasonicSensor(irSensorPort);
+//		usSensor = new EV3UltrasonicSensor(irSensorPort);
 //		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 
 //		touch1 = new EV3TouchSensor(touchSensor1Port);
@@ -81,7 +82,7 @@ public class Robot {
 		touch1 = new EV3TouchSensor(touchSensor1Port);
 		touch2 = new EV3TouchSensor(touchSensor2Port);
 		//touchDetector = new FusorDetector()
-		pilot.setTravelSpeed(15);
+		pilot.setTravelSpeed(10);
 		
 	}
 	
@@ -93,13 +94,22 @@ public class Robot {
 	public void start() {
  		//pilot.forward();
 		//pilot.steer(100);
- 		new FindLineFirst(this).findLineFirst();
+		LightSensorThread lst = new LightSensorThread(this);
+		lst.startThread();
+ 		new LineFollower(this, lst).adjustLine();
 	}
 	
 	//
 	// Getter
 	//
 	
+	public RegulatedMotor getLeftWheel() {
+		return leftWheel;
+	}
+	
+	public RegulatedMotor getRightWheel() {
+		return rightWheel;
+	}
 	public EV3ColorSensor getColorSensor() {
 		return colorSensor;
 	}
