@@ -12,15 +12,17 @@ public abstract class WallFollower {
 	private DifferentialPilot pilot;
 	private UltrasonicSensor sensor;
 	private float distanceToWall;
-	private final float mustDistance;
 	
+	/**
+	 * Standard constructor of the calls. Needs reference to the {@link Robot} and {@link UltrasonicSensor}
+	 * @param robot : {@link Robot}
+	 * @param sensor : {@link UltrasonicSensor}
+	 */
 	public WallFollower(Robot robot, UltrasonicSensor sensor) {
 		this.pilot = robot.getPilot();
 		this.sensor = sensor;
 		this.distanceToWall = 0.0f;
 		updateDistanceToWall();
-		// TODO: Need to find out the must distance via measuring.
-		this.mustDistance = 0.0f;
 	}
 	
 	/**
@@ -32,15 +34,17 @@ public abstract class WallFollower {
 			controllTheDistanceToWall();
 			// TODO: Wait to be done.
 			pilot.travel(20.0);
+			// TODO: Wait to be done.
 			if (isBumped()) {
 				tryNextSide();
+				// TODO: Wait to be done.
 			}
 		}
 	}
 	
 	/**
 	 * Decides, if the robot still in the labyrinth or not.
-	 * @return <b>true</b>, if the robot still in the labyrinth, else <b>false</b>.
+	 * @return <code>true</code>, if the robot still in the labyrinth, else <code>false</code>.
 	 */
 	private boolean isInLabyrinth() {
 		// TODO: Decide to change state, if the robot out of the maze.
@@ -52,15 +56,15 @@ public abstract class WallFollower {
 	 */
 	private void controllTheDistanceToWall() {
 		updateDistanceToWall();
-		float diff = mustDistance - distanceToWall;
+		float diff = 0.3f - distanceToWall;
 		double turnRate = (-1.0) * (distanceToTurnRate(diff));
 		pilot.steer(turnRate);
 	}
 	
 	/**
-	 * Converts distance values read from UltrasonicSensor to the turnRate values needed for pilot.steer() method.
-	 * @param distance : <b>float</b>, value read from UltrasonicSensor.
-	 * @return <b>double</b> value for turnRate.
+	 * Converts distance values read from {@link UltrasonicSensor} to the <code>turnRate</code> values needed for <code>pilot.steer()</code> method.
+	 * @param distance : <code>float</code>, value read from {@link UltrasonicSensor}.
+	 * @return <code>double</code> value for <code>turnRate</code>.
 	 */
 	private double distanceToTurnRate(float distance) {
 		// FIXME; Factor must be set right. 1.0 is wrong.
@@ -68,7 +72,7 @@ public abstract class WallFollower {
 	}
 	
 	/**
-	 * Updates the distance between the wall and the 
+	 * Updates the <code>distanceToWall</code> - distance between the wall and the robot
 	 */
  	private void updateDistanceToWall() {
 		this.distanceToWall = sensor.getLeftDistance();
@@ -76,7 +80,7 @@ public abstract class WallFollower {
  	
  	/**
  	 * Checks reads touch sensor values and decides, whether the robot bumped from front.
- 	 * @return <b>true</b> if robot bumped from front, else <b>false</b>.
+ 	 * @return <code>true</code> if robot bumped from front, else <code>false</code>.
  	 */
  	private boolean isBumped() {
  		// TODO: Read touch sensor values and make a decision.
