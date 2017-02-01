@@ -4,19 +4,18 @@ import lejos.hardware.Button;
 import lejos.hardware.Key;
 import robot.Robot;
 import robot.UltrasonicSensor;
+import robot.UltrasonicSensor.Modes;
 import util.EscapeThread;
 
 public class USSensorTest {
 	
 	public static void main(String[] args) {
 		new EscapeThread().startThread();
-		// TODO Auto-generated method stub
 		Robot robot = new Robot();
 //		robot.start();
-		//System.out.println("Hello World");
 		
 		UltrasonicSensor us = new UltrasonicSensor(robot);
-		us.start();
+		us.start(Modes.BothSides, 90);
 		
 		Button.ESCAPE.waitForPress();
 		stop();
