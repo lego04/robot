@@ -3,12 +3,14 @@ package robot;
 import interfaces.Actor;
 import lejos.robotics.LightDetectorAdaptor;
 import listeners.TouchSensorListener;
+import sensorThreads.LightSensorThread;
 import util.*;
 
 public class FindLineFirst implements Actor {
 
 	private Robot robot;
 	private LightDetectorAdaptor detector;
+	private LightSensorThread lst;
 	
 	public FindLineFirst(Robot robot) {
 		this.robot = robot;
@@ -18,16 +20,17 @@ public class FindLineFirst implements Actor {
 		detector.setHigh(1);
 		detector.setReflected(true);
 		new TouchSensorListener(this);
+		lst = new LightSensorThread(robot);
+		lst.startThread();
 	}
 	
 	public void findLineFirst() {		// wird einmal zum Start aufgerufen
 		robot.getPilot().rotate(globalValues.RIGHT * 45);	// um 45 Grad nach rechts drehen
 		robot.getPilot().forward();
-		while (GlobHelpMethods.getCurrentLightValue(detector) < globalValues.MINLIGHT) {
+		while (lst.getLastLightValue() < globalValues.MINLIGHT) {
 		}
 		robot.getPilot().rotate(globalValues.LEFT * 45);
-		//}
-		//adjustLine();
+		new LineFollower(robot, lst).adjustLine();
 	}
 	
 	
@@ -38,7 +41,7 @@ public class FindLineFirst implements Actor {
 		robot.getPilot().travel(-10);
 		robot.getPilot().rotate(globalValues.LEFT * 90);
 		robot.getPilot().forward();
-		while (GlobHelpMethods.getCurrentLightValue(detector) < globalValues.MINLIGHT) {
+		while (lst.getLastLightValue() < globalValues.MINLIGHT) {
 		}
 		robot.getPilot().stop();
 	}
