@@ -3,15 +3,13 @@ package robot;
 import robot.Robot;
 import util.globalValues;
 import util.TouchSensorID;
-import lejos.hardware.sensor.EV3TouchSensor;
-import lejos.robotics.navigation.DifferentialPilot;
 
 /**
  * WallFollwer class is the generalisation of the Left- and RightWallFollower
  * @author Rashad Asgarbayli
  */
-public abstract class WallFollower {
-	private DifferentialPilot pilot;
+public class WallFollower implements interfaces.Actor {
+	private Robot robot;
 	private UltrasonicSensor distanceSensor;
 	private float distanceToWall;
 	
@@ -21,7 +19,7 @@ public abstract class WallFollower {
 	 * @param sensor : {@link UltrasonicSensor}
 	 */
 	public WallFollower(Robot robot, UltrasonicSensor sensor) {
-		this.pilot = robot.getPilot();
+		this.robot = robot;
 		this.distanceSensor = sensor;
 		this.distanceToWall = 0.0f;
 		updateDistanceToWall();
@@ -35,12 +33,8 @@ public abstract class WallFollower {
 		while (isInLabyrinth()) {
 			controllTheDistanceToWall();
 			// TODO: Wait to be done.
-			pilot.travel(20.0);
+			robot.getPilot().travel(20.0);
 			// TODO: Wait to be done.
-			if (isBumped()) {
-				tryNextSide();
-				// TODO: Wait to be done.
-			}
 		}
 	}
 	
@@ -58,9 +52,10 @@ public abstract class WallFollower {
 	 */
 	private void controllTheDistanceToWall() {
 		updateDistanceToWall();
+		// FIXME: Fix the 0.3f to the right must distance from the left wall
 		float diff = 0.3f - distanceToWall;
 		double turnRate = (-1.0) * (distanceToTurnRate(diff));
-		pilot.steer(turnRate);
+		robot.getPilot().steer(turnRate);
 	}
 	
 	/**
@@ -79,20 +74,17 @@ public abstract class WallFollower {
  	private void updateDistanceToWall() {
 		this.distanceToWall = distanceSensor.getLeftDistance();
 	}
- 	
- 	/**
- 	 * Checks reads touch sensor values and decides, whether the robot bumped from front.
- 	 * @return <code>true</code> if robot bumped from front, else <code>false</code>.
- 	 */
- 	private boolean isBumped() {
- 		return false;
- 	}
 
- 	/**
- 	 * The method turns the robot to another side, that robot tries to avoid another bumping.
- 	 */
- 	private void tryNextSide() {
- 		pilot.travel(-10);
-		pilot.rotate(globalValues.RIGHT * 90);
- 	}
+	@Override
+	public void act(TouchSensorID id) {
+		robot.getPilot().stop();
+		robot.getPilot().travel(-10.0);
+		robot.getPilot().rotate(globalValues.RIGHT * 90.0);
+		robot.getPilot().travel(10.0);
+	}
+
+	@Override
+	public Robot getRobot() {
+		return robot;
+	}
 }
