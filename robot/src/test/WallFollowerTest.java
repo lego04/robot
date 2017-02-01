@@ -6,10 +6,12 @@ import listeners.TouchSensorListener;
 import robot.Robot;
 import robot.UltrasonicSensor;
 import robot.WallFollower;
+import util.EscapeThread;
 
 public class WallFollowerTest {
 	
 	public static void main(String[] args) {
+		new EscapeThread().startThread();
 		Robot robot = new Robot();
 		UltrasonicSensor us = new UltrasonicSensor(robot);
 		us.start();
@@ -17,8 +19,8 @@ public class WallFollowerTest {
 		new TouchSensorListener(wf);
 		wf.followTheWall();
 		
-		Button.ESCAPE.waitForPress();
-		stop();
+		//Button.ESCAPE.waitForPress();
+		//stop();
 	}
 	
 	private static void stop() {
