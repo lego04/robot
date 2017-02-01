@@ -9,9 +9,18 @@ import util.TouchSensorID;
  * @author Rashad Asgarbayli
  */
 public class WallFollower implements interfaces.Actor {
+	/**
+	 * Reference to {@link Robot}
+	 */
 	private Robot robot;
+	/**
+	 * Reference to {@link UltrasonicSensor}
+	 */
 	private UltrasonicSensor distanceSensor;
-	private float distanceToWall;
+	/**
+	 * Current distance to the wall as <b>centimetres (cm)</b>, that read from {@link UltrasonicSensor}.
+	 */
+	private int distanceToWall;
 	
 	/**
 	 * Standard constructor of the calls. Needs reference to the {@link Robot} and {@link UltrasonicSensor}
@@ -21,7 +30,7 @@ public class WallFollower implements interfaces.Actor {
 	public WallFollower(Robot robot, UltrasonicSensor sensor) {
 		this.robot = robot;
 		this.distanceSensor = sensor;
-		this.distanceToWall = 0.22f; // Just to be sure, that it was initialised.
+		this.distanceToWall = 22; // Just to be sure, that it was initialised.
 		updateDistanceToWall();
 	}
 	
@@ -52,8 +61,8 @@ public class WallFollower implements interfaces.Actor {
 	 */
 	private void controllTheDistanceToWall() {
 		updateDistanceToWall();
-		float diff = 0.22f - distanceToWall;
-		double turnRate = globalValues.RIGHT * (distanceToTurnRate(diff));
+		int diff = 22 - distanceToWall;
+		double turnRate = (double) globalValues.RIGHT * (distanceToTurnRate(diff));
 		robot.getPilot().steer(turnRate);
 	}
 	
@@ -62,9 +71,9 @@ public class WallFollower implements interfaces.Actor {
 	 * @param distance : <code>float</code>, value read from {@link UltrasonicSensor}.
 	 * @return <code>double</code> value for <code>turnRate</code>.
 	 */
-	private double distanceToTurnRate(float distance) {
+	private double distanceToTurnRate(int distance) {
 		// FIXME; Factor must be set right. 1.0 is wrong.
-		return Math.min(200, Math.max(-200, 1.0 * distance));
+		return Math.min(200.0, Math.max(-200.0, 1.0 * distance));
 	}
 	
 	/**

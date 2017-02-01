@@ -10,6 +10,7 @@ import robot.WallFollower;
 public class WallFollowerTest {
 	
 	public static void main(String[] args) {
+		System.out.println("Testing WallFollower:");
 		Robot robot = new Robot();
 		UltrasonicSensor us = new UltrasonicSensor(robot);
 		us.start();
