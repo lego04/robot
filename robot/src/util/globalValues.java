@@ -10,4 +10,9 @@ public final class globalValues {
 	public static final float LEFT = 1f;
 	public static final float RIGHT = -1f;
 	
+	
+	//Umrechnungsfaktoren
+	public static int floatToInt = 100;
+	
+	
 }

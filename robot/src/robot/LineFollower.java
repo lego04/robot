@@ -10,6 +10,7 @@ import lejos.hardware.Key;
 import lejos.hardware.KeyListener;
 import lejos.robotics.LightDetectorAdaptor;
 import listeners.TouchSensorListener;
+import sensorThreads.LightSensorThread;
 
 public class LineFollower implements Actor {
 
@@ -21,16 +22,20 @@ public class LineFollower implements Actor {
 	/**
 	 * interface for color / light sensor
 	 */
-	private LightDetectorAdaptor detector;
+	private LightSensorThread lightSensorThread;
 	private boolean leftEdge;
 
 	public LineFollower(Robot robot) {
 		this.robot = robot;
+		lightSensorThread = new LightSensorThread(robot);
 		
+		//should be handled by LightSensorThread, remove this lines if it works
+		/*
 		detector = new LightDetectorAdaptor(robot.getColorSensor());
 		detector.setLow(0);
 		detector.setHigh(1);
 		detector.setReflected(true);
+		*/
 
 	}
 	
@@ -38,7 +43,6 @@ public class LineFollower implements Actor {
 		robot.getPilot().rotate(45);	// um 45 Grad nach rechts drehen
 		robot.getPilot().forward();
 		while (getCurrentLightValue() < globalValues.MINLIGHT
-				// und die Sto�sensoren nicht aktiv sind
 				) {
 			robot.getPilot().stop();
 		}
@@ -66,7 +70,7 @@ public class LineFollower implements Actor {
 		if (leftEdge) {
 			for (int i = 0; i < 20; i++) {		//for testing purpose
 				if (getCurrentLightValue() < globalValues.MINLIGHT) {
-					robot.getPilot().steer(-15);
+					robot.getPilot().steer(globalValues.RIGHT * 15);
 					while (getCurrentLightValue() < globalValues.MINLIGHT) {
 						try {
 							Thread.sleep(200);
@@ -78,7 +82,7 @@ public class LineFollower implements Actor {
 					//robot.getPilot().stop();
 				}
 				else if (getCurrentLightValue() > globalValues.MAXLIGHT) {
-					robot.getPilot().steer(15);
+					robot.getPilot().steer(globalValues.LEFT * 15);
 					while (getCurrentLightValue() > globalValues.MAXLIGHT) {
 						try {
 							Thread.sleep(100);
@@ -121,7 +125,7 @@ public class LineFollower implements Actor {
 	*/
 	
 	private float getCurrentLightValue() {
-		float lv = detector.getLightValue();
+		float lv = lightSensorThread.getLastLightValue();
 		System.out.println(lv);
 		return lv;
 	}
@@ -130,6 +134,7 @@ public class LineFollower implements Actor {
 	 * shows current light value whenever enter is pressed
 	 */
 	public void debug() {
+		robot.getPilot().forward();
 		Button.ENTER.addKeyListener(new KeyListener() {
 			
 			@Override
@@ -141,7 +146,7 @@ public class LineFollower implements Actor {
 			@Override
 			public void keyPressed(Key k) {
 				if (k.getId() == Button.ID_ENTER) {
-					float light = detector.getLightValue();
+					float light = lightSensorThread.getDetector().getLightValue();
 					System.out.println(light);
 				}
 
@@ -151,7 +156,7 @@ public class LineFollower implements Actor {
 
 	@Override
 	public void act(TouchSensorID id) {
-		
+		robot.getPilot().stop();
 		
 	}
 

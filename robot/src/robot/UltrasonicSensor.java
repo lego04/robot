@@ -48,7 +48,6 @@ public class UltrasonicSensor {
 				System.out.println("left: " + leftDistance);
 			}
 		}
-		
 	}
 
 }
