@@ -1,5 +1,6 @@
 package sensorThreads;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import lejos.robotics.LightDetectorAdaptor;
@@ -15,6 +16,8 @@ public class LightSensorThread implements Runnable {
 	
 	private Thread lightSensorThread;
 	
+	private AtomicBoolean active;
+	
 	/**
 	 * 
 	 * @param values shared space in which this thread will be writing data 
@@ -27,11 +30,12 @@ public class LightSensorThread implements Runnable {
 		detector.setHigh(1);
 		detector.setReflected(true);
 		lightSensorThread = new Thread(this);
+		active = new AtomicBoolean(true);
 	}
 	
 	@Override
 	public void run() {
-		while (true) {
+		while (active.get()) {
 			int value = (int) (detector.getLightValue() * globalValues.floatToInt);
 			currentValue.set(value);
 		}
@@ -39,15 +43,19 @@ public class LightSensorThread implements Runnable {
 	}
 	
 	public void interruptThread() {
-		if (!lightSensorThread.isInterrupted()) {
-			lightSensorThread.interrupt();
-		}
+		/*
+		 * set active to false, so while loop in run method will exit and thread is finished
+		 */
+		active.set(false);
 	}
 	
 	public void startThread() {
-		if (!lightSensorThread.isAlive() || lightSensorThread.isInterrupted()) {
-			lightSensorThread.start();
-		}
+		//instanciate new Thread and start it
+		interruptThread(); //kill thread if its still alive
+		//start new one
+		lightSensorThread = new Thread(this);
+		active.set(true);
+		lightSensorThread.start();
 	}
 	
 	public float getLastLightValue() {

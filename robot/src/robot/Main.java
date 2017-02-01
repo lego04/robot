@@ -2,11 +2,12 @@ package robot;
 
 import lejos.hardware.Button;
 import lejos.hardware.Key;
+import util.EscapeThread;
 
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		startEscapeThread();
 		Robot robot = new Robot();
 		robot.start();
 		//System.out.println("Hello World");
@@ -16,6 +17,10 @@ public class Main {
 	
 	private static void stop() {
 		Button.ESCAPE.simulateEvent(Key.KEY_PRESSED_AND_RELEASED);
+	}
+	
+	private static void startEscapeThread() {
+		new EscapeThread().startThread();
 	}
 
 }
