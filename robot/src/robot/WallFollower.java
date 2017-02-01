@@ -16,15 +16,20 @@ public class WallFollower implements interfaces.Actor {
 	/** Current distance to the wall as <b>centimetres (cm)</b>, that read from {@link UltrasonicSensorThread}. */
 	private int distanceToWall;
 	
+	private final float wallToFollow;
+	
 	/** Standard constructor of the calls. Needs reference to the {@link Robot} and {@link UltrasonicSensorThread}
 	 * @param robot : {@link Robot}
 	 * @param sensor : {@link UltrasonicSensorThread}
 	 */
+
 	public WallFollower(Robot robot, UltrasonicSensorThread sensor) {
+
 		this.robot = robot;
 		this.distanceSensor = sensor;
 		this.distanceToWall = 22; // Just to be sure, that it was initialised.
 		updateDistanceToWall();
+		this.wallToFollow = wallToFollow;
 	}
 	
 	/** Robot follows the wall using it as an anchor point to find its way through the labyrinth.
@@ -33,9 +38,9 @@ public class WallFollower implements interfaces.Actor {
 	public void followTheWall() {
 		while (isInLabyrinth()) {
 			controllTheDistanceToWall();
-			// TODO: Wait to be done.
-			robot.getPilot().travel(20.0);
-			// TODO: Wait to be done.
+			waitComplete(500);
+			robot.getPilot().travel(10.0);
+			waitComplete(500);
 		}
 	}
 	
@@ -51,7 +56,9 @@ public class WallFollower implements interfaces.Actor {
 	private void controllTheDistanceToWall() {
 		updateDistanceToWall();
 		int diff = 22 - distanceToWall;
-		double turnRate = (double) globalValues.RIGHT * (distanceToTurnRate(diff));
+		System.out.println("diff: " + diff);
+		double turnRate = (double) (-1.0) * wallToFollow * distanceToTurnRate(diff);
+		System.out.println("turnRate: " + turnRate);
 		robot.getPilot().steer(turnRate);
 	}
 	
@@ -73,8 +80,23 @@ public class WallFollower implements interfaces.Actor {
 	public void act(TouchSensorID id) {
 		robot.getPilot().stop();
 		robot.getPilot().travel(-10.0);
-		robot.getPilot().rotate(globalValues.RIGHT * 90.0);
+		waitComplete(500);
+		robot.getPilot().rotate(wallToFollow * 90.0);
+		waitComplete(500);
 		robot.getPilot().travel(10.0);
+		waitComplete(500);
+	}
+	
+	/** Stops the execution for the given time. 
+	 * @param millis : <code>long</code>, is the milliseconds for the thread to sleep.
+	 */
+	private void waitComplete(long millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
