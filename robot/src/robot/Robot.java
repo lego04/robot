@@ -70,19 +70,19 @@ public class Robot {
 		ultraSonicDetector = new RangeFeatureDetector(new RangeFinderAdapter(us), ultraSonicMaxDistanceCM, ultraSonicDelayMS);
 		ultraSonicDetector.addListener(new UltraSonicDistanceListener(pilot, ultraSonicStopDistanceM));
 		ultraSonicDetector.enableDetection(false);
-//		colorSensor = new EV3ColorSensor(colorSensorPort);
+		colorSensor = new EV3ColorSensor(colorSensorPort);
 //		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 
 //		touch1 = new EV3TouchSensor(touchSensor1Port);
 //		touch2 = new EV3TouchSensor(touchSensor2Port);
 		
-		UltrasonicSensor us1 = new UltrasonicSensor(this);
-		us1.start();
+//		UltrasonicSensor us1 = new UltrasonicSensor(this);
+//		us1.start();
 
 		touch1 = new EV3TouchSensor(touchSensor1Port);
 		touch2 = new EV3TouchSensor(touchSensor2Port);
 		//touchDetector = new FusorDetector()
-//		pilot.setTravelSpeed(10);
+		pilot.setTravelSpeed(15);
 		
 	}
 	
@@ -94,7 +94,7 @@ public class Robot {
 	public void start() {
  		//pilot.forward();
 		//pilot.steer(100);
- 		//new LineFollower(this).adjustLine(true);
+ 		new FindLineFirst(this).findLineFirst();
 	}
 	
 	//
