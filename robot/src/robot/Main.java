@@ -11,8 +11,8 @@ public class Main {
 		Robot robot = new Robot();
 		robot.start();
 		//System.out.println("Hello World");
-		Button.ESCAPE.waitForPress();
-		stop();
+		//Button.ESCAPE.waitForPress();
+		//stop();
 	}
 	
 	private static void stop() {
