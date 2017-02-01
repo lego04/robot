@@ -1,7 +1,9 @@
 package robot;
 
 import robot.Robot;
-
+import util.globalValues;
+import util.TouchSensorID;
+import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.robotics.navigation.DifferentialPilot;
 
 /**
@@ -10,7 +12,7 @@ import lejos.robotics.navigation.DifferentialPilot;
  */
 public abstract class WallFollower {
 	private DifferentialPilot pilot;
-	private UltrasonicSensor sensor;
+	private UltrasonicSensor distanceSensor;
 	private float distanceToWall;
 	
 	/**
@@ -20,7 +22,7 @@ public abstract class WallFollower {
 	 */
 	public WallFollower(Robot robot, UltrasonicSensor sensor) {
 		this.pilot = robot.getPilot();
-		this.sensor = sensor;
+		this.distanceSensor = sensor;
 		this.distanceToWall = 0.0f;
 		updateDistanceToWall();
 	}
@@ -75,7 +77,7 @@ public abstract class WallFollower {
 	 * Updates the <code>distanceToWall</code> - distance between the wall and the robot
 	 */
  	private void updateDistanceToWall() {
-		this.distanceToWall = sensor.getLeftDistance();
+		this.distanceToWall = distanceSensor.getLeftDistance();
 	}
  	
  	/**
@@ -83,7 +85,6 @@ public abstract class WallFollower {
  	 * @return <code>true</code> if robot bumped from front, else <code>false</code>.
  	 */
  	private boolean isBumped() {
- 		// TODO: Read touch sensor values and make a decision.
  		return false;
  	}
 
@@ -91,7 +92,7 @@ public abstract class WallFollower {
  	 * The method turns the robot to another side, that robot tries to avoid another bumping.
  	 */
  	private void tryNextSide() {
- 		pilot.travel(-10.0);
- 		// TODO: Turn robot according to the bumping result
+ 		pilot.travel(-10);
+		pilot.rotate(globalValues.RIGHT * 90);
  	}
 }
