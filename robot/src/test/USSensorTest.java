@@ -1,26 +1,27 @@
-package robot;
+package test;
 
 import lejos.hardware.Button;
 import lejos.hardware.Key;
-import util.EscapeThread;
+import robot.Robot;
+import robot.UltrasonicSensor;
 
-public class Main {
-
+public class USSensorTest {
+	
 	public static void main(String[] args) {
-		startEscapeThread();
+		// TODO Auto-generated method stub
 		Robot robot = new Robot();
 		robot.start();
 		//System.out.println("Hello World");
+		
+		UltrasonicSensor us = new UltrasonicSensor(robot);
+		us.start();
+		
 		Button.ESCAPE.waitForPress();
 		stop();
 	}
 	
 	private static void stop() {
 		Button.ESCAPE.simulateEvent(Key.KEY_PRESSED_AND_RELEASED);
-	}
-	
-	private static void startEscapeThread() {
-		new EscapeThread().startThread();
 	}
 
 }

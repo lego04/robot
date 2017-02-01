@@ -14,7 +14,6 @@ import lejos.robotics.objectdetection.FeatureDetector;
 import lejos.robotics.objectdetection.FusorDetector;
 import lejos.robotics.objectdetection.RangeFeatureDetector;
 import lejos.robotics.objectdetection.TouchFeatureDetector;
-import listeners.UltraSonicDistanceListener;
 
 /**
  * class representing robot
@@ -66,23 +65,23 @@ public class Robot {
 	
 	public Robot() {
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel);
+		/*
 		EV3UltrasonicSensor us = new EV3UltrasonicSensor(irSensorPort);
 		ultraSonicDetector = new RangeFeatureDetector(new RangeFinderAdapter(us), ultraSonicMaxDistanceCM, ultraSonicDelayMS);
 		ultraSonicDetector.addListener(new UltraSonicDistanceListener(pilot, ultraSonicStopDistanceM));
 		ultraSonicDetector.enableDetection(false);
-//		colorSensor = new EV3ColorSensor(colorSensorPort);
+		*/
+		colorSensor = new EV3ColorSensor(colorSensorPort);
+		usSensor = new EV3UltrasonicSensor(irSensorPort);
 //		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 
 //		touch1 = new EV3TouchSensor(touchSensor1Port);
 //		touch2 = new EV3TouchSensor(touchSensor2Port);
-		
-		UltrasonicSensor us1 = new UltrasonicSensor(this);
-		us1.start();
 
 		touch1 = new EV3TouchSensor(touchSensor1Port);
 		touch2 = new EV3TouchSensor(touchSensor2Port);
 		//touchDetector = new FusorDetector()
-//		pilot.setTravelSpeed(10);
+		pilot.setTravelSpeed(15);
 		
 	}
 	
@@ -94,7 +93,7 @@ public class Robot {
 	public void start() {
  		//pilot.forward();
 		//pilot.steer(100);
- 		//new LineFollower(this).adjustLine(true);
+ 		new FindLineFirst(this).findLineFirst();
 	}
 	
 	//
