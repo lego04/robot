@@ -30,6 +30,11 @@ public abstract class WallFollower {
 	public void followTheWall() {
 		while (isInLabyrinth()) {
 			controllTheDistanceToWall();
+			// TODO: Wait to be done.
+			pilot.travel(20.0);
+			if (isBumped()) {
+				tryNextSide();
+			}
 		}
 	}
 	
@@ -50,7 +55,6 @@ public abstract class WallFollower {
 		float diff = mustDistance - distanceToWall;
 		double turnRate = (-1.0) * (distanceToTurnRate(diff));
 		pilot.steer(turnRate);
-		pilot.travel(20.0);
 	}
 	
 	/**
@@ -69,4 +73,21 @@ public abstract class WallFollower {
  	private void updateDistanceToWall() {
 		this.distanceToWall = sensor.getLeftDistance();
 	}
+ 	
+ 	/**
+ 	 * Checks reads touch sensor values and decides, whether the robot bumped from front.
+ 	 * @return <b>true</b> if robot bumped from front, else <b>false</b>.
+ 	 */
+ 	private boolean isBumped() {
+ 		// TODO: Read touch sensor values and make a decision.
+ 		return false;
+ 	}
+
+ 	/**
+ 	 * The method turns the robot to another side, that robot tries to avoid another bumping.
+ 	 */
+ 	private void tryNextSide() {
+ 		pilot.travel(-10.0);
+ 		// TODO: Turn robot according to the bumping result
+ 	}
 }
