@@ -45,13 +45,13 @@ public class UltrasonicSensor {
 		
 		/*
 		 * - ASSERT START POSITION (NEUTRAL, MIDDLE) -
-		 * rotate left (90°)
+		 * rotate left (90ï¿½)
 		 * 
 		 * while(not interrupted) {
 		 * 	leftDistance = readDistance()
-		 * 	rotate right (180°)
+		 * 	rotate right (180ï¿½)
 		 * 	rightDistance = readDistance()
-		 * 	rotate left (180°)
+		 * 	rotate left (180ï¿½)
 		 */
 		
 	}

@@ -10,6 +10,7 @@ import lejos.hardware.Key;
 import lejos.hardware.KeyListener;
 import lejos.robotics.LightDetectorAdaptor;
 import listeners.TouchSensorListener;
+import sensorThreads.LightSensorThread;
 
 public class LineFollower implements Actor {
 
@@ -21,16 +22,20 @@ public class LineFollower implements Actor {
 	/**
 	 * interface for color / light sensor
 	 */
-	private LightDetectorAdaptor detector;
+	private LightSensorThread lightSensorThread;
 	private boolean leftEdge;
 
 	public LineFollower(Robot robot) {
 		this.robot = robot;
+		lightSensorThread = new LightSensorThread(robot);
 		
+		//should be handled by LightSensorThread, remove this lines if it works
+		/*
 		detector = new LightDetectorAdaptor(robot.getColorSensor());
 		detector.setLow(0);
 		detector.setHigh(1);
 		detector.setReflected(true);
+		*/
 
 	}
 	
@@ -121,7 +126,7 @@ public class LineFollower implements Actor {
 	*/
 	
 	private float getCurrentLightValue() {
-		float lv = detector.getLightValue();
+		float lv = lightSensorThread.getLastLightValue();
 		System.out.println(lv);
 		return lv;
 	}
@@ -141,7 +146,7 @@ public class LineFollower implements Actor {
 			@Override
 			public void keyPressed(Key k) {
 				if (k.getId() == Button.ID_ENTER) {
-					float light = detector.getLightValue();
+					float light = lightSensorThread.getDetector().getLightValue();
 					System.out.println(light);
 				}
 
