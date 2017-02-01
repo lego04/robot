@@ -21,7 +21,7 @@ public class WallFollower implements interfaces.Actor {
 	public WallFollower(Robot robot, UltrasonicSensor sensor) {
 		this.robot = robot;
 		this.distanceSensor = sensor;
-		this.distanceToWall = 0.0f;
+		this.distanceToWall = 0.22f; // Just to be sure, that it was initialised.
 		updateDistanceToWall();
 	}
 	
@@ -52,9 +52,8 @@ public class WallFollower implements interfaces.Actor {
 	 */
 	private void controllTheDistanceToWall() {
 		updateDistanceToWall();
-		// FIXME: Fix the 0.3f to the right must distance from the left wall
-		float diff = 0.3f - distanceToWall;
-		double turnRate = (-1.0) * (distanceToTurnRate(diff));
+		float diff = 0.22f - distanceToWall;
+		double turnRate = globalValues.RIGHT * (distanceToTurnRate(diff));
 		robot.getPilot().steer(turnRate);
 	}
 	
