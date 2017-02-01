@@ -83,8 +83,34 @@ public class UltrasonicSensor implements Runnable{
 		}
 	}
 	
-	private void oneSide() {
+	private void leftSide() {
+		usMotor.rotate(angle);
 		
+		while (active.get()) {
+			int distanceInt = (int) (rangeFinder.getRange() * globalValues.floatToInt);
+			leftDistance.set(distanceInt);
+			System.out.println("left: " + leftDistance.get());
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void rightSide() {
+		usMotor.rotate(-angle);
+		
+		while (active.get()) {
+			int distanceInt = (int) (rangeFinder.getRange() * globalValues.floatToInt);
+			rightDistance.set(distanceInt);
+			System.out.println("right: " + rightDistance.get());
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -96,6 +122,10 @@ public class UltrasonicSensor implements Runnable{
 		
 		if (mode == Modes.BothSides) {
 			bothSides();
+		} else if (mode == Modes.Left) {
+			leftSide();
+		} else {
+			rightSide();
 		}
 		
 	}
