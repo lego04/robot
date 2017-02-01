@@ -35,9 +35,17 @@ public class WallFollower implements interfaces.Actor {
 	public void followTheWall() {
 		while (isInLabyrinth()) {
 			controllTheDistanceToWall();
-			waitComplete(500);
-			robot.getPilot().travel(10.0);
-			waitComplete(500);
+			robot.getPilot().forward();
+			updateDistanceToWall();
+			while (distanceToWall < globalValues.WALL_DIST_MAX && distanceToWall > globalValues.WALL_DIST_MIN) {
+				updateDistanceToWall();
+				waitComplete(200);
+			}
+			robot.getPilot().stop();
+			controllTheDistanceToWall();
+			//waitComplete(500);
+			//robot.getPilot().travel(10.0);
+			//waitComplete(500);
 		}
 	}
 	
@@ -49,15 +57,29 @@ public class WallFollower implements interfaces.Actor {
 		return true;
 	}
 	
+
+	
 	/** Controller, that tries to keep the robot at the wall. */
 	private void controllTheDistanceToWall() {
 		updateDistanceToWall();
+		if (distanceToWall > 40) {
+			turnLeft();
+			robot.getPilot().travel(35);
+			return;
+		}
+		//supdateDistanceToWall();
 		int diff = 22 - distanceToWall;
 		System.out.println("diff: " + diff);
-		double turnRate = (double) (-1.0) * wallToFollow * distanceToTurnRate(diff);
+		double turnRate = (double)  wallToFollow * distanceToTurnRate(diff);
 		System.out.println("turnRate: " + turnRate);
 		robot.getPilot().steer(turnRate);
+		
 	}
+	
+	private void turnLeft() {
+		//TODO: was cooles überlegen
+	}
+	
 	
 	/** Converts distance values read from {@link UltrasonicSensor} to the <code>turnRate</code> values needed for <code>pilot.steer()</code> method.
 	 * @param distance : <code>float</code>, value read from {@link UltrasonicSensor}.
@@ -77,11 +99,11 @@ public class WallFollower implements interfaces.Actor {
 	public void act(TouchSensorID id) {
 		robot.getPilot().stop();
 		robot.getPilot().travel(-10.0);
-		waitComplete(500);
+		//waitComplete(500);
 		robot.getPilot().rotate(wallToFollow * 90.0);
-		waitComplete(500);
+		//waitComplete(500);
 		robot.getPilot().travel(10.0);
-		waitComplete(500);
+		//waitComplete(500);
 	}
 	
 	/** Stops the execution for the given time. 

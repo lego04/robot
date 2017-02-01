@@ -25,8 +25,8 @@ public class Robot {
 	
 	// wheel properties
 	
-	public static final double wheelDiameter = 5; //TODO
-	public static final double trackWidth = 10; //TODO
+	public static final double wheelDiameter = 8.16;
+	public static final double trackWidth = 12;
 	
 	public static final float ultraSonicMaxDistanceCM = 40;
 	public static final int ultraSonicDelayMS = 250;
@@ -46,11 +46,11 @@ public class Robot {
 	
 	//Sensors
 	
-	private Port colorSensorPort = SensorPort.S3; //TODO
-	private Port irSensorPort = SensorPort.S4; //TODO
-//	private Port gyroSensorPort = SensorPort.S1; //TODO
-	private Port touchSensor1Port = SensorPort.S1; //TODO
-	private Port touchSensor2Port = SensorPort.S2; //TODO
+	private Port colorSensorPort = SensorPort.S3; 
+	private Port irSensorPort = SensorPort.S4; 
+//	private Port gyroSensorPort = SensorPort.S1;
+	private Port touchSensor1Port = SensorPort.S1; 
+	private Port touchSensor2Port = SensorPort.S2; 
 	
 	
 	private EV3ColorSensor colorSensor;
@@ -66,18 +66,17 @@ public class Robot {
 	
 	public Robot() {
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel);
-		/*
-		EV3UltrasonicSensor us = new EV3UltrasonicSensor(irSensorPort);
-		ultraSonicDetector = new RangeFeatureDetector(new RangeFinderAdapter(us), ultraSonicMaxDistanceCM, ultraSonicDelayMS);
+		
+		usSensor = new EV3UltrasonicSensor(irSensorPort);
+		
+		/*ultraSonicDetector = new RangeFeatureDetector(new RangeFinderAdapter(us), ultraSonicMaxDistanceCM, ultraSonicDelayMS);
 		ultraSonicDetector.addListener(new UltraSonicDistanceListener(pilot, ultraSonicStopDistanceM));
-		ultraSonicDetector.enableDetection(false);
-		*/
+		ultraSonicDetector.enableDetection(false);*/
+		
 		colorSensor = new EV3ColorSensor(colorSensorPort);
 //		usSensor = new EV3UltrasonicSensor(irSensorPort);
 //		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 
-//		touch1 = new EV3TouchSensor(touchSensor1Port);
-//		touch2 = new EV3TouchSensor(touchSensor2Port);
 
 		touch1 = new EV3TouchSensor(touchSensor1Port);
 		touch2 = new EV3TouchSensor(touchSensor2Port);

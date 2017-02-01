@@ -121,6 +121,7 @@ public class LineFollower implements Actor {
 					count++;
 					if (count > globalValues.LINETRAVELSPEED) {
 						//findLine();
+						
 						count = 0;
 					}
 					
