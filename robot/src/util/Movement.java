@@ -30,8 +30,8 @@ public class Movement {
 	 * 			time in Milliseconds
 	 */
 	public void goForwardTime(int time) {
-		robot.getLeftWheel().setSpeed(globalValues.LINETRAVELSPEED * 15);
-		robot.getRightWheel().setSpeed(globalValues.LINETRAVELSPEED * 15);
+		robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 15);
+		robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 15);
 		robot.getLeftWheel().forward();
 		robot.getRightWheel().forward();
 		try {

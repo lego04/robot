@@ -1,6 +1,6 @@
 package test;
 
-import util.globalValues;
+import util.GlobalValues;
 import listeners.TouchSensorListener;
 import robot.Robot;
 import robot.WallFollower;
@@ -16,7 +16,7 @@ public class WallFollowerTest {
 		Robot robot = new Robot();
 		UltrasonicSensorThread us = new UltrasonicSensorThread(robot);
 		us.start(Modes.Left, 90);
-		WallFollower wf = new WallFollower(robot, us, globalValues.RIGHT);
+		WallFollower wf = new WallFollower(robot, us, GlobalValues.RIGHT);
 		new TouchSensorListener(wf);
 		wf.followTheWall();
 	}

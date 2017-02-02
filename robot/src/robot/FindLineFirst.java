@@ -25,11 +25,11 @@ public class FindLineFirst implements Actor {
 	}
 	
 	public void findLineFirst() {		// wird einmal zum Start aufgerufen
-		robot.getPilot().rotate(globalValues.RIGHT * 45);	// um 45 Grad nach rechts drehen
+		robot.getPilot().rotate(GlobalValues.RIGHT * 45);	// um 45 Grad nach rechts drehen
 		robot.getPilot().forward();
-		while (lst.getLastLightValue() < globalValues.MINLIGHT) {
+		while (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
 		}
-		robot.getPilot().rotate(globalValues.LEFT * 45);
+		robot.getPilot().rotate(GlobalValues.LEFT * 45);
 		new LineFollower(robot, lst).adjustLine();
 	}
 	
@@ -39,9 +39,9 @@ public class FindLineFirst implements Actor {
 	public void act(TouchSensorID id) {
 		robot.getPilot().stop();
 		robot.getPilot().travel(-10);
-		robot.getPilot().rotate(globalValues.LEFT * 90);
+		robot.getPilot().rotate(GlobalValues.LEFT * 90);
 		robot.getPilot().forward();
-		while (lst.getLastLightValue() < globalValues.MINLIGHT) {
+		while (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
 		}
 		robot.getPilot().stop();
 	}

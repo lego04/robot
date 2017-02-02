@@ -7,7 +7,7 @@ import javax.xml.bind.JAXBElement.GlobalScope;
 import interfaces.Actor;
 import util.GlobHelpMethods;
 import util.TouchSensorID;
-import util.globalValues;
+import util.GlobalValues;
 import lejos.hardware.Button;
 import lejos.hardware.Key;
 import lejos.hardware.KeyListener;
@@ -73,9 +73,9 @@ public class LineFollower implements Actor {
 	public void findLine() {
 		int count = 0;
 		robot.getPilot().stop();
-		robot.getPilot().rotate(globalValues.RIGHT * 65);
+		robot.getPilot().rotate(GlobalValues.RIGHT * 65);
 		
-		while (lst.getLastLightValue() < globalValues.MINLIGHT) {
+		while (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
 			/*
 			robot.getPilot().forward();	
 			while (lst.getLastLightValue() < globalValues.MINLIGHT) {
@@ -95,8 +95,8 @@ public class LineFollower implements Actor {
 			Thread.sleep(400);
 		}
 		catch (Exception e) { }
-		robot.getPilot().steer(globalValues.LEFT * 200);
-		while (lst.getLastLightValue() < globalValues.MINLIGHT) {
+		robot.getPilot().steer(GlobalValues.LEFT * 200);
+		while (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
 		}
 		robot.getPilot().stop();
 	}
@@ -104,13 +104,13 @@ public class LineFollower implements Actor {
 	public void adjustLine() {
 		int leftSide = 0;
 		while (true) {		//for testing purpose
-			robot.getMovement().goForwardSpeed(globalValues.LINETRAVELSPEED * 15);
-			if (lst.getLastLightValue() < globalValues.MINLIGHT) {
+			robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED * 15);
+			if (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
 				leftSide = 1;
 				//robot.getPilot().steer(globalValues.RIGHT * 30);
 				int count = 0;
 				robot.getRightWheel().stop();
-				while (lst.getLastLightValue() < globalValues.MINLIGHT) {
+				while (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
 					/*
 					try {
 						Thread.sleep(50);
@@ -130,7 +130,7 @@ public class LineFollower implements Actor {
 				}
 				//robot.getPilot().stop();
 			}
-			else if (lst.getLastLightValue() > globalValues.MAXLIGHT) {
+			else if (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
 				//robot.getLeftWheel().setSpeed(globalValues.LINETRAVELSPEED * 5);
 				//robot.getRightWheel().setSpeed(globalValues.LINETRAVELSPEED * 20);
 				robot.getMovement().stopAll();
@@ -149,9 +149,9 @@ public class LineFollower implements Actor {
 				robot.getRightWheel().forward();
 				*/
 				
-				while (lst.getLastLightValue() > globalValues.MAXLIGHT) {
-					robot.getLeftWheel().setSpeed(globalValues.LINETRAVELSPEED * 5);
-					robot.getRightWheel().setSpeed(globalValues.LINETRAVELSPEED * 5);
+				while (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
+					robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 5);
+					robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 5);
 					robot.getRightWheel().forward();
 					robot.getLeftWheel().backward();
 					/*
@@ -167,8 +167,8 @@ public class LineFollower implements Actor {
 				//robot.getPilot().stop();
 			}
 			else {
-				while (globalValues.MINLIGHT < lst.getLastLightValue() &&
-						lst.getLastLightValue() < globalValues.MAXLIGHT) {
+				while (GlobalValues.MINLIGHT < lst.getLastLightValue() &&
+						lst.getLastLightValue() < GlobalValues.MAXLIGHT) {
 					//int delta = (robot.getLeftWheel().getSpeed() - robot.getRightWheel().getSpeed()) / 10;
 					//robot.getMovement().stopAll();
 					/*
@@ -183,7 +183,7 @@ public class LineFollower implements Actor {
 						robot.getMovement().speedUpRight();
 					}
 					*/
-					robot.getMovement().goForwardSpeed(globalValues.LINETRAVELSPEED * 15);
+					robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED * 15);
 					/*
 					try {
 						Thread.sleep(100);

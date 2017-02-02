@@ -7,7 +7,7 @@ import lejos.robotics.RangeFinderAdapter;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
 import robot.Robot;
-import util.globalValues;
+import util.GlobalValues;
 
 
 public class UltrasonicSensorThread implements Runnable {
@@ -102,7 +102,7 @@ public class UltrasonicSensorThread implements Runnable {
 					lookingLeft.set(false);;
 					leftRight = !leftRight;
 				}
-				int rightDistanceInt = (int) (rangeFinder.getRange() * globalValues.floatToInt);
+				int rightDistanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
 				rightDistance.set(rightDistanceInt);
 				if (DEBUG) {
 					System.out.println("right: " + rightDistance.get());
@@ -114,7 +114,7 @@ public class UltrasonicSensorThread implements Runnable {
 					leftRight = !leftRight;
 				}
 				
-				int leftDistanceInt = (int) (rangeFinder.getRange() * globalValues.floatToInt);
+				int leftDistanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
 				leftDistance.set(leftDistanceInt);
 				if (DEBUG) {
 					System.out.println("left: " + leftDistance.get());
@@ -128,7 +128,7 @@ public class UltrasonicSensorThread implements Runnable {
 		usMotor.rotate(angle);
 		lookingLeft.set(true);
 		while (active.get()) {
-			int distanceInt = (int) (rangeFinder.getRange() * globalValues.floatToInt);
+			int distanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
 			leftDistance.set(distanceInt);
 			if (DEBUG) {
 				System.out.println("left: " + leftDistance.get());
@@ -145,7 +145,7 @@ public class UltrasonicSensorThread implements Runnable {
 		usMotor.rotate(-angle);
 		lookingLeft.set(false);
 		while (active.get()) {
-			int distanceInt = (int) (rangeFinder.getRange() * globalValues.floatToInt);
+			int distanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
 			rightDistance.set(distanceInt);
 			if (DEBUG) {
 				System.out.println("right: " + rightDistance.get());
