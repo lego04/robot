@@ -11,7 +11,7 @@ public class BridgeFollower {
 	private UltrasonicSensorThread usSensor;
 	
 // TODO: anpassen
-	private final int DISTANCE_LIMIT = 30;
+	private final int DISTANCE_LIMIT = 20;
 	
 	public BridgeFollower(Robot robot) {
 		
@@ -22,14 +22,12 @@ public class BridgeFollower {
 	
 	public void start() {
 		
-		//wenden
-		//robot.setUltraSonicFront();
 		usSensor.start(Modes.BothSides, 35);
 		
 		int distance = 0;
 		
-		robot.getLeftWheel().backward();
-		robot.getRightWheel().backward();
+		robot.getLeftWheel().forward();
+		robot.getRightWheel().forward();
 		
 		while (true) {
 			
@@ -46,13 +44,13 @@ public class BridgeFollower {
 			
 			System.out.println(distance);
 			if (distance <= DISTANCE_LIMIT) {
-				System.out.println("<=");
+				System.out.println("<=" + " " + distance);
 				usSensor.setMovementEnabled(true);
 				//robot.getPilot().forward();
 				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 25);
 				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 25);
 			} else {
-				System.out.println(">");
+				System.out.println(">" + " " + distance);
 				usSensor.setMovementEnabled(false);
 				//robot.getPilot().stop();
 				robot.getLeftWheel().stop();
@@ -80,9 +78,10 @@ public class BridgeFollower {
 					robot.getRightWheel().setSpeed(0);
 				}
 			}
-			robot.getLeftWheel().backward();
-			robot.getRightWheel().backward();
+			robot.getLeftWheel().forward();
+			robot.getRightWheel().forward();
 			
+// TODO: implement
 			/*
 			if (von Brücke runter) {
 				break;
@@ -91,15 +90,13 @@ public class BridgeFollower {
 			
 // TODO: besser?
 			try {
-				Thread.sleep(100);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			
 		}
 		
-		// wenden
-		// //robot.setUltraSonicBack();
 		// nächster Schritt // Linie folgen?
 		
 		
