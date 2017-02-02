@@ -104,12 +104,12 @@ public class LineFollower implements Actor {
 	
 	public void adjustLine() {
 		while (true) {		//for testing purpose
-			robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED * 10);
+			//robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED * 10);
 			if (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
 				//robot.getPilot().steer(globalValues.RIGHT * 30);
 				//robot.getMovement().stopAll();
 				//robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED * 10);
-				robot.getRightWheel().stop();
+				robot.getRightWheel().flt();
 				while (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
 					/*
 					try {
