@@ -179,7 +179,7 @@ public class WallFollower implements interfaces.Actor {
 	
 	/** Updates the <code>distanceToWall</code> - distance between the wall and the robot */
  	private void updateDistanceToWall() {
-		this.distanceToWall = distanceSensor.getLeftDistance();
+		this.distanceToWall = distanceSensor.getDistance();
 	}
 
 	@Override
