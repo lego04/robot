@@ -123,8 +123,13 @@ public class Movement {
 		robot.getLeftWheel().endSynchronization();
 	}
 	
-	public void reverseDirection() {
-		reverse = !reverse;
+	public void backwardDirection() {
+		reverse = true;
 		robot.setUltraSonicBack();
+	}
+	
+	public void forwardDirection() {
+		reverse = false;
+		robot.setUltraSonicFront();
 	}
 }
