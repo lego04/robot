@@ -56,8 +56,7 @@ public class Robot {
 	private EV3ColorSensor colorSensor;
 	private EV3UltrasonicSensor usSensor;
 	private EV3GyroSensor gyroSensor;
-	private EV3TouchSensor touch1, touch2;
-	
+	private EV3TouchSensor touch1, touch2;	
 	
 	//Range detectors
 	private FeatureDetector ultraSonicDetector;
@@ -74,7 +73,9 @@ public class Robot {
 		ultraSonicDetector.enableDetection(false);*/
 		
 		colorSensor = new EV3ColorSensor(colorSensorPort);
-//		usSensor = new EV3UltrasonicSensor(irSensorPort);
+
+		usSensor = new EV3UltrasonicSensor(irSensorPort);
+
 //		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 
 

@@ -3,8 +3,8 @@ package test;
 import lejos.hardware.Button;
 import lejos.hardware.Key;
 import robot.Robot;
-import robot.UltrasonicSensor;
-import robot.UltrasonicSensor.Modes;
+import sensorThreads.UltrasonicSensorThread;
+import sensorThreads.UltrasonicSensorThread.Modes;
 import util.EscapeThread;
 
 public class USSensorTest {
@@ -14,7 +14,7 @@ public class USSensorTest {
 		Robot robot = new Robot();
 //		robot.start();
 		
-		UltrasonicSensor us = new UltrasonicSensor(robot);
+		UltrasonicSensorThread us = new UltrasonicSensorThread(robot);
 		us.start(Modes.Right, 90);
 		
 		Button.ESCAPE.waitForPress();

@@ -1,6 +1,7 @@
 package robot;
 
 import robot.Robot;
+import sensorThreads.UltrasonicSensorThread;
 import util.globalValues;
 import util.TouchSensorID;
 
@@ -10,18 +11,20 @@ import util.TouchSensorID;
 public class WallFollower implements interfaces.Actor {
 	/** Reference to {@link Robot} */
 	private Robot robot;
-	/** Reference to {@link UltrasonicSensor} */
-	private UltrasonicSensor distanceSensor;
-	/** Current distance to the wall as <b>centimetres (cm)</b>, that read from {@link UltrasonicSensor}. */
+	/** Reference to {@link UltrasonicSensorThread} */
+	private UltrasonicSensorThread distanceSensor;
+	/** Current distance to the wall as <b>centimetres (cm)</b>, that read from {@link UltrasonicSensorThread}. */
 	private int distanceToWall;
 	
 	private final float wallToFollow;
 	
-	/** Standard constructor of the calls. Needs reference to the {@link Robot} and {@link UltrasonicSensor}
+	/** Standard constructor of the calls. Needs reference to the {@link Robot} and {@link UltrasonicSensorThread}
 	 * @param robot : {@link Robot}
-	 * @param sensor : {@link UltrasonicSensor}
+	 * @param sensor : {@link UltrasonicSensorThread}
 	 */
-	public WallFollower(Robot robot, UltrasonicSensor sensor, float wallToFollow) {
+
+	public WallFollower(Robot robot, UltrasonicSensorThread sensor, float wallToFollow) {
+
 		this.robot = robot;
 		this.distanceSensor = sensor;
 		this.distanceToWall = 22; // Just to be sure, that it was initialised.
@@ -81,7 +84,7 @@ public class WallFollower implements interfaces.Actor {
 	}
 	
 	
-	/** Converts distance values read from {@link UltrasonicSensor} to the <code>turnRate</code> values needed for <code>pilot.steer()</code> method.
+	/** Converts distance values read from {@link UltrasonicSensorThread} to the <code>turnRate</code> values needed for <code>pilot.steer()</code> method.
 	 * @param distance : <code>float</code>, value read from {@link UltrasonicSensor}.
 	 * @return <code>double</code> value for <code>turnRate</code>.
 	 */
