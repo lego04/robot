@@ -122,6 +122,7 @@ public class LineFollower implements Actor {
 					robot.getMovement().slowDownRight();
 					if (count > globalValues.LINETRAVELSPEED) {
 						//findLine();
+						
 						count = 0;
 					}
 					*/
