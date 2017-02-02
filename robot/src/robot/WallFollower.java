@@ -3,6 +3,7 @@ package robot;
 import robot.Robot;
 import sensorThreads.UltrasonicSensorThread;
 import util.GlobalValues;
+import util.Movement;
 import util.TouchSensorID;
 
 /** WallFollwer class is the generalisation of the Left- and RightWallFollower
@@ -15,6 +16,10 @@ public class WallFollower implements interfaces.Actor {
 	private UltrasonicSensorThread distanceSensor;
 	/** Current distance to the wall as <b>centimetres (cm)</b>, that read from {@link UltrasonicSensorThread}. */
 	private int distanceToWall;
+	
+	private Movement movement;
+	
+	private TurnState currentState;
 	
 	private final float wallToFollow;
 	
@@ -30,25 +35,68 @@ public class WallFollower implements interfaces.Actor {
 		this.distanceToWall = 22; // Just to be sure, that it was initialised.
 		updateDistanceToWall();
 		this.wallToFollow = wallToFollow;
+		this.movement = new Movement(robot);
+		currentState = TurnState.STRAIGHT;
 	}
 	
 	/** Robot follows the wall using it as an anchor point to find its way through the labyrinth.
 	 * Robot stays in this state, until it decides, that it is out of the labyrinth.
 	 */
 	public void followTheWall() {
+		movement.backwardDirection();
+		movement.goForward();
 		while (isInLabyrinth()) {
-			controllTheDistanceToWall();
-			robot.getPilot().forward();
-			updateDistanceToWall();
-			while (distanceToWall < GlobalValues.WALL_DIST_MAX && distanceToWall > GlobalValues.WALL_DIST_MIN) {
+			//controllTheDistanceToWall();
+			//robot.getPilot().forward();
+			//updateDistanceToWall();
+			/*while (distanceToWall < GlobalValues.WALL_DIST_MAX && distanceToWall > GlobalValues.WALL_DIST_MIN) {
 				updateDistanceToWall();
 				waitComplete(200);
-			}
-			robot.getPilot().stop();
-			controllTheDistanceToWall();
+			}*/
+			updateMovement();
+			waitComplete(200);
+			//movement.stopAll();
+			//controllTheDistanceToWall();
 			//waitComplete(500);
 			//robot.getPilot().travel(10.0);
 			//waitComplete(500);
+		}
+	}
+	
+	
+	private void updateMovement() {
+		TurnState state = getState();
+		if (state != currentState) {
+			switch (state) {
+			case LEFT:
+				movement.speedUpLeft();
+				break;
+			case RIGHT:
+				movement.slowDownLeft();
+				break;
+			case STRAIGHT: //nothing to do
+				break;
+			case LEFT_TURN:
+				
+			default:
+				throw new IllegalStateException("unknwon state");
+			}
+		}
+		currentState = state;
+	}
+	
+	private TurnState getState() {
+		updateDistanceToWall();
+		if (distanceToWall < GlobalValues.WALL_DIST_MIN) {
+			return TurnState.LEFT;
+		} else if (distanceToWall > GlobalValues.WALL_DIST_MIN) {
+			if (distanceToWall > GlobalValues.WALL_DIST_MAX) {
+				return TurnState.LEFT_TURN;
+			} else {
+				return TurnState.RIGHT;
+			}
+		} else {
+			return TurnState.STRAIGHT;
 		}
 	}
 	
@@ -60,10 +108,31 @@ public class WallFollower implements interfaces.Actor {
 		return true;
 	}
 	
+	private void turnLeft() {
+		movement.stopAll();
+		//reset left motor speed if necessary
+		
+		switch (currentState) {
+		case LEFT:
+			movement.slowDownLeft();
+			break;
+		case RIGHT:
+			movement.speedUpLeft();
+			break;
+		case LEFT_TURN:
+		case STRAIGHT:
+		default: 
+			throw new IllegalStateException("invalid state");
+		}
+		
+		//reset completed
+		
+		robot.getPilot().travelArc(0, 0); //TODO: set right values
+	}
 
 	
 	/** Controller, that tries to keep the robot at the wall. */
-	private void controllTheDistanceToWall() {
+	/*private void controllTheDistanceToWall() {
 		updateDistanceToWall();
 		if (distanceToWall > 40) {
 			robot.getPilot().stop();
@@ -81,8 +150,9 @@ public class WallFollower implements interfaces.Actor {
 		robot.getPilot().steer(turnRate);
 		
 	}
+	*/
 	
-	// ist ein Einzeiler, keine eigene Methode nötig
+	// ist ein Einzeiler, keine eigene Methode nï¿½tig
 	/*
 	private void turnLeft() {
 		robot.getPilot().rotate(globalValues.LEFT * 90); 
@@ -107,12 +177,13 @@ public class WallFollower implements interfaces.Actor {
 
 	@Override
 	public void act(TouchSensorID id) {
-		robot.getPilot().stop();
-		robot.getPilot().travel(-10.0);
+		//robot.getPilot().stop();
+		//movement.stopAll();
+		//robot.getPilot().travel(-10.0);
 		//waitComplete(500);
-		robot.getPilot().rotate(wallToFollow * 90.0);
+		//robot.getPilot().rotate(wallToFollow * 90.0);
 		//waitComplete(500);
-		robot.getPilot().travel(10.0);
+		//robot.getPilot().travel(10.0);
 		//waitComplete(500);
 	}
 	
@@ -131,5 +202,13 @@ public class WallFollower implements interfaces.Actor {
 	@Override
 	public Robot getRobot() {
 		return robot;
+	}
+	
+	public enum TurnState {
+		
+		LEFT,
+		RIGHT,
+		STRAIGHT,
+		LEFT_TURN;
 	}
 }
