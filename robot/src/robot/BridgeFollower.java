@@ -23,21 +23,23 @@ public class BridgeFollower {
 	public void start() {
 		
 		//wenden
-		robot.setUltraSonicFront();
+		//robot.setUltraSonicFront();
 		usSensor.start(Modes.BothSides, 45);
 		
 		int distance = 0;
 		
-		robot.getLeftWheel().forward();
-		robot.getRightWheel().forward();
+		robot.getLeftWheel().backward();
+		robot.getRightWheel().backward();
 		
 		while (true) {
 			
 			boolean lookingLeft = usSensor.getLookingLeft();
 			
 			if (lookingLeft) {
+				System.out.println("Left");
 				distance = usSensor.getLeftDistance();
 			} else {
+				System.out.println("Right");
 				distance = usSensor.getRightDistance();
 			}		
 			
@@ -59,7 +61,7 @@ public class BridgeFollower {
 				robot.getRightWheel().setSpeed(0);
 				
 				// was wenn sich die ausrichtung des sensor inzwischen geändert hat?
-				if (lookingLeft != usSensor.getLookingLeft()) {
+				if (lookingLeft == usSensor.getLookingLeft()) {
 					usSensor.moveTo(lookingLeft ? Directions.Left : Directions.Right);
 				}
 				
@@ -78,8 +80,8 @@ public class BridgeFollower {
 					robot.getRightWheel().setSpeed(0);
 				}
 			}
-			robot.getLeftWheel().forward();
-			robot.getRightWheel().forward();
+			robot.getLeftWheel().backward();
+			robot.getRightWheel().backward();
 			
 			/*
 			if (von Brücke runter) {
@@ -97,7 +99,7 @@ public class BridgeFollower {
 		}
 		
 		// wenden
-		// robot.setUltraSonicBack();
+		// //robot.setUltraSonicBack();
 		// nächster Schritt // Linie folgen?
 		
 		
