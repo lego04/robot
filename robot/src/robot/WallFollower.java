@@ -117,7 +117,7 @@ public class WallFollower implements interfaces.Actor {
 	private void turnRight() {
 		movement.stopAll();
 		synchronizeMotors();
-		robot.getPilot().travelArc(0, 0); //TODO: set right values
+		robot.getPilot().rotate(GlobalValues.RIGHT * 90);
 	}
 	
 	private void synchronizeMotors() {
@@ -185,6 +185,7 @@ public class WallFollower implements interfaces.Actor {
 	@Override
 	public void act(TouchSensorID id) {
 		turnRight();
+		followTheWall();
 	}
 	
 	/** Stops the execution for the given time. 
