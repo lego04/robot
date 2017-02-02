@@ -97,30 +97,31 @@ public class UltrasonicSensorThread implements Runnable {
 	}
 
 	private void bothSides() {
-		usMotor.rotate(-angle);
-		lookingLeft.set(true);;
-		boolean leftRight = true;
+		usMotor.rotate(angle);
+		lookingLeft.set(false);;
+		boolean lookingRight = true;
 		while (active.get()) {
-			if (leftRight) {
+			if (!lookingRight) {
 				if (movementEnabled.get()) {
 					usMotor.rotate(2 * angle);
-					lookingLeft.set(false);;
-					leftRight = !leftRight;
+					lookingLeft.set(false);
+					lookingRight = !lookingRight;
+					int rightDistanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
+					rightDistance.set(rightDistanceInt);
 				}
-				int rightDistanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
-				rightDistance.set(rightDistanceInt);
+				
 				if (DEBUG) {
 					System.out.println("right: " + rightDistance.get());
 				}
 			} else {
 				if (movementEnabled.get()) {
 					usMotor.rotate(-(2 * angle));
-					lookingLeft.set(true);;
-					leftRight = !leftRight;
-				}
+					lookingLeft.set(true);
+					lookingRight = !lookingRight;
+					int leftDistanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
+					leftDistance.set(leftDistanceInt);
+				}				
 				
-				int leftDistanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
-				leftDistance.set(leftDistanceInt);
 				if (DEBUG) {
 					System.out.println("left: " + leftDistance.get());
 				}
