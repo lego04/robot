@@ -74,7 +74,7 @@ public class Robot {
 		
 		colorSensor = new EV3ColorSensor(colorSensorPort);
 
-		usSensor = new EV3UltrasonicSensor(irSensorPort);
+		// SusSensor = new EV3UltrasonicSensor(irSensorPort);
 
 //		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 

@@ -42,15 +42,21 @@ public class BridgeFollower {
 			}		
 			
 			
-			
+			System.out.println(distance);
 			if (distance <= DISTANCE_LIMIT) {
+				System.out.println("<=");
 				usSensor.setMovementEnabled(true);
 				//robot.getPilot().forward();
 				robot.getLeftWheel().setSpeed(globalValues.LINETRAVELSPEED * 25);
 				robot.getRightWheel().setSpeed(globalValues.LINETRAVELSPEED * 25);
 			} else {
+				System.out.println(">");
 				usSensor.setMovementEnabled(false);
-				robot.getPilot().stop();
+				//robot.getPilot().stop();
+				robot.getLeftWheel().stop();
+				robot.getRightWheel().stop();
+				robot.getLeftWheel().setSpeed(0);
+				robot.getRightWheel().setSpeed(0);
 				
 				// was wenn sich die ausrichtung des sensor inzwischen geändert hat?
 				if (lookingLeft != usSensor.getLookingLeft()) {
@@ -72,6 +78,8 @@ public class BridgeFollower {
 					robot.getRightWheel().setSpeed(0);
 				}
 			}
+			robot.getLeftWheel().forward();
+			robot.getRightWheel().forward();
 			
 			/*
 			if (von Brücke runter) {
