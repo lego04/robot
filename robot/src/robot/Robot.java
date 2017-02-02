@@ -15,6 +15,7 @@ import lejos.robotics.objectdetection.FusorDetector;
 import lejos.robotics.objectdetection.RangeFeatureDetector;
 import lejos.robotics.objectdetection.TouchFeatureDetector;
 import sensorThreads.LightSensorThread;
+import util.Movement;
 
 /**
  * class representing robot
@@ -33,7 +34,7 @@ public class Robot {
 	
 	public static final double ultraSonicStopDistanceM = 0.2;
 	
-	
+	private Movement mov;
 
 	private DifferentialPilot pilot;
 	
@@ -49,14 +50,14 @@ public class Robot {
 	private Port colorSensorPort = SensorPort.S3; 
 	private Port irSensorPort = SensorPort.S4; 
 //	private Port gyroSensorPort = SensorPort.S1;
-	private Port touchSensor1Port = SensorPort.S1; 
-	private Port touchSensor2Port = SensorPort.S2; 
+	private Port touchSensor = SensorPort.S1; 
+//	private Port touchSensor2Port = SensorPort.S2; 
 	
 	
 	private EV3ColorSensor colorSensor;
 	private EV3UltrasonicSensor usSensor;
 	private EV3GyroSensor gyroSensor;
-	private EV3TouchSensor touch1, touch2;	
+	private EV3TouchSensor touch1;	
 	
 	//Range detectors
 	private FeatureDetector ultraSonicDetector;
@@ -66,7 +67,7 @@ public class Robot {
 	public Robot() {
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel);
 		
-		usSensor = new EV3UltrasonicSensor(irSensorPort);
+//		usSensor = new EV3UltrasonicSensor(irSensorPort);
 		
 		/*ultraSonicDetector = new RangeFeatureDetector(new RangeFinderAdapter(us), ultraSonicMaxDistanceCM, ultraSonicDelayMS);
 		ultraSonicDetector.addListener(new UltraSonicDistanceListener(pilot, ultraSonicStopDistanceM));
@@ -79,10 +80,11 @@ public class Robot {
 //		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 
 
-		touch1 = new EV3TouchSensor(touchSensor1Port);
-		touch2 = new EV3TouchSensor(touchSensor2Port);
+		touch1 = new EV3TouchSensor(touchSensor);
+//		touch2 = new EV3TouchSensor(touchSensor2Port);
 		//touchDetector = new FusorDetector()
 		pilot.setTravelSpeed(10);
+		mov = new Movement(this);
 		
 	}
 	
@@ -117,6 +119,10 @@ public class Robot {
 	// Getter
 	//
 	
+	public Movement getMovement() {
+		return mov;
+	}
+	
 	public RegulatedMotor getLeftWheel() {
 		return leftWheel;
 	}
@@ -139,10 +145,10 @@ public class Robot {
 	public EV3TouchSensor getTouch1() {
 		return touch1;
 	}
-	
+	/*
 	public EV3TouchSensor getTouch2() {
 		return touch2;
 	}
-	
+	*/
 }
 

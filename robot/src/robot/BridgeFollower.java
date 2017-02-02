@@ -3,7 +3,7 @@ package robot;
 import sensorThreads.UltrasonicSensorThread;
 import sensorThreads.UltrasonicSensorThread.Directions;
 import sensorThreads.UltrasonicSensorThread.Modes;
-import util.globalValues;
+import util.GlobalValues;
 
 public class BridgeFollower {
 	
@@ -49,8 +49,8 @@ public class BridgeFollower {
 				System.out.println("<=");
 				usSensor.setMovementEnabled(true);
 				//robot.getPilot().forward();
-				robot.getLeftWheel().setSpeed(globalValues.LINETRAVELSPEED * 25);
-				robot.getRightWheel().setSpeed(globalValues.LINETRAVELSPEED * 25);
+				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 25);
+				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 25);
 			} else {
 				System.out.println(">");
 				usSensor.setMovementEnabled(false);
@@ -71,12 +71,12 @@ public class BridgeFollower {
 					// robot.getPilot().rotate(20);
 					
 					robot.getLeftWheel().setSpeed(0);
-					robot.getRightWheel().setSpeed(globalValues.LINETRAVELSPEED * 25);
+					robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 25);
 				} else {
 					// nach rechts korrigieren
 // TODO: Wert anpassen
 					// robot.getPilot().rotate(-20);
-					robot.getLeftWheel().setSpeed(globalValues.LINETRAVELSPEED * 25);
+					robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 25);
 					robot.getRightWheel().setSpeed(0);
 				}
 			}

@@ -14,33 +14,34 @@ public class TouchSensorListener implements FeatureListener {
 	private Actor actor;
 	
 	private TouchFeatureDetector touch1Detector;
-	private TouchFeatureDetector touch2Detector;
+//	private TouchFeatureDetector touch2Detector;
 
 	public TouchSensorListener(Actor a) {
 		this.actor = a;
 		Robot robot = a.getRobot();
 		touch1Detector = new TouchFeatureDetector(new TouchAdapter(robot.getTouch1()));
-		touch2Detector = new TouchFeatureDetector(new TouchAdapter(robot.getTouch2()));
+//		touch2Detector = new TouchFeatureDetector(new TouchAdapter(robot.getTouch2()));
 		touch1Detector.addListener(this);
-		touch2Detector.addListener(this);
+//		touch2Detector.addListener(this);
 	}
 
 	@Override
 	public void featureDetected(Feature feature, FeatureDetector detector) {
 		if (detector.equals(touch1Detector)) {
 			//check whether touch2 is also pressed
-			if (touch2Detector.scan() != null) {
-				actor.act(TouchSensorID.BOTH);
-			} else {
+//			if (touch2Detector.scan() != null) {
+//				actor.act(TouchSensorID.BOTH);
+//			} else {
 				actor.act(TouchSensorID.ONE);
-			}
-		} else {
-			//check whether touch1 is pressed
-			if (touch1Detector.scan() != null) {
-				actor.act(TouchSensorID.BOTH);
-			} else {
-				actor.act(TouchSensorID.TWO);
-			}
+//			}
 		}
+//		else {
+//			//check whether touch1 is pressed
+//			if (touch1Detector.scan() != null) {
+//				actor.act(TouchSensorID.BOTH);
+//			} else {
+//				actor.act(TouchSensorID.TWO);
+//			}
+//		}
 	}
 }
