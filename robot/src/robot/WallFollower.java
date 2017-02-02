@@ -110,25 +110,32 @@ public class WallFollower implements interfaces.Actor {
 	
 	private void turnLeft() {
 		movement.stopAll();
-		//reset left motor speed if necessary
-		
-		switch (currentState) {
-		case LEFT:
-			movement.slowDownLeft();
-			break;
-		case RIGHT:
-			movement.speedUpLeft();
-			break;
-		case LEFT_TURN:
-		case STRAIGHT:
-		default: 
-			throw new IllegalStateException("invalid state");
-		}
-		
-		//reset completed
-		
+		synchronizeMotors();
 		robot.getPilot().travelArc(0, 0); //TODO: set right values
 	}
+	
+	private void turnRight() {
+		movement.stopAll();
+		synchronizeMotors();
+		robot.getPilot().travelArc(0, 0); //TODO: set right values
+	}
+	
+	private void synchronizeMotors() {
+		//reset left motor speed if necessary
+				switch (currentState) {
+				case LEFT:
+					movement.slowDownLeft();
+					break;
+				case RIGHT:
+					movement.speedUpLeft();
+					break;
+				case LEFT_TURN:
+				case STRAIGHT:
+				default: 
+					throw new IllegalStateException("invalid state");
+				}				
+	}
+	
 
 	
 	/** Controller, that tries to keep the robot at the wall. */
@@ -177,14 +184,7 @@ public class WallFollower implements interfaces.Actor {
 
 	@Override
 	public void act(TouchSensorID id) {
-		//robot.getPilot().stop();
-		//movement.stopAll();
-		//robot.getPilot().travel(-10.0);
-		//waitComplete(500);
-		//robot.getPilot().rotate(wallToFollow * 90.0);
-		//waitComplete(500);
-		//robot.getPilot().travel(10.0);
-		//waitComplete(500);
+		turnRight();
 	}
 	
 	/** Stops the execution for the given time. 
