@@ -15,12 +15,8 @@ public class UltrasonicSensorThread implements Runnable {
 	private static final boolean DEBUG = true;
 
 	public enum Modes {
-		Left, Right, BothSides
-	}
-	
-	public enum Directions {
 		Left,
-		Right
+		Down
 	}
 	private Modes mode;
 
@@ -30,64 +26,29 @@ public class UltrasonicSensorThread implements Runnable {
 	private AtomicBoolean active;
 	private Thread usSensorThread;
 
-	private AtomicInteger leftDistance;
-	private AtomicInteger rightDistance;
-
-	private int angle;
-	private AtomicBoolean lookingLeft;	
-	private AtomicBoolean movementEnabled;
+	private AtomicInteger distance;
 	
 	public UltrasonicSensorThread(Robot robot) {
 
 		usSensorThread = new Thread(this);
-		mode = Modes.BothSides;
+		mode = Modes.Down;
 
 		SampleProvider sampleProvider = robot.getUSSensor().getDistanceMode();
 		rangeFinder = new RangeFinderAdapter(sampleProvider);
 
 		usMotor = Robot.ultrasonicMotor;
 
-		leftDistance = new AtomicInteger(0);
-		rightDistance = new AtomicInteger(0);
+		distance = new AtomicInteger(0);
 		active = new AtomicBoolean(true);
-		movementEnabled = new AtomicBoolean(true);
-		lookingLeft = new AtomicBoolean(true);
 
 	}
 
-	public int getLeftDistance() {
-		return leftDistance.get(); // in cm?
+	public int getDistance() {
+		return distance.get(); // in cm?
 	}
 
-	public int getRightDistance() {
-		return rightDistance.get(); // in cm?
-	}
-	
-	public boolean getLookingLeft() {
-		return lookingLeft.get();
-	}
-	
-	public void setMovementEnabled(boolean mv) {
-		movementEnabled.set(mv);;
-	}
-
-	public void moveTo(Directions dir) {
-		usMotor.rotateTo(0);
-		if (dir == Directions.Left) {
-			usMotor.rotate(-angle);
-			int distanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
-			leftDistance.set(distanceInt);
-			
-		} else {
-			usMotor.rotate(angle);
-			int rightDistanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
-			rightDistance.set(rightDistanceInt);
-		}
-	}
-
-	public void start(Modes mode, int angle) {
+	public void start(Modes mode) {
 		this.mode = mode;
-		this.angle = angle;
 		usSensorThread = new Thread(this);
 		usSensorThread.start();
 	}
@@ -96,87 +57,26 @@ public class UltrasonicSensorThread implements Runnable {
 		active.set(false);
 	}
 
-	private void bothSides() {
-		usMotor.rotate(angle);
-		lookingLeft.set(false);;
-		boolean lookingRight = true;
-		while (active.get()) {
-			if (!lookingRight) {
-				if (movementEnabled.get()) {
-					usMotor.rotate(2 * angle);
-					lookingLeft.set(false);
-					lookingRight = !lookingRight;
-					int rightDistanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
-					rightDistance.set(rightDistanceInt);
-				}
-				
-				if (DEBUG) {
-					System.out.println("right: " + rightDistance.get());
-				}
-			} else {
-				if (movementEnabled.get()) {
-					usMotor.rotate(-(2 * angle));
-					lookingLeft.set(true);
-					lookingRight = !lookingRight;
-					int leftDistanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
-					leftDistance.set(leftDistanceInt);
-				}				
-				
-				if (DEBUG) {
-					System.out.println("left: " + leftDistance.get());
-				}
-			}
-			
-		}
-	}
-
-	private void leftSide() {
-		usMotor.rotate(-angle);
-		lookingLeft.set(true);
-		while (active.get()) {
-			int distanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
-			leftDistance.set(distanceInt);
-			if (DEBUG) {
-				System.out.println("left: " + leftDistance.get());
-			}
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	private void rightSide() {
-		usMotor.rotate(angle);
-		lookingLeft.set(false);
-		while (active.get()) {
-			int distanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
-			rightDistance.set(distanceInt);
-			if (DEBUG) {
-				System.out.println("right: " + rightDistance.get());
-			}
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 	@Override
 	public void run() {
 		usMotor.rotateTo(0);
-		leftDistance.set(0);
-		rightDistance.set(0);
-		active.set(true);
+		distance.set(0);
 
-		if (mode == Modes.BothSides) {
-			bothSides();
-		} else if (mode == Modes.Left) {
-			leftSide();
-		} else {
-			rightSide();
+		if (mode == Modes.Left) {
+			usMotor.rotate(-90);
+		}
+		
+		while (active.get()) {
+			int distanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
+			distance.set(distanceInt);
+			if (DEBUG) {
+				System.out.println("left: " + distance.get());
+			}
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 
 	}
