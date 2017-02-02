@@ -23,37 +23,45 @@ public class BridgeFollower {
 	public void start() {
 		
 		//wenden
-		robot.setUltraSonicFront();
-		usSensor.start(Modes.BothSides, 45);
+		//robot.setUltraSonicFront();
+		usSensor.start(Modes.BothSides, 35);
 		
 		int distance = 0;
 		
-		robot.getLeftWheel().forward();
-		robot.getRightWheel().forward();
+		robot.getLeftWheel().backward();
+		robot.getRightWheel().backward();
 		
 		while (true) {
 			
 			boolean lookingLeft = usSensor.getLookingLeft();
 			
 			if (lookingLeft) {
+				System.out.println("Left");
 				distance = usSensor.getLeftDistance();
 			} else {
+				System.out.println("Right");
 				distance = usSensor.getRightDistance();
 			}		
 			
 			
-			
+			System.out.println(distance);
 			if (distance <= DISTANCE_LIMIT) {
+				System.out.println("<=");
 				usSensor.setMovementEnabled(true);
 				//robot.getPilot().forward();
 				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 25);
 				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 25);
 			} else {
+				System.out.println(">");
 				usSensor.setMovementEnabled(false);
-				robot.getPilot().stop();
+				//robot.getPilot().stop();
+				robot.getLeftWheel().stop();
+				robot.getRightWheel().stop();
+				robot.getLeftWheel().setSpeed(0);
+				robot.getRightWheel().setSpeed(0);
 				
 				// was wenn sich die ausrichtung des sensor inzwischen geändert hat?
-				if (lookingLeft != usSensor.getLookingLeft()) {
+				if (lookingLeft == usSensor.getLookingLeft()) {
 					usSensor.moveTo(lookingLeft ? Directions.Left : Directions.Right);
 				}
 				
@@ -72,6 +80,8 @@ public class BridgeFollower {
 					robot.getRightWheel().setSpeed(0);
 				}
 			}
+			robot.getLeftWheel().backward();
+			robot.getRightWheel().backward();
 			
 			/*
 			if (von Brücke runter) {
@@ -89,7 +99,7 @@ public class BridgeFollower {
 		}
 		
 		// wenden
-		// robot.setUltraSonicBack();
+		// //robot.setUltraSonicBack();
 		// nächster Schritt // Linie folgen?
 		
 		

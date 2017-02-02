@@ -67,7 +67,7 @@ public class Robot {
 	public Robot() {
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel);
 		
-//		usSensor = new EV3UltrasonicSensor(irSensorPort);
+		usSensor = new EV3UltrasonicSensor(irSensorPort);
 		
 		/*ultraSonicDetector = new RangeFeatureDetector(new RangeFinderAdapter(us), ultraSonicMaxDistanceCM, ultraSonicDelayMS);
 		ultraSonicDetector.addListener(new UltraSonicDistanceListener(pilot, ultraSonicStopDistanceM));
@@ -75,7 +75,7 @@ public class Robot {
 		
 		colorSensor = new EV3ColorSensor(colorSensorPort);
 
-		usSensor = new EV3UltrasonicSensor(irSensorPort);
+		// SusSensor = new EV3UltrasonicSensor(irSensorPort);
 
 //		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 
@@ -101,6 +101,7 @@ public class Robot {
  		new LineFollower(this, lst).adjustLine();
 	}
 	
+	// TODO: löschen? wird nicht mehr gebraucht?
 	/**
 	 * ultrasonic sensor is in front of robot. Set pilot to move backwards in order to get forwards.
 	 */
@@ -108,6 +109,7 @@ public class Robot {
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel, true);
 	}
 	
+	// TODO: löschen? wird nicht mehr gebraucht?
 	/**
 	 * ultra sonic sensor is behind of robot. Set pilot to move forward in order to get forwards.
 	 */

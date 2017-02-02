@@ -12,7 +12,7 @@ import util.GlobalValues;
 
 public class UltrasonicSensorThread implements Runnable {
 
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 
 	public enum Modes {
 		Left, Right, BothSides
@@ -74,9 +74,14 @@ public class UltrasonicSensorThread implements Runnable {
 	public void moveTo(Directions dir) {
 		usMotor.rotateTo(0);
 		if (dir == Directions.Left) {
-			usMotor.rotate(angle);
-		} else {
 			usMotor.rotate(-angle);
+			int distanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
+			leftDistance.set(distanceInt);
+			
+		} else {
+			usMotor.rotate(angle);
+			int rightDistanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
+			rightDistance.set(rightDistanceInt);
 		}
 	}
 
@@ -92,13 +97,13 @@ public class UltrasonicSensorThread implements Runnable {
 	}
 
 	private void bothSides() {
-		usMotor.rotate(angle);
+		usMotor.rotate(-angle);
 		lookingLeft.set(true);;
 		boolean leftRight = true;
 		while (active.get()) {
 			if (leftRight) {
 				if (movementEnabled.get()) {
-					usMotor.rotate(- (2 * angle));
+					usMotor.rotate(2 * angle);
 					lookingLeft.set(false);;
 					leftRight = !leftRight;
 				}
@@ -109,7 +114,7 @@ public class UltrasonicSensorThread implements Runnable {
 				}
 			} else {
 				if (movementEnabled.get()) {
-					usMotor.rotate(2 * angle);
+					usMotor.rotate(-(2 * angle));
 					lookingLeft.set(true);;
 					leftRight = !leftRight;
 				}
@@ -125,7 +130,7 @@ public class UltrasonicSensorThread implements Runnable {
 	}
 
 	private void leftSide() {
-		usMotor.rotate(angle);
+		usMotor.rotate(-angle);
 		lookingLeft.set(true);
 		while (active.get()) {
 			int distanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
@@ -142,7 +147,7 @@ public class UltrasonicSensorThread implements Runnable {
 	}
 
 	private void rightSide() {
-		usMotor.rotate(-angle);
+		usMotor.rotate(angle);
 		lookingLeft.set(false);
 		while (active.get()) {
 			int distanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
