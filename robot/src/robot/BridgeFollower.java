@@ -1,7 +1,6 @@
 package robot;
 
 import sensorThreads.UltrasonicSensorThread;
-import sensorThreads.UltrasonicSensorThread.Directions;
 import sensorThreads.UltrasonicSensorThread.Modes;
 import util.GlobalValues;
 
@@ -22,7 +21,7 @@ public class BridgeFollower {
 	
 	public void start() {
 		
-		usSensor.start(Modes.BothSides, 35);
+		usSensor.start(Modes.Down);
 		
 		int distance = 0;
 		
@@ -33,13 +32,7 @@ public class BridgeFollower {
 			
 			boolean lookingLeft = usSensor.getLookingLeft();
 			
-			if (lookingLeft) {
-				System.out.println("Left");
-				distance = usSensor.getLeftDistance();
-			} else {
-				System.out.println("Right");
-				distance = usSensor.getRightDistance();
-			}		
+			distance = 
 			
 			
 			System.out.println(distance);
