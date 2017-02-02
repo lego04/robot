@@ -75,12 +75,12 @@ public class UltrasonicSensorThread implements Runnable {
 		usMotor.rotateTo(0);
 		if (dir == Directions.Left) {
 			usMotor.rotate(-angle);
-			int distanceInt = (int) (rangeFinder.getRange() * globalValues.floatToInt);
+			int distanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
 			leftDistance.set(distanceInt);
 			
 		} else {
 			usMotor.rotate(angle);
-			int rightDistanceInt = (int) (rangeFinder.getRange() * globalValues.floatToInt);
+			int rightDistanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
 			rightDistance.set(rightDistanceInt);
 		}
 	}

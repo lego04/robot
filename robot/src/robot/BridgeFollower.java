@@ -24,7 +24,7 @@ public class BridgeFollower {
 		
 		//wenden
 		//robot.setUltraSonicFront();
-		usSensor.start(Modes.BothSides, 45);
+		usSensor.start(Modes.BothSides, 35);
 		
 		int distance = 0;
 		
