@@ -2,19 +2,33 @@ package util;
 
 import javax.crypto.spec.SecretKeySpec;
 
+import lejos.robotics.RegulatedMotor;
 import robot.Robot;
 
 public class Movement {
 	
 	private Robot robot;
+	private boolean reverse = false;
 	
 	public Movement(Robot robot) {
 		this.robot = robot;
+		RegulatedMotor motors[] = {robot.getRightWheel()};
+		robot.getLeftWheel().synchronizeWith(motors);
 	}
 	
 	public void goForward() {
-		robot.getRightWheel().forward();
-		robot.getLeftWheel().forward();
+		if (!reverse) {
+			robot.getLeftWheel().startSynchronization();
+			robot.getRightWheel().forward();
+			robot.getLeftWheel().forward();
+			robot.getLeftWheel().endSynchronization();			
+		}
+		else {
+			robot.getLeftWheel().startSynchronization();
+			robot.getRightWheel().backward();
+			robot.getLeftWheel().backward();
+			robot.getLeftWheel().endSynchronization();
+		}
 	}
 	
 	public void goForwardSpeed(int speed) {
@@ -32,8 +46,7 @@ public class Movement {
 	public void goForwardTime(int time) {
 		robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 15);
 		robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 15);
-		robot.getLeftWheel().forward();
-		robot.getRightWheel().forward();
+		goForward();
 		try {
 			Thread.sleep(time);
 		}
@@ -42,56 +55,154 @@ public class Movement {
 	}
 	
 	public void speedUpRight() {
-		robot.getRightWheel().setSpeed(robot.getRightWheel().getSpeed() + 10);
-		robot.getRightWheel().forward();
+		if (!reverse) {
+			robot.getRightWheel().setSpeed(robot.getRightWheel().getSpeed() + 10);
+			robot.getRightWheel().forward();
+		}
+		else {
+			robot.getLeftWheel().setSpeed(robot.getLeftWheel().getSpeed() + 10);
+			robot.getLeftWheel().backward();
+		}
+		
 	}
 	
 	public void speedUpRight(int speedUp) {
-		robot.getRightWheel().setSpeed(robot.getRightWheel().getSpeed() + speedUp);
-		robot.getRightWheel().forward();
+		if (!reverse) {
+			robot.getRightWheel().setSpeed(robot.getRightWheel().getSpeed() + speedUp);
+			robot.getRightWheel().forward();
+		}
+		else {
+			robot.getLeftWheel().setSpeed(robot.getLeftWheel().getSpeed() + speedUp);
+			robot.getLeftWheel().backward();
+		}
 	}
 	
 	public void slowDownRight() {
-		if (robot.getRightWheel().getSpeed() > 0) {
-			robot.getRightWheel().setSpeed(robot.getRightWheel().getSpeed() - 10);
-			robot.getRightWheel().forward();
+		if (!reverse) {
+			if (robot.getRightWheel().getSpeed() > 0) {
+				robot.getRightWheel().setSpeed(robot.getRightWheel().getSpeed() - 10);
+				robot.getRightWheel().forward();
+			}			
+		}
+		else {
+			if (robot.getLeftWheel().getSpeed() > 0) {
+				robot.getLeftWheel().setSpeed(robot.getLeftWheel().getSpeed() - 10);
+				robot.getLeftWheel().backward();
+			}
 		}
 	}
 	
 	public void slowDownRight(int slowDown) {
-		if (robot.getRightWheel().getSpeed() > 0 + slowDown) {
-			robot.getRightWheel().setSpeed(robot.getRightWheel().getSpeed() - slowDown);
-			robot.getRightWheel().forward();
+		if (!reverse) {
+			if (robot.getRightWheel().getSpeed() > 0 + slowDown) {
+				robot.getRightWheel().setSpeed(robot.getRightWheel().getSpeed() - slowDown);
+				robot.getRightWheel().forward();
+			}			
+		}
+		else {
+			if (robot.getLeftWheel().getSpeed() > 0 + slowDown) {
+				robot.getLeftWheel().setSpeed(robot.getRightWheel().getSpeed() - slowDown);
+				robot.getLeftWheel().backward();
+			}
 		}
 	}
 	
 	public void speedUpLeft() {
-		robot.getLeftWheel().setSpeed(robot.getLeftWheel().getSpeed() + 10);
-		robot.getLeftWheel().forward();
+		if (!reverse) {
+			robot.getLeftWheel().setSpeed(robot.getLeftWheel().getSpeed() + 10);
+			robot.getLeftWheel().forward();
+		}
+		else {
+			robot.getRightWheel().setSpeed(robot.getLeftWheel().getSpeed() + 10);
+			robot.getRightWheel().backward();
+		}
 	}
 	
 	public void speedUpLeft(int speedUp) {
-		robot.getLeftWheel().setSpeed(robot.getLeftWheel().getSpeed() + speedUp);
-		robot.getLeftWheel().forward();
+		if (!reverse) {
+			robot.getLeftWheel().setSpeed(robot.getLeftWheel().getSpeed() + speedUp);
+			robot.getLeftWheel().forward();
+		}
+		else {
+			robot.getRightWheel().setSpeed(robot.getLeftWheel().getSpeed() + speedUp);
+			robot.getRightWheel().backward();
+		}
 	}
 	
 	public void slowDownLeft() {
-		if (robot.getLeftWheel().getSpeed() > 0) {
-			robot.getLeftWheel().setSpeed(robot.getLeftWheel().getSpeed() - 10);
-			robot.getLeftWheel().forward();
+		if (!reverse) {
+			if (robot.getLeftWheel().getSpeed() > 0) {
+				robot.getLeftWheel().setSpeed(robot.getLeftWheel().getSpeed() - 10);
+				robot.getLeftWheel().forward();
+			}			
+		}
+		else {
+			if (robot.getRightWheel().getSpeed() > 0) {
+				robot.getRightWheel().setSpeed(robot.getLeftWheel().getSpeed() - 10);
+				robot.getRightWheel().backward();
+			}
 		}
 	}
 	
 	public void slowDownLeft(int slowDown) {
-		if (robot.getLeftWheel().getSpeed() > 0 + slowDown) {
-			robot.getLeftWheel().setSpeed(robot.getLeftWheel().getSpeed() - slowDown);
+		if (!reverse) {
+			if (robot.getLeftWheel().getSpeed() > 0) {
+				robot.getLeftWheel().setSpeed(robot.getLeftWheel().getSpeed() - slowDown);
+				robot.getLeftWheel().forward();
+			}			
+		}
+		else {
+			if (robot.getRightWheel().getSpeed() > 0) {
+				robot.getRightWheel().setSpeed(robot.getLeftWheel().getSpeed() - slowDown);
+				robot.getRightWheel().backward();
+			}
+		}
+	}
+	
+	public void turnOnPointLeft() {
+		if (!reverse) {
+			robot.getLeftWheel().startSynchronization();
+			robot.getRightWheel().forward();
+			robot.getLeftWheel().backward();
+			robot.getLeftWheel().endSynchronization();
+		}
+		else {
+			robot.getLeftWheel().startSynchronization();
 			robot.getLeftWheel().forward();
+			robot.getRightWheel().backward();
+			robot.getLeftWheel().endSynchronization();
+		}
+	}
+	
+	public void turnOnPointRight() {
+		if (!reverse) {
+			robot.getLeftWheel().startSynchronization();
+			robot.getLeftWheel().forward();
+			robot.getRightWheel().backward();
+			robot.getLeftWheel().endSynchronization();
+		}
+		else {
+			robot.getLeftWheel().startSynchronization();
+			robot.getRightWheel().forward();
+			robot.getLeftWheel().backward();
+			robot.getLeftWheel().endSynchronization();
 		}
 	}
 	
 	public void stopAll() {
+		robot.getLeftWheel().startSynchronization();
 		robot.getLeftWheel().stop();
 		robot.getRightWheel().stop();
+		robot.getLeftWheel().endSynchronization();
 	}
 	
+	public void backwardDirection() {
+		reverse = true;
+		robot.setUltraSonicBack();
+	}
+	
+	public void forwardDirection() {
+		reverse = false;
+		robot.setUltraSonicFront();
+	}
 }
