@@ -15,6 +15,7 @@ import lejos.robotics.objectdetection.FusorDetector;
 import lejos.robotics.objectdetection.RangeFeatureDetector;
 import lejos.robotics.objectdetection.TouchFeatureDetector;
 import sensorThreads.LightSensorThread;
+import util.Movement;
 
 /**
  * class representing robot
@@ -33,7 +34,7 @@ public class Robot {
 	
 	public static final double ultraSonicStopDistanceM = 0.2;
 	
-	
+	private Movement mov;
 
 	private DifferentialPilot pilot;
 	
@@ -83,6 +84,7 @@ public class Robot {
 		touch2 = new EV3TouchSensor(touchSensor2Port);
 		//touchDetector = new FusorDetector()
 		pilot.setTravelSpeed(10);
+		mov = new Movement(this);
 		
 	}
 	
@@ -116,6 +118,10 @@ public class Robot {
 	//
 	// Getter
 	//
+	
+	public Movement getMovement() {
+		return mov;
+	}
 	
 	public RegulatedMotor getLeftWheel() {
 		return leftWheel;
