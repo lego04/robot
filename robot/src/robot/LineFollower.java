@@ -104,11 +104,9 @@ public class LineFollower implements Actor {
 	public void adjustLine() {
 		int leftSide = 0;
 		while (true) {		//for testing purpose
-			robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED * 15);
+			robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED * 10);
 			if (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
-				leftSide = 1;
 				//robot.getPilot().steer(globalValues.RIGHT * 30);
-				int count = 0;
 				robot.getRightWheel().stop();
 				while (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
 					/*
@@ -128,6 +126,8 @@ public class LineFollower implements Actor {
 					*/
 					
 				}
+				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 10);
+				robot.getRightWheel().forward();
 				//robot.getPilot().stop();
 			}
 			else if (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
@@ -148,12 +148,12 @@ public class LineFollower implements Actor {
 				robot.getLeftWheel().forward();
 				robot.getRightWheel().forward();
 				*/
+				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 6);
+				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 6);
+				robot.getRightWheel().forward();
+				robot.getLeftWheel().backward();
 				
 				while (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
-					robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 5);
-					robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 5);
-					robot.getRightWheel().forward();
-					robot.getLeftWheel().backward();
 					/*
 					try {
 						Thread.sleep(100);
@@ -163,12 +163,14 @@ public class LineFollower implements Actor {
 					*/
 				}
 				robot.getMovement().stopAll();
+//				robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED * 10);
 			
 				//robot.getPilot().stop();
 			}
 			else {
 				while (GlobalValues.MINLIGHT < lst.getLastLightValue() &&
 						lst.getLastLightValue() < GlobalValues.MAXLIGHT) {
+					robot.getMovement().stopAll();
 					//int delta = (robot.getLeftWheel().getSpeed() - robot.getRightWheel().getSpeed()) / 10;
 					//robot.getMovement().stopAll();
 					/*
@@ -183,7 +185,7 @@ public class LineFollower implements Actor {
 						robot.getMovement().speedUpRight();
 					}
 					*/
-					robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED * 15);
+					robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED * 10);
 					/*
 					try {
 						Thread.sleep(100);
