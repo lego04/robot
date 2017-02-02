@@ -104,54 +104,16 @@ public class LineFollower implements Actor {
 	
 	public void adjustLine() {
 		while (true) {		//for testing purpose
-			//robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED * 10);
 			if (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
-				//robot.getPilot().steer(globalValues.RIGHT * 30);
-				//robot.getMovement().stopAll();
-				//robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED * 10);
-				robot.getRightWheel().flt();
-				while (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
-					/*
-					try {
-						Thread.sleep(50);
-					}
-					catch (Exception e) {
-					}
-					System.out.println("Right: " + lst.getLastLightValue());
-					count++;
-					robot.getMovement().slowDownRight();
-					if (count > globalValues.LINETRAVELSPEED) {
-						//findLine();
-						
-						count = 0;
-					}
-					*/
-					
-					
+				robot.getMovement().stopAll();
+				robot.getRightWheel().setSpeed(1);
+				robot.getMovement().goForward();
+				while (lst.getLastLightValue() < GlobalValues.MINLIGHT) {	
 				}
-				LCD.drawString("Debug01", 0, 0);
 				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 10);
-				robot.getRightWheel().forward();
-				//robot.getPilot().stop();
 			}
 			else if (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
-				//robot.getLeftWheel().setSpeed(globalValues.LINETRAVELSPEED * 5);
-				//robot.getRightWheel().setSpeed(globalValues.LINETRAVELSPEED * 20);
 				robot.getMovement().stopAll();
-				LCD.drawString("Debug02", 0, 0);
-				
-				/*
-				try {
-					Thread.sleep(300);
-				}
-				catch (Exception e) { }
-				*/
-				/*
-				robot.getLeftWheel().setSpeed(150);
-				robot.getRightWheel().setSpeed(100);
-				robot.getLeftWheel().forward();
-				robot.getRightWheel().forward();
-				*/
 				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 6);
 				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 6);
 				robot.getMovement().turnOnPointLeft();
