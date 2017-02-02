@@ -2,7 +2,7 @@ package robot;
 
 import robot.Robot;
 import sensorThreads.UltrasonicSensorThread;
-import util.globalValues;
+import util.GlobalValues;
 import util.TouchSensorID;
 
 /** WallFollwer class is the generalisation of the Left- and RightWallFollower
@@ -40,7 +40,7 @@ public class WallFollower implements interfaces.Actor {
 			controllTheDistanceToWall();
 			robot.getPilot().forward();
 			updateDistanceToWall();
-			while (distanceToWall < globalValues.WALL_DIST_MAX && distanceToWall > globalValues.WALL_DIST_MIN) {
+			while (distanceToWall < GlobalValues.WALL_DIST_MAX && distanceToWall > GlobalValues.WALL_DIST_MIN) {
 				updateDistanceToWall();
 				waitComplete(200);
 			}
@@ -66,12 +66,15 @@ public class WallFollower implements interfaces.Actor {
 	private void controllTheDistanceToWall() {
 		updateDistanceToWall();
 		if (distanceToWall > 40) {
-			turnLeft();
-			robot.getPilot().travel(35);
+			robot.getPilot().stop();
+			robot.getPilot().travel(GlobalValues.TRAVEL_DIST_LABYRINTH);
+			// turn left by 90 degree with only right Wheel moving
+			robot.getPilot().steer(GlobalValues.LEFT * 100, 90);		
+			robot.getPilot().travel(GlobalValues.TRAVEL_DIST_LABYRINTH);
 			return;
 		}
 		//supdateDistanceToWall();
-		int diff = globalValues.WALL_MID - distanceToWall;
+		int diff = GlobalValues.WALL_MID - distanceToWall;
 		System.out.println("diff: " + diff);
 		double turnRate = (double)  wallToFollow * distanceToTurnRate(diff);
 		System.out.println("turnRate: " + turnRate);
@@ -79,12 +82,16 @@ public class WallFollower implements interfaces.Actor {
 		
 	}
 	
+	// ist ein Einzeiler, keine eigene Methode nötig
+	/*
 	private void turnLeft() {
-		//TODO: was cooles Ã¼berlegen
+		robot.getPilot().rotate(globalValues.LEFT * 90); 
 	}
+	*/
 	
 	
-	/** Converts distance values read from {@link UltrasonicSensorThread} to the <code>turnRate</code> values needed for <code>pilot.steer()</code> method.
+	/** Converts distance values read from {@link UltrasonicSensorThread} to 
+	 * the <code>turnRate</code> values needed for <code>pilot.steer()</code> method.
 	 * @param distance : <code>float</code>, value read from {@link UltrasonicSensor}.
 	 * @return <code>double</code> value for <code>turnRate</code>.
 	 */
