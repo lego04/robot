@@ -16,6 +16,9 @@ public final class GlobalValues {
 	public static int WALL_MID = (int) (WALL_DIST_MAX + WALL_DIST_MIN) / 2; 
 	public static int TRAVEL_DIST_LABYRINTH = 35;
 	
+	//Wall Following Travel Speed
+	public static int WALLFOLLOWSPEED = 20;
+	
 	//Line Travel Speed
 	public static final int LINETRAVELSPEED = 10; 
 	
