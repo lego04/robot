@@ -2,19 +2,33 @@ package util;
 
 import javax.crypto.spec.SecretKeySpec;
 
+import lejos.robotics.RegulatedMotor;
 import robot.Robot;
 
 public class Movement {
 	
 	private Robot robot;
+	private boolean reverse = false;
 	
 	public Movement(Robot robot) {
 		this.robot = robot;
+		RegulatedMotor motors[] = {robot.getRightWheel()};
+		robot.getLeftWheel().synchronizeWith(motors);
 	}
 	
 	public void goForward() {
-		robot.getRightWheel().forward();
-		robot.getLeftWheel().forward();
+		if (!reverse) {
+			robot.getLeftWheel().startSynchronization();
+			robot.getRightWheel().forward();
+			robot.getLeftWheel().forward();
+			robot.getLeftWheel().endSynchronization();			
+		}
+		else {
+			robot.getLeftWheel().startSynchronization();
+			robot.getRightWheel().backward();
+			robot.getLeftWheel().backward();
+			robot.getLeftWheel().endSynchronization();
+		}
 	}
 	
 	public void goForwardSpeed(int speed) {
@@ -32,8 +46,7 @@ public class Movement {
 	public void goForwardTime(int time) {
 		robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 15);
 		robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 15);
-		robot.getLeftWheel().forward();
-		robot.getRightWheel().forward();
+		goForward();
 		try {
 			Thread.sleep(time);
 		}
@@ -89,9 +102,29 @@ public class Movement {
 		}
 	}
 	
-	public void stopAll() {
-		robot.getLeftWheel().stop();
-		robot.getRightWheel().stop();
+	public void turnOnPointLeft() {
+		robot.getLeftWheel().startSynchronization();
+		robot.getRightWheel().forward();
+		robot.getLeftWheel().backward();
+		robot.getLeftWheel().endSynchronization();
 	}
 	
+	public void turnOnPointRight() {
+		robot.getLeftWheel().startSynchronization();
+		robot.getLeftWheel().forward();
+		robot.getRightWheel().backward();
+		robot.getLeftWheel().endSynchronization();
+	}
+	
+	public void stopAll() {
+		robot.getLeftWheel().startSynchronization();
+		robot.getLeftWheel().stop();
+		robot.getRightWheel().stop();
+		robot.getLeftWheel().endSynchronization();
+	}
+	
+	public void reverseDirection() {
+		reverse = !reverse;
+		robot.setUltraSonicBack();
+	}
 }
