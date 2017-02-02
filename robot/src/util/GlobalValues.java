@@ -6,7 +6,7 @@ public final class GlobalValues {
 	public static final float MAXLIGHT = 0.4f;
 	*/
 	public static final float MINLIGHT = 0.04f;		//Test Values (Floor) 
-	public static final float MAXLIGHT = 0.35f;
+	public static final float MAXLIGHT = 0.25f;
 	public static final float LEFT = 1f;
 	public static final float RIGHT = -1f;
 	

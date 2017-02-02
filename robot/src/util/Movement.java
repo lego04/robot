@@ -191,8 +191,8 @@ public class Movement {
 	
 	public void stopAll() {
 		robot.getLeftWheel().startSynchronization();
-		robot.getLeftWheel().stop();
-		robot.getRightWheel().stop();
+		robot.getLeftWheel().flt();
+		robot.getRightWheel().flt();
 		robot.getLeftWheel().endSynchronization();
 	}
 	
