@@ -15,7 +15,7 @@ public class USSensorTest {
 //		robot.start();
 		
 		UltrasonicSensorThread us = new UltrasonicSensorThread(robot);
-		us.start(Modes.Right, 40);
+		us.start(Modes.Down);
 		
 		Button.ESCAPE.waitForPress();
 		stop();
