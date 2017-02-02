@@ -68,7 +68,7 @@ public class WallFollower implements interfaces.Actor {
 			return;
 		}
 		//supdateDistanceToWall();
-		int diff = 22 - distanceToWall;
+		int diff = globalValues.WALL_MID - distanceToWall;
 		System.out.println("diff: " + diff);
 		double turnRate = (double)  wallToFollow * distanceToTurnRate(diff);
 		System.out.println("turnRate: " + turnRate);

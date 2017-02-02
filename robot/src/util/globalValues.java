@@ -13,6 +13,7 @@ public final class globalValues {
 	//Wall Following
 	public static int WALL_DIST_MIN = 12;
 	public static int WALL_DIST_MAX = 25;
+	public static int WALL_MID = (int) (WALL_DIST_MAX + WALL_DIST_MIN) / 2; 
 	
 	//Line Travel Speed
 	public static final int LINETRAVELSPEED = 10; 
