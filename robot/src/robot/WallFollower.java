@@ -35,7 +35,7 @@ public class WallFollower implements interfaces.Actor {
 		this.distanceToWall = 22; // Just to be sure, that it was initialised.
 		updateDistanceToWall();
 		this.wallToFollow = wallToFollow;
-		this.movement = new Movement(robot);
+		this.movement = new Movement(robot, GlobalValues.WALLFOLLOWSPEED);
 		currentState = TurnState.STRAIGHT;
 	}
 	
@@ -46,6 +46,7 @@ public class WallFollower implements interfaces.Actor {
 		//robot.getPilot().setTravelSpeed(GlobalValues.WALLFOLLOWSPEED);
 		movement.backwardDirection();
 		movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
+		robot.getPilot().setTravelSpeed(GlobalValues.WALLFOLLOWSPEED);
 		while (isInLabyrinth()) {
 			//controllTheDistanceToWall();
 			//robot.getPilot().forward();
@@ -75,10 +76,11 @@ public class WallFollower implements interfaces.Actor {
 			case RIGHT:
 				movement.slowDownLeft();
 				break;
-			case STRAIGHT: //nothing to do
+			case STRAIGHT:	//Set the two speeds at one value to drive straight
+				robot.getLeftWheel().setSpeed(robot.getRightWheel().getSpeed());
 				break;
 			case LEFT_TURN:
-				turnLeft(currentState);
+				turnLeft();
 				//System.out.println("left turn");
 				break;
 			default:
@@ -91,14 +93,18 @@ public class WallFollower implements interfaces.Actor {
 	private TurnState getState() {
 		updateDistanceToWall();
 		if (distanceToWall < GlobalValues.WALL_DIST_MIN) {
+			System.out.println("LEFT");
 			return TurnState.LEFT;
 		} else if (distanceToWall > GlobalValues.WALL_DIST_MIN) {
 			if (distanceToWall > GlobalValues.WALL_DIST_MAX) {
+				System.out.println("LEFT_TURN");
 				return TurnState.LEFT_TURN;
 			} else {
+				System.out.println("RIGHT");
 				return TurnState.RIGHT;
 			}
 		} else {
+			System.out.println("STRAIGHT");
 			return TurnState.STRAIGHT;
 		}
 	}
@@ -111,7 +117,7 @@ public class WallFollower implements interfaces.Actor {
 		return true;
 	}
 	
-	private void turnLeft(TurnState state) {
+	private void turnLeft() {
 		movement.stopAll();
 		//synchronizeMotors(state);
 		robot.getPilot().travel(GlobalValues.TRAVEL_DIST_LABYRINTH);
@@ -125,8 +131,8 @@ public class WallFollower implements interfaces.Actor {
 	private void turnRight() {
 		movement.stopAll();
 		//synchronizeMotors(currentState);
-		robot.getPilot().travel(-5);
-		robot.getPilot().rotate(GlobalValues.RIGHT * 90);
+		movement.goBackwardDist(5);
+		movement.turnOnPointRight();
 	}
 	
 	private void synchronizeMotors(TurnState state) {

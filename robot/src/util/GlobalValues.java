@@ -20,13 +20,16 @@ public final class GlobalValues {
 	public static int TRAVEL_DIST_LABYRINTH = 35;
 	
 	//Wall Following Travel Speed
-	public static int WALLFOLLOWSPEED = 40;
+	public static int WALLFOLLOWSPEED = 150;
 	
 	//Line Travel Speed
 	public static final int LINETRAVELSPEED = 15; 
 	
 	//Umrechnungsfaktoren
 	public static int floatToInt = 100;
+	
+	public static float DEGREETODIST = 14f;
+	public static float DISTFORPOINTROTATE = 37.7f;
 	
 	
 }

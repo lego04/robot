@@ -9,11 +9,13 @@ public class Movement {
 	
 	private Robot robot;
 	private boolean reverse = false;
+	private int travelSpeed = 150;
 	
-	public Movement(Robot robot) {
+	public Movement(Robot robot, int speed) {
 		this.robot = robot;
 		RegulatedMotor motors[] = {robot.getRightWheel()};
 		robot.getLeftWheel().synchronizeWith(motors);
+		this.travelSpeed = speed;
 	}
 	
 	public void goForward() {
@@ -31,6 +33,23 @@ public class Movement {
 		}
 	}
 	
+	public void goBackward() {
+		if (!reverse) {
+			robot.getLeftWheel().startSynchronization();
+			robot.getRightWheel().backward();
+			robot.getLeftWheel().backward();
+			robot.getLeftWheel().endSynchronization();
+		
+		}
+		else {
+			robot.getLeftWheel().startSynchronization();
+			robot.getRightWheel().forward();
+			robot.getLeftWheel().forward();
+			robot.getLeftWheel().endSynchronization();			
+		}
+	}
+	
+	
 	public void goForwardSpeed(int speed) {
 		robot.getLeftWheel().setSpeed(speed);
 		robot.getRightWheel().setSpeed(speed);
@@ -44,13 +63,23 @@ public class Movement {
 	 * 			time in Milliseconds
 	 */
 	public void goForwardTime(int time) {
-		robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 15);
-		robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 15);
+		robot.getLeftWheel().setSpeed(travelSpeed);
+		robot.getRightWheel().setSpeed(travelSpeed);
 		goForward();
 		try {
 			Thread.sleep(time);
 		}
 		catch (Exception e) { }
+		stopAll();
+	}
+	
+	public void goBackwardDist(int dist) {
+		robot.getLeftWheel().setSpeed(travelSpeed);
+		robot.getRightWheel().setSpeed(travelSpeed);
+		robot.getLeftWheel().resetTachoCount();
+		goBackward();
+		while (robot.getLeftWheel().getTachoCount() < dist*GlobalValues.DEGREETODIST) {
+		}
 		stopAll();
 	}
 	
@@ -189,10 +218,29 @@ public class Movement {
 		}
 	}
 	
+	public void turnOnPointRight(int angle) {
+		if (!reverse) {
+			robot.getLeftWheel().startSynchronization();
+			robot.getLeftWheel().rotate();
+			robot.getRightWheel().backward();
+			robot.getLeftWheel().endSynchronization();
+		}
+		else {
+			robot.getLeftWheel().startSynchronization();
+			robot.getRightWheel().forward();
+			robot.getLeftWheel().backward();
+			robot.getLeftWheel().endSynchronization();
+		}
+	}
+	
 	public void stopAll() {
 		robot.getLeftWheel().startSynchronization();
 		robot.getLeftWheel().flt();
 		robot.getRightWheel().flt();
+		robot.getLeftWheel().endSynchronization();
+	}
+	
+	public void endSync() {
 		robot.getLeftWheel().endSynchronization();
 	}
 	

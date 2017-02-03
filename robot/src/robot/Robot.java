@@ -97,7 +97,6 @@ public class Robot {
  		//pilot.forward();
 		//pilot.steer(100);
 		LightSensorThread lst = new LightSensorThread(this);
-		lst.startThread();
  		new LineFollower(this, lst).adjustLine();
 	}
 	
