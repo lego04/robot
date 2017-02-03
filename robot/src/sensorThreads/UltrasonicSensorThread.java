@@ -12,7 +12,7 @@ import util.GlobalValues;
 
 public class UltrasonicSensorThread implements Runnable {
 
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 
 	public enum Modes {
 		Left,
