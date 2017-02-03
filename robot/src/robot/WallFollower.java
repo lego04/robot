@@ -35,7 +35,7 @@ public class WallFollower implements interfaces.Actor {
 		this.mustDistance = 8; // cm
 		this.isDistance = this.mustDistance; // Just to be sure, that it was also initialised.
 		updateDistanceToWall();
-		this.movement = new Movement(robot);
+		this.movement = new Movement(robot, GlobalValues.WALLFOLLOWSPEED);
 		movement.backwardDirection();
 	}
 	
@@ -44,11 +44,10 @@ public class WallFollower implements interfaces.Actor {
 	 */
 	public void followTheWall() {
 		movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
+		robot.getPilot().setTravelSpeed(GlobalValues.WALLFOLLOWSPEED);
 		while (isInLabyrinth()) {
 			controllTheDistanceToWall();
 		}
-		// Out of the labyrinth.
-		movement.stopAll();
 	}
 	
 	/** Decides, if the robot still in the labyrinth or not.

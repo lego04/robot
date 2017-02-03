@@ -49,7 +49,7 @@ public class Robot {
 	
 	private Port colorSensorPort = SensorPort.S3; 
 	private Port irSensorPort = SensorPort.S4; 
-//	private Port gyroSensorPort = SensorPort.S1;
+	private Port gyroSensorPort = SensorPort.S2;
 	private Port touchSensor = SensorPort.S1; 
 //	private Port touchSensor2Port = SensorPort.S2; 
 	
@@ -77,14 +77,14 @@ public class Robot {
 
 //		SusSensor = new EV3UltrasonicSensor(irSensorPort);
 
-//		gyroSensor = new EV3GyroSensor(gyroSensorPort);
+		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 
 
 		touch1 = new EV3TouchSensor(touchSensor);
 //		touch2 = new EV3TouchSensor(touchSensor2Port);
 		//touchDetector = new FusorDetector()
 		pilot.setTravelSpeed(10);
-		mov = new Movement(this);
+		mov = new Movement(this, 150);
 		
 	}
 	
@@ -97,11 +97,10 @@ public class Robot {
  		//pilot.forward();
 		//pilot.steer(100);
 		LightSensorThread lst = new LightSensorThread(this);
-		lst.startThread();
  		new LineFollower(this, lst).adjustLine();
 	}
 	
-	// TODO: löschen? wird nicht mehr gebraucht?
+	// TODO: lï¿½schen? wird nicht mehr gebraucht?
 	/**
 	 * ultrasonic sensor is in front of robot. Set pilot to move backwards in order to get forwards.
 	 */
@@ -109,7 +108,7 @@ public class Robot {
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel, true);
 	}
 	
-	// TODO: löschen? wird nicht mehr gebraucht?
+	// TODO: lï¿½schen? wird nicht mehr gebraucht?
 	/**
 	 * ultra sonic sensor is behind of robot. Set pilot to move forward in order to get forwards.
 	 */
@@ -138,6 +137,10 @@ public class Robot {
 	
 	public EV3UltrasonicSensor getUSSensor() {
 		return usSensor;
+	}
+	
+	public EV3GyroSensor getGyroSensor() {
+		return gyroSensor;
 	}
 	
 	public DifferentialPilot getPilot() {

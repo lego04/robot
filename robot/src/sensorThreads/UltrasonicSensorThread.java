@@ -30,7 +30,7 @@ public class UltrasonicSensorThread implements Runnable {
 	
 	public UltrasonicSensorThread(Robot robot) {
 
-		usSensorThread = new Thread(this);
+		//usSensorThread = new Thread(this);
 		mode = Modes.Down;
 
 		SampleProvider sampleProvider = robot.getUSSensor().getDistanceMode();
@@ -67,14 +67,15 @@ public class UltrasonicSensorThread implements Runnable {
 		}
 		
 		while (active.get()) {
-			float[] ranges = rangeFinder.getRanges();
-			int distanceInt = (int) (ranges[0] * GlobalValues.floatToInt);
+			float range = rangeFinder.getRange();
+			int distanceInt = (int) (range * GlobalValues.floatToInt);
 			distance.set(distanceInt);
 			if (DEBUG) {
 				System.out.println("left: " + distance.get());
 			}
 			try {
-				Thread.sleep(500);
+// TODO: change to normal value
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
