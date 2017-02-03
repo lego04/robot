@@ -49,7 +49,7 @@ public class Robot {
 	
 	private Port colorSensorPort = SensorPort.S3; 
 	private Port irSensorPort = SensorPort.S4; 
-//	private Port gyroSensorPort = SensorPort.S1;
+	private Port gyroSensorPort = SensorPort.S2;
 	private Port touchSensor = SensorPort.S1; 
 //	private Port touchSensor2Port = SensorPort.S2; 
 	
@@ -77,7 +77,7 @@ public class Robot {
 
 //		SusSensor = new EV3UltrasonicSensor(irSensorPort);
 
-//		gyroSensor = new EV3GyroSensor(gyroSensorPort);
+		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 
 
 		touch1 = new EV3TouchSensor(touchSensor);
@@ -137,6 +137,10 @@ public class Robot {
 	
 	public EV3UltrasonicSensor getUSSensor() {
 		return usSensor;
+	}
+	
+	public EV3GyroSensor getGyroSensor() {
+		return gyroSensor;
 	}
 	
 	public DifferentialPilot getPilot() {

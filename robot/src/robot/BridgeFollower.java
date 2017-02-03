@@ -13,8 +13,8 @@ public class BridgeFollower {
 	
 // TODO: anpassen
 	private final int DISTANCE_LIMIT = 10;
-	private final int HIGH_SPEED = 120;
-	private final int LOW_SPEED = HIGH_SPEED / 2;
+	private final int HIGH_SPEED = 200;
+	private final int LOW_SPEED = HIGH_SPEED / 3;
 	
 	public BridgeFollower(Robot robot) {
 		
@@ -57,6 +57,19 @@ public class BridgeFollower {
 				mv.goForward();
 				while (usSensor.getDistance() > DISTANCE_LIMIT) {
 				}
+				
+				
+				robot.getRightWheel().setSpeed(HIGH_SPEED);
+				robot.getLeftWheel().setSpeed(HIGH_SPEED);
+				mv.goForward();
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
 			}
 			
 // TODO: implement
