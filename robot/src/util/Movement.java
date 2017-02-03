@@ -197,7 +197,7 @@ public class Movement {
 
 		if (!reverse) {
 			robot.getLeftWheel().startSynchronization();
-			robot.getLeftWheel().rotate(rotateAngle, true);
+			robot.getLeftWheel().rotate(rotateAngle, false);
 			robot.getRightWheel().rotate(-rotateAngle, false);
 			robot.getLeftWheel().endSynchronization();
 		} else {
@@ -229,7 +229,7 @@ public class Movement {
 
 		if (!reverse) {
 			robot.getLeftWheel().startSynchronization();
-			robot.getLeftWheel().rotate(-rotateAngle, true);
+			robot.getLeftWheel().rotate(-rotateAngle, false);
 			robot.getRightWheel().rotate(+rotateAngle, false);
 			robot.getLeftWheel().endSynchronization();
 		} else {
