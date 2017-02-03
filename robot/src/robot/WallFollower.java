@@ -21,8 +21,6 @@ public class WallFollower implements interfaces.Actor {
 	private final int mustDistance;
 	/** Current distance to the wall as <b>centimetres (cm)</b>, that read from {@link UltrasonicSensorThread}. */
 	private int isDistance;
-	/** Current distance to the wall as <b>centimetres (cm)</b>, that read from {@link UltrasonicSensorThread}. */
-	private MovementState movState;
 	
 	private Movement movement;
 	
@@ -37,7 +35,6 @@ public class WallFollower implements interfaces.Actor {
 		this.mustDistance = 8; // cm
 		this.isDistance = this.mustDistance; // Just to be sure, that it was also initialised.
 		updateDistanceToWall();
-		this.movState = MovementState.FORWARD;
 		this.movement = new Movement(robot);
 		movement.backwardDirection();
 	}
@@ -47,7 +44,6 @@ public class WallFollower implements interfaces.Actor {
 	 */
 	public void followTheWall() {
 		movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
-		this.movState = MovementState.FORWARD;
 		while (isInLabyrinth()) {
 			controllTheDistanceToWall();
 		}
@@ -67,35 +63,14 @@ public class WallFollower implements interfaces.Actor {
 	private void controllTheDistanceToWall() {
 		updateDistanceToWall();
 		int diff = mustDistance - isDistance;
-		/*if (Math.abs(diff) < 2) {
-			return;
-		}*/
 		double sin = Math.min(1.0, Math.max(-1.0, diff / hypotenus));
 		double angle = - Math.toDegrees(Math.asin(sin));
-		/*double turnRate = angle < -0.0 ? 85.0 : -85.0;
-		if (Math.abs(angle) > 0.0 && movState != MovementState.STEERING) {
-			System.out.println("Angle: " + angle);
-			//robot.getPilot().stop();
-			//waitComplete();
-			movState = MovementState.STEERING;
-			robot.getPilot().steer(turnRate, angle);
-			//waitComplete();
-			movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
-			this.movState = MovementState.FORWARD;
-		}*/
 		movement.setSpeed((int) angle);
 	}
 	
 	/** Updates the <code>distanceToWall</code> - distance between the wall and the robot */
  	private void updateDistanceToWall() {
 		this.isDistance = distanceSensor.getDistance();
-	}
- 	
- 	/** Stops the execution until the current movement is completed. */
-	private void waitComplete() {
-		while(robot.getPilot().isMoving()) {
-			Thread.yield();
-		}
 	}
 
 	@Override
@@ -107,11 +82,5 @@ public class WallFollower implements interfaces.Actor {
 	@Override
 	public Robot getRobot() {
 		return robot;
-	}
-	
-
-	public enum MovementState {
-		STEERING,
-		FORWARD;
 	}
 }
