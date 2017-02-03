@@ -39,20 +39,7 @@ public class BridgeFollower {
 			
 			if (distance <= DISTANCE_LIMIT) {
 				
-		//		mv.speedUpRight(30);
-		//		mv.slowDownLeft(30);
-				
 				mv.stopAll();
-			//	robot.getLeftWheel().setSpeed(60);
-			//	robot.getRightWheel().setSpeed(0);
-			//	mv.goForward();
-				//robot.getLeftWheel().backward();
-				//robot.getLeftWheel().stop();
-				//mv.speedUpRight(60);
-				
-				/*robot.getLeftWheel().setSpeed(60);
-				robot.getRightWheel().setSpeed(60);
-				mv.turnOnPointRight();*/
 				
 				mv.stopAll();
 				robot.getLeftWheel().setSpeed(HIGH_SPEED);
@@ -60,80 +47,17 @@ public class BridgeFollower {
 				mv.goForward();
 				
 				while (usSensor.getDistance() <= DISTANCE_LIMIT) {
-					/*System.out.println("IN1: " + usSensor.getDistance());
-					try {
-						Thread.sleep(500);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}*/
 				}
-				//robot.getRightWheel().setSpeed(60);
 				
 			} else {
-/*				
-				mv.stopAll();
-				robot.getLeftWheel().setSpeed(1);
-				mv.goForward();
-*/								
-	//			mv.speedUpLeft(30);
-	//			mv.slowDownRight(30);
 				
 				mv.stopAll();
 				robot.getRightWheel().setSpeed(HIGH_SPEED);
 				robot.getLeftWheel().setSpeed(LOW_SPEED);
 				mv.goForward();
-				//robot.getRightWheel().backward();
-			//	robot.getRightWheel().stop();
-			//	mv.speedUpLeft(60);
 				while (usSensor.getDistance() > DISTANCE_LIMIT) {
-					/*System.out.println("IN2: " + usSensor.getDistance());
-					try {
-						Thread.sleep(500);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}*/
-				}
-				//robot.getLeftWheel().setSpeed(60);
-			}
-		
-	/*		try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		*/	
-			
-			
-	/*		
-			
-			if (distance > DISTANCE_LIMIT) {
-				mv.stopAll();
-				robot.getLeftWheel().setSpeed(1);
-				robot.getMovement().goForward();
-				while (distance > DISTANCE_LIMIT) {	
-				}
-				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 10);
-//			}
-//			else if (distance < DISTANCE_LIMIT) {
-//				robot.getMovement().stopAll();
-//				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 5);
-//				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 5);
-//				robot.getMovement().turnOnPointLeft();
-//				while (distance > GlobalValues.MAXLIGHT) {
-//				}
-			}
-			else {
-				robot.getMovement().stopAll();
-				robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED * 10);
-				while (DISTANCE_LIMIT > distance) {
 				}
 			}
-			
-*/			
-			
-			
 			
 // TODO: implement
 			/*
@@ -153,9 +77,7 @@ public class BridgeFollower {
 		}
 		
 		// nächster Schritt // Linie folgen?
-		
-		
-		
+				
 	}
 
 }
