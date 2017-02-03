@@ -5,10 +5,13 @@ public final class GlobalValues {
 	public static final float MINLIGHT = 0.05f;		//real Values 
 	public static final float MAXLIGHT = 0.4f;
 	*/
+	
+	//Line Following
 	public static final float MINLIGHT = 0.04f;		//Test Values (Floor) 
 	public static final float MAXLIGHT = 0.25f;
 	public static final float LEFT = 1f;
 	public static final float RIGHT = -1f;
+	public static final int LEFTWHEEL90DEGREE = 10;
 	
 	//Wall Following
 	public static int WALL_DIST_MIN = 12;
