@@ -12,7 +12,7 @@ import util.GlobalValues;
 
 public class UltrasonicSensorThread implements Runnable {
 
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 
 	public enum Modes {
 		Left,
@@ -67,8 +67,8 @@ public class UltrasonicSensorThread implements Runnable {
 		}
 		
 		while (active.get()) {
-			float[] ranges = rangeFinder.getRanges();
-			int distanceInt = (int) (ranges[0] * GlobalValues.floatToInt);
+			float range = rangeFinder.getRange();
+			int distanceInt = (int) (range * GlobalValues.floatToInt);
 			distance.set(distanceInt);
 			if (DEBUG) {
 				System.out.println("left: " + distance.get());

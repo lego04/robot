@@ -3,18 +3,21 @@ package robot;
 import sensorThreads.UltrasonicSensorThread;
 import sensorThreads.UltrasonicSensorThread.Modes;
 import util.GlobalValues;
+import util.Movement;
 
 public class BridgeFollower {
 	
 	private Robot robot;
 	private UltrasonicSensorThread usSensor;
+	private Movement mv;
 	
 // TODO: anpassen
-	private final int DISTANCE_LIMIT = 20;
+	private final int DISTANCE_LIMIT = 10;
 	
 	public BridgeFollower(Robot robot) {
 		
 		this.robot = robot;
+		mv = robot.getMovement();
 		usSensor = new UltrasonicSensorThread(robot);
 		
 	}
@@ -22,57 +25,97 @@ public class BridgeFollower {
 	public void start() {
 		
 		usSensor.start(Modes.Down);
+		mv.backwardDirection();
+		mv.goForwardSpeed(60);
 		
 		int distance = 0;
 		
-		robot.getLeftWheel().forward();
-		robot.getRightWheel().forward();
-		
 		while (true) {
 			
-			//boolean lookingLeft = usSensor.getLookingLeft();
+			distance = usSensor.getDistance();
+			System.out.println("OUT: " + distance);
 			
-			//distance = 
-			
-			
-			System.out.println(distance);
 			if (distance <= DISTANCE_LIMIT) {
-				System.out.println("<=" + " " + distance);
-				//usSensor.setMovementEnabled(true);
-				//robot.getPilot().forward();
-				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 25);
-				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 25);
-			} else {
-				System.out.println(">" + " " + distance);
-				//usSensor.setMovementEnabled(false);
-				//robot.getPilot().stop();
-				robot.getLeftWheel().stop();
-				robot.getRightWheel().stop();
+				
+		//		mv.speedUpRight(30);
+		//		mv.slowDownLeft(30);
+				
+				mv.stopAll();
 				robot.getLeftWheel().setSpeed(0);
+				//robot.getLeftWheel().backward();
+				//robot.getLeftWheel().stop();
+				mv.speedUpRight(60);
+				while (usSensor.getDistance() <= DISTANCE_LIMIT) {
+					System.out.println("IN1: " + distance);
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+			} else {
+/*				
+				mv.stopAll();
+				robot.getLeftWheel().setSpeed(1);
+				mv.goForward();
+*/								
+	//			mv.speedUpLeft(30);
+	//			mv.slowDownRight(30);
+				
+				mv.stopAll();
 				robot.getRightWheel().setSpeed(0);
-				
-				// was wenn sich die ausrichtung des sensor inzwischen geändert hat?
-				//if (lookingLeft == usSensor.getLookingLeft()) {
-				//	usSensor.moveTo(lookingLeft ? Directions.Left : Directions.Right);
-				//}
-				
-				//if (lookingLeft) {
-					// nach links korrigieren (Fahrtrichtung ist umgekehrt, aber Sensorrichtung bleibt gleich)
-// TODO: Wert anpassen
-					// robot.getPilot().rotate(20);
-					
-					robot.getLeftWheel().setSpeed(0);
-					robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 25);
-				//} else {
-					// nach rechts korrigieren
-// TODO: Wert anpassen
-					// robot.getPilot().rotate(-20);
-					robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 25);
-					robot.getRightWheel().setSpeed(0);
-				//}
+				//robot.getRightWheel().backward();
+				robot.getRightWheel().stop();
+				mv.speedUpLeft(60);
+				while (usSensor.getDistance() > DISTANCE_LIMIT) {
+					System.out.println("IN2: " + distance);
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
-			robot.getLeftWheel().forward();
-			robot.getRightWheel().forward();
+		
+	/*		try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		*/	
+			
+			
+	/*		
+			
+			if (distance > DISTANCE_LIMIT) {
+				mv.stopAll();
+				robot.getLeftWheel().setSpeed(1);
+				robot.getMovement().goForward();
+				while (distance > DISTANCE_LIMIT) {	
+				}
+				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 10);
+//			}
+//			else if (distance < DISTANCE_LIMIT) {
+//				robot.getMovement().stopAll();
+//				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 5);
+//				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 5);
+//				robot.getMovement().turnOnPointLeft();
+//				while (distance > GlobalValues.MAXLIGHT) {
+//				}
+			}
+			else {
+				robot.getMovement().stopAll();
+				robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED * 10);
+				while (DISTANCE_LIMIT > distance) {
+				}
+			}
+			
+*/			
+			
+			
 			
 // TODO: implement
 			/*
@@ -82,11 +125,12 @@ public class BridgeFollower {
 			 */
 			
 // TODO: besser?
+			/*
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}
+			} */
 			
 		}
 		
