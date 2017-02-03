@@ -16,6 +16,7 @@ public class Movement {
 		RegulatedMotor motors[] = { robot.getRightWheel() };
 		robot.getLeftWheel().synchronizeWith(motors);
 		this.travelSpeed = speed;
+		
 	}
 
 	public void goForward() {
@@ -60,21 +61,17 @@ public class Movement {
 	 *            time in Milliseconds
 	 */
 	public void goForwardDist(int dist) {
-		robot.getLeftWheel().setSpeed(travelSpeed);
-		robot.getRightWheel().setSpeed(travelSpeed);
 		robot.getLeftWheel().resetTachoCount();
 		goForward();
-		while (robot.getLeftWheel().getTachoCount() < dist * GlobalValues.DEGREETODIST) {
+		while (robot.getLeftWheel().getTachoCount() < dist * GlobalValues.DEGREE_TO_DIST) {
 		}
 		stopAll();
 	}
 
 	public void goBackwardDist(int dist) {
-		robot.getLeftWheel().setSpeed(travelSpeed);
-		robot.getRightWheel().setSpeed(travelSpeed);
 		robot.getLeftWheel().resetTachoCount();
 		goBackward();
-		while (robot.getLeftWheel().getTachoCount() < dist * GlobalValues.DEGREETODIST) {
+		while (robot.getLeftWheel().getTachoCount() < dist * GlobalValues.DEGREE_TO_DIST) {
 		}
 		stopAll();
 	}
@@ -193,18 +190,26 @@ public class Movement {
 	public void turnOnPointLeft(int angle) {
 
 		float dist = GlobalValues.DIST_PER_DEGREE * angle;
-		int rotateAngle = (int) (dist / GlobalValues.DIST_PER_DEGREE);
+		int rotateAngle = (int) (dist * GlobalValues.DEGREE_TO_DIST);
 
-		if (!reverse) {
+		if (reverse) {
 			robot.getLeftWheel().startSynchronization();
-			robot.getLeftWheel().rotate(rotateAngle, true);
-			robot.getRightWheel().rotate(-rotateAngle, false);
+			robot.getLeftWheel().resetTachoCount();
+			robot.getRightWheel().backward();
+			robot.getLeftWheel().forward();
 			robot.getLeftWheel().endSynchronization();
+			while (robot.getLeftWheel().getTachoCount() < rotateAngle) {
+			}
+			//stopAll();
 		} else {
 			robot.getLeftWheel().startSynchronization();
-			robot.getRightWheel().rotate(-rotateAngle, false);
-			robot.getLeftWheel().rotate(+rotateAngle);
+			robot.getRightWheel().resetTachoCount();
+			robot.getRightWheel().forward();
+			robot.getLeftWheel().backward();
 			robot.getLeftWheel().endSynchronization();
+			while (robot.getRightWheel().getTachoCount() < rotateAngle) {
+			}
+			//stopAll();
 		}
 	}
 
@@ -222,21 +227,29 @@ public class Movement {
 		}
 	}
 
-	public void turnOnPointRight(int angle) {
+	public void turnOnPointRight(int angle) throws InterruptedException {
 
 		float dist = GlobalValues.DIST_PER_DEGREE * angle;
-		int rotateAngle = (int) (dist / GlobalValues.DIST_PER_DEGREE);
-
+		int rotateAngle = (int) (dist * GlobalValues.DEGREE_TO_DIST);
+		
 		if (!reverse) {
 			robot.getLeftWheel().startSynchronization();
-			robot.getLeftWheel().rotate(-rotateAngle, true);
-			robot.getRightWheel().rotate(+rotateAngle, false);
+			robot.getLeftWheel().resetTachoCount();
+			robot.getRightWheel().backward();
+			robot.getLeftWheel().forward();
 			robot.getLeftWheel().endSynchronization();
+			while (robot.getLeftWheel().getTachoCount() < rotateAngle) {
+			}
+			stopAll();
 		} else {
 			robot.getLeftWheel().startSynchronization();
-			robot.getRightWheel().rotate(rotateAngle, false);
-			robot.getLeftWheel().rotate(-rotateAngle);
+			robot.getRightWheel().resetTachoCount();
+			robot.getRightWheel().forward();
+			robot.getLeftWheel().backward();
 			robot.getLeftWheel().endSynchronization();
+			while (robot.getRightWheel().getTachoCount() < rotateAngle) {
+			}
+			stopAll();
 		}
 	}
 
