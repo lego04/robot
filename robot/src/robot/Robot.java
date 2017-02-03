@@ -84,7 +84,7 @@ public class Robot {
 //		touch2 = new EV3TouchSensor(touchSensor2Port);
 		//touchDetector = new FusorDetector()
 		pilot.setTravelSpeed(10);
-		mov = new Movement(this, (int) pilot.getTravelSpeed());
+		mov = new Movement(this, 150);
 		
 	}
 	

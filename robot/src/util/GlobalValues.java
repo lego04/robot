@@ -32,9 +32,9 @@ public final class GlobalValues {
 	 *  degrees the wheels have to to move a distance of 1 cm.
 	 *  So to drive x cm you need to rotate both motors x * DEGREETODIST degree
 	 */
-	public static float DEGREETODIST = 14f;
-	public static float DISTFORPOINTROTATE = 37.7f;
-	public static float DIST_PER_DEGREE = DISTFORPOINTROTATE / 360;
+	public static float DEGREE_TO_DIST = 14f;
+	public static float DIST_FOR_POINTROTATE = 40f;
+	public static float DIST_PER_DEGREE = DIST_FOR_POINTROTATE / 360;
 	
 	
 }
