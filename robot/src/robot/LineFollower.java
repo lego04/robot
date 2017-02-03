@@ -41,10 +41,9 @@ public class LineFollower implements Actor {
 		while (true) {		//TODO: better implementation, now only for testing purpose
 			if (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
 				robot.getLeftWheel().resetTachoCount();
-				//robot.getMovement().stopAll();
-				robot.getMovement().endSync();
-				robot.getRightWheel().setSpeed(1);
-				//robot.getMovement().goForward();
+				robot.getMovement().stopAll();
+				robot.getRightWheel().setSpeed(10);
+				robot.getMovement().goForward();
 				while (lst.getLastLightValue() < GlobalValues.MINLIGHT) {	
 					if (robot.getLeftWheel().getTachoCount() > GlobalValues.LEFTWHEEL90DEGREE) {
 						break;
