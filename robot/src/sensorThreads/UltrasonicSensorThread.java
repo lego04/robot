@@ -30,7 +30,7 @@ public class UltrasonicSensorThread implements Runnable {
 	
 	public UltrasonicSensorThread(Robot robot) {
 
-		usSensorThread = new Thread(this);
+		//usSensorThread = new Thread(this);
 		mode = Modes.Down;
 
 		SampleProvider sampleProvider = robot.getUSSensor().getDistanceMode();
