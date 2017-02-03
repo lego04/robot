@@ -67,7 +67,8 @@ public class UltrasonicSensorThread implements Runnable {
 		}
 		
 		while (active.get()) {
-			int distanceInt = (int) (rangeFinder.getRange() * GlobalValues.floatToInt);
+			float[] ranges = rangeFinder.getRanges();
+			int distanceInt = (int) (ranges[0] * GlobalValues.floatToInt);
 			distance.set(distanceInt);
 			if (DEBUG) {
 				System.out.println("left: " + distance.get());

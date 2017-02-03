@@ -20,7 +20,7 @@ public final class GlobalValues {
 	public static int WALLFOLLOWSPEED = 40;
 	
 	//Line Travel Speed
-	public static final int LINETRAVELSPEED = 10; 
+	public static final int LINETRAVELSPEED = 15; 
 	
 	//Umrechnungsfaktoren
 	public static int floatToInt = 100;
