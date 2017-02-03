@@ -40,10 +40,15 @@ public class LineFollower implements Actor {
 	public void adjustLine() {
 		while (true) {		//TODO: better implementation, now only for testing purpose
 			if (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
-				robot.getMovement().stopAll();
+				robot.getLeftWheel().resetTachoCount();
+				//robot.getMovement().stopAll();
+				robot.getMovement().endSync();
 				robot.getRightWheel().setSpeed(1);
-				robot.getMovement().goForward();
+				//robot.getMovement().goForward();
 				while (lst.getLastLightValue() < GlobalValues.MINLIGHT) {	
+					if (robot.getLeftWheel().getTachoCount() > GlobalValues.LEFTWHEEL90DEGREE) {
+						break;
+					}
 				}
 				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 10);
 			}

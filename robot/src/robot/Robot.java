@@ -84,7 +84,7 @@ public class Robot {
 //		touch2 = new EV3TouchSensor(touchSensor2Port);
 		//touchDetector = new FusorDetector()
 		pilot.setTravelSpeed(10);
-		mov = new Movement(this);
+		mov = new Movement(this, (int) pilot.getTravelSpeed());
 		
 	}
 	
@@ -97,11 +97,10 @@ public class Robot {
  		//pilot.forward();
 		//pilot.steer(100);
 		LightSensorThread lst = new LightSensorThread(this);
-		lst.startThread();
  		new LineFollower(this, lst).adjustLine();
 	}
 	
-	// TODO: löschen? wird nicht mehr gebraucht?
+	// TODO: lï¿½schen? wird nicht mehr gebraucht?
 	/**
 	 * ultrasonic sensor is in front of robot. Set pilot to move backwards in order to get forwards.
 	 */
@@ -109,7 +108,7 @@ public class Robot {
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel, true);
 	}
 	
-	// TODO: löschen? wird nicht mehr gebraucht?
+	// TODO: lï¿½schen? wird nicht mehr gebraucht?
 	/**
 	 * ultra sonic sensor is behind of robot. Set pilot to move forward in order to get forwards.
 	 */
