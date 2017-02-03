@@ -81,6 +81,7 @@ public class WallFollower implements interfaces.Actor {
 				break;
 			case LEFT_TURN:
 				turnLeft();
+				state = TurnState.STRAIGHT;
 				//System.out.println("left turn");
 				break;
 			default:
@@ -120,10 +121,15 @@ public class WallFollower implements interfaces.Actor {
 	private void turnLeft() {
 		movement.stopAll();
 		//synchronizeMotors(state);
-		robot.getPilot().travel(GlobalValues.TRAVEL_DIST_LABYRINTH);
+		//robot.getPilot().travel(GlobalValues.TRAVEL_DIST_LABYRINTH);
 		//movement.turnOnPointLeft();
-		robot.getPilot().rotate(GlobalValues.LEFT * 90);
-		robot.getPilot().travel(GlobalValues.TRAVEL_DIST_LABYRINTH);
+		//robot.getPilot().rotate(GlobalValues.LEFT * 90);
+		//robot.getPilot().travel(GlobalValues.TRAVEL_DIST_LABYRINTH);
+		
+		movement.goForwardDist(GlobalValues.TRAVEL_DIST_LABYRINTH);
+		movement.turnOnPointLeft((int)(GlobalValues.LEFT) * 90);
+		movement.goForwardDist(GlobalValues.TRAVEL_DIST_LABYRINTH);
+		
 		//evtl. mit robot.getPilot().travelArc() umsetzen, würde dann eine Kurve fahren
 		
 	}
@@ -132,7 +138,7 @@ public class WallFollower implements interfaces.Actor {
 		movement.stopAll();
 		//synchronizeMotors(currentState);
 		movement.goBackwardDist(5);
-		movement.turnOnPointRight();
+		movement.turnOnPointRight((int) (GlobalValues.RIGHT) * 90);
 	}
 	
 	private void synchronizeMotors(TurnState state) {
