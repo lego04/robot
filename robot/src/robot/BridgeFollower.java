@@ -30,21 +30,21 @@ public class BridgeFollower {
 		
 		while (true) {
 			
-			boolean lookingLeft = usSensor.getLookingLeft();
+			//boolean lookingLeft = usSensor.getLookingLeft();
 			
-			distance = 
+			//distance = 
 			
 			
 			System.out.println(distance);
 			if (distance <= DISTANCE_LIMIT) {
 				System.out.println("<=" + " " + distance);
-				usSensor.setMovementEnabled(true);
+				//usSensor.setMovementEnabled(true);
 				//robot.getPilot().forward();
 				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 25);
 				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 25);
 			} else {
 				System.out.println(">" + " " + distance);
-				usSensor.setMovementEnabled(false);
+				//usSensor.setMovementEnabled(false);
 				//robot.getPilot().stop();
 				robot.getLeftWheel().stop();
 				robot.getRightWheel().stop();
@@ -52,24 +52,24 @@ public class BridgeFollower {
 				robot.getRightWheel().setSpeed(0);
 				
 				// was wenn sich die ausrichtung des sensor inzwischen geändert hat?
-				if (lookingLeft == usSensor.getLookingLeft()) {
-					usSensor.moveTo(lookingLeft ? Directions.Left : Directions.Right);
-				}
+				//if (lookingLeft == usSensor.getLookingLeft()) {
+				//	usSensor.moveTo(lookingLeft ? Directions.Left : Directions.Right);
+				//}
 				
-				if (lookingLeft) {
+				//if (lookingLeft) {
 					// nach links korrigieren (Fahrtrichtung ist umgekehrt, aber Sensorrichtung bleibt gleich)
 // TODO: Wert anpassen
 					// robot.getPilot().rotate(20);
 					
 					robot.getLeftWheel().setSpeed(0);
 					robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 25);
-				} else {
+				//} else {
 					// nach rechts korrigieren
 // TODO: Wert anpassen
 					// robot.getPilot().rotate(-20);
 					robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 25);
 					robot.getRightWheel().setSpeed(0);
-				}
+				//}
 			}
 			robot.getLeftWheel().forward();
 			robot.getRightWheel().forward();
