@@ -28,8 +28,13 @@ public final class GlobalValues {
 	//Umrechnungsfaktoren
 	public static int floatToInt = 100;
 	
+	/**
+	 *  degrees the wheels have to to move a distance of 1 cm.
+	 *  So to drive x cm you need to rotate both motors x * DEGREETODIST degree
+	 */
 	public static float DEGREETODIST = 14f;
 	public static float DISTFORPOINTROTATE = 37.7f;
+	public static float DIST_PER_DEGREE = DISTFORPOINTROTATE / 360;
 	
 	
 }
