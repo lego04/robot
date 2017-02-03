@@ -74,7 +74,8 @@ public class UltrasonicSensorThread implements Runnable {
 				System.out.println("left: " + distance.get());
 			}
 			try {
-				Thread.sleep(500);
+// TODO: change to normal value
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

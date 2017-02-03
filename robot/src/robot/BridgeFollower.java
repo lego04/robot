@@ -13,6 +13,8 @@ public class BridgeFollower {
 	
 // TODO: anpassen
 	private final int DISTANCE_LIMIT = 10;
+	private final int HIGH_SPEED = 120;
+	private final int LOW_SPEED = HIGH_SPEED / 2;
 	
 	public BridgeFollower(Robot robot) {
 		
@@ -41,19 +43,32 @@ public class BridgeFollower {
 		//		mv.slowDownLeft(30);
 				
 				mv.stopAll();
-				robot.getLeftWheel().setSpeed(0);
+			//	robot.getLeftWheel().setSpeed(60);
+			//	robot.getRightWheel().setSpeed(0);
+			//	mv.goForward();
 				//robot.getLeftWheel().backward();
 				//robot.getLeftWheel().stop();
-				mv.speedUpRight(60);
+				//mv.speedUpRight(60);
+				
+				/*robot.getLeftWheel().setSpeed(60);
+				robot.getRightWheel().setSpeed(60);
+				mv.turnOnPointRight();*/
+				
+				mv.stopAll();
+				robot.getLeftWheel().setSpeed(HIGH_SPEED);
+				robot.getRightWheel().setSpeed(LOW_SPEED);
+				mv.goForward();
+				
 				while (usSensor.getDistance() <= DISTANCE_LIMIT) {
-					System.out.println("IN1: " + distance);
+					/*System.out.println("IN1: " + usSensor.getDistance());
 					try {
 						Thread.sleep(500);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}
+					}*/
 				}
+				//robot.getRightWheel().setSpeed(60);
 				
 			} else {
 /*				
@@ -65,19 +80,22 @@ public class BridgeFollower {
 	//			mv.slowDownRight(30);
 				
 				mv.stopAll();
-				robot.getRightWheel().setSpeed(0);
+				robot.getRightWheel().setSpeed(HIGH_SPEED);
+				robot.getLeftWheel().setSpeed(LOW_SPEED);
+				mv.goForward();
 				//robot.getRightWheel().backward();
-				robot.getRightWheel().stop();
-				mv.speedUpLeft(60);
+			//	robot.getRightWheel().stop();
+			//	mv.speedUpLeft(60);
 				while (usSensor.getDistance() > DISTANCE_LIMIT) {
-					System.out.println("IN2: " + distance);
+					/*System.out.println("IN2: " + usSensor.getDistance());
 					try {
 						Thread.sleep(500);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}
+					}*/
 				}
+				//robot.getLeftWheel().setSpeed(60);
 			}
 		
 	/*		try {
