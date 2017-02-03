@@ -43,8 +43,9 @@ public class WallFollower implements interfaces.Actor {
 	 * Robot stays in this state, until it decides, that it is out of the labyrinth.
 	 */
 	public void followTheWall() {
+		//robot.getPilot().setTravelSpeed(GlobalValues.WALLFOLLOWSPEED);
 		movement.backwardDirection();
-		movement.goForward();
+		movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
 		while (isInLabyrinth()) {
 			//controllTheDistanceToWall();
 			//robot.getPilot().forward();
@@ -77,7 +78,9 @@ public class WallFollower implements interfaces.Actor {
 			case STRAIGHT: //nothing to do
 				break;
 			case LEFT_TURN:
-				
+				turnLeft(currentState);
+				//System.out.println("left turn");
+				break;
 			default:
 				throw new IllegalStateException("unknwon state");
 			}
@@ -108,32 +111,41 @@ public class WallFollower implements interfaces.Actor {
 		return true;
 	}
 	
-	private void turnLeft() {
+	private void turnLeft(TurnState state) {
 		movement.stopAll();
-		synchronizeMotors();
-		robot.getPilot().travelArc(0, 0); //TODO: set right values
+		//synchronizeMotors(state);
+		robot.getPilot().travel(GlobalValues.TRAVEL_DIST_LABYRINTH);
+		//movement.turnOnPointLeft();
+		robot.getPilot().rotate(GlobalValues.LEFT * 90);
+		robot.getPilot().travel(GlobalValues.TRAVEL_DIST_LABYRINTH);
+		//evtl. mit robot.getPilot().travelArc() umsetzen, würde dann eine Kurve fahren
+		
 	}
 	
 	private void turnRight() {
 		movement.stopAll();
-		synchronizeMotors();
+		//synchronizeMotors(currentState);
+		robot.getPilot().travel(-5);
 		robot.getPilot().rotate(GlobalValues.RIGHT * 90);
 	}
 	
-	private void synchronizeMotors() {
+	private void synchronizeMotors(TurnState state) {
 		//reset left motor speed if necessary
-				switch (currentState) {
+				switch (state) {
 				case LEFT:
 					movement.slowDownLeft();
 					break;
 				case RIGHT:
 					movement.speedUpLeft();
 					break;
-				case LEFT_TURN:
-				case STRAIGHT:
+				case STRAIGHT: 
+					//motors are already synchronized
+					break;
+				case LEFT_TURN:		
 				default: 
-					throw new IllegalStateException("invalid state");
-				}				
+					throw new IllegalStateException("invalid state: " + state);
+				}			
+				
 	}
 	
 

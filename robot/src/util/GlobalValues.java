@@ -17,7 +17,7 @@ public final class GlobalValues {
 	public static int TRAVEL_DIST_LABYRINTH = 35;
 	
 	//Wall Following Travel Speed
-	public static int WALLFOLLOWSPEED = 20;
+	public static int WALLFOLLOWSPEED = 40;
 	
 	//Line Travel Speed
 	public static final int LINETRAVELSPEED = 10; 
