@@ -4,7 +4,6 @@ import robot.BridgeFollower;
 import robot.FindLineFirst;
 import robot.Robot;
 import robot.WallFollower;
-import sensorThreads.UltrasonicSensorThread;
 
 public class States {
 	
