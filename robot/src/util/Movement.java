@@ -275,13 +275,17 @@ public class Movement {
 		robot.setUltraSonicBack();
 	}
 	
-	public void setSpeed(int speed) {
-		robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED + ((GlobalValues.WALLFOLLOWSPEED * speed) / 125));
-		robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED - ((GlobalValues.WALLFOLLOWSPEED * speed) / 125));
+	public void updateWheelSpeeds(int angle) {
+		double percent = ((angle * 100.0) / 90.0) / 100.0;
+		int speedChange = (int) Math.floor(GlobalValues.WALLFOLLOWSPEED * percent);
+		robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED + speedChange);
+		robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED - speedChange);
 		if (!reverse) {
 			robot.getLeftWheel().forward();
+			robot.getRightWheel().forward();
 		}
 		else {
+			robot.getLeftWheel().backward();
 			robot.getRightWheel().backward();
 		}
 	}

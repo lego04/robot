@@ -31,7 +31,7 @@ public class WallFollower implements interfaces.Actor {
 	public WallFollower(Robot robot, UltrasonicSensorThread sensor) {
 		this.robot = robot;
 		this.distanceSensor = sensor;
-		this.hypotenus = 13.0; // cm
+		this.hypotenus = 13.5; // cm
 		this.mustDistance = 8; // cm
 		this.isDistance = this.mustDistance; // Just to be sure, that it was also initialised.
 		updateDistanceToWall();
@@ -64,7 +64,7 @@ public class WallFollower implements interfaces.Actor {
 		int diff = mustDistance - isDistance;
 		double sin = Math.min(1.0, Math.max(-1.0, diff / hypotenus));
 		double angle = - Math.toDegrees(Math.asin(sin));
-		movement.setSpeed((int) angle);
+		movement.updateWheelSpeeds((int) angle);
 	}
 	
 	/** Updates the <code>distanceToWall</code> - distance between the wall and the robot */
