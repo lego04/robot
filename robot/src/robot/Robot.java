@@ -7,13 +7,10 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3GyroSensor;
 import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
-import lejos.robotics.RangeFinderAdapter;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.objectdetection.FeatureDetector;
 import lejos.robotics.objectdetection.FusorDetector;
-import lejos.robotics.objectdetection.RangeFeatureDetector;
-import lejos.robotics.objectdetection.TouchFeatureDetector;
 import sensorThreads.LightSensorThread;
 import util.Movement;
 import util.States;
@@ -77,19 +74,12 @@ public class Robot {
 		
 		usSensor = new EV3UltrasonicSensor(irSensorPort);
 		
-		/*ultraSonicDetector = new RangeFeatureDetector(new RangeFinderAdapter(us), ultraSonicMaxDistanceCM, ultraSonicDelayMS);
-		ultraSonicDetector.addListener(new UltraSonicDistanceListener(pilot, ultraSonicStopDistanceM));
-		ultraSonicDetector.enableDetection(false);*/
-		
 		colorSensor = new EV3ColorSensor(colorSensorPort);
-
-//		SusSensor = new EV3UltrasonicSensor(irSensorPort);
 
 		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 
 
 		touch1 = new EV3TouchSensor(touchSensor);
-//		touch2 = new EV3TouchSensor(touchSensor2Port);
 		//touchDetector = new FusorDetector()
 		pilot.setTravelSpeed(10);
 		mov = new Movement(this, 150);
@@ -97,11 +87,8 @@ public class Robot {
 		states = new States(this);
 		
 		lightSensorThread = new LightSensorThread(this);
-// TODO: Light Sensor Thread starten?
 		
 	}
-	
-	
 	
 	/**
 	 * starts the robot
@@ -109,7 +96,9 @@ public class Robot {
 	public void start() {
  		//pilot.forward();
 		//pilot.steer(100);
-		LightSensorThread lst = new LightSensorThread(this);
+		
+// TODO: Light Sensor Thread starten?
+		
  		//new LineFollower(this, lst).adjustLine();
 		states.start();
 	}
@@ -160,10 +149,6 @@ public class Robot {
 		return colorSensor;
 	}
 	
-	public LightSensorThread getLightSensorThread() {
-		return lightSensorThread;
-	}
-	
 	public EV3UltrasonicSensor getUSSensor() {
 		return usSensor;
 	}
@@ -179,10 +164,5 @@ public class Robot {
 	public EV3TouchSensor getTouch1() {
 		return touch1;
 	}
-	/*
-	public EV3TouchSensor getTouch2() {
-		return touch2;
-	}
-	*/
 }
 
