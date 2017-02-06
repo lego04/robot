@@ -276,16 +276,15 @@ public class Movement {
 	}
 	
 	public void updateWheelSpeeds(int angle) {
-		System.out.println("update wheelspeeds");
-		double percent = ((angle * 100.0) / 90.0) / 100.0;
-		int speedChange = (int) Math.floor(GlobalValues.WALLFOLLOWSPEED * percent);
-		robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED + speedChange);
-		robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED - speedChange);
 		if (!reverse) {
-			//robot.getMovement().goForward();
-		}
-		else {
-			//robot.getMovement().goBackward();
+			return;
+		} else {
+			double percent = ((angle * 100.0) / 90.0) / 100.0;
+			int speedChange = (int) Math.floor(GlobalValues.WALLFOLLOWSPEED * percent);
+			robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED + speedChange);
+			robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED - speedChange);
+			robot.getLeftWheel().backward();
+			robot.getRightWheel().backward();
 		}
 	}
 }
