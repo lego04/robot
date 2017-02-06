@@ -3,6 +3,7 @@ package test;
 import listeners.TouchSensorListener;
 import robot.Robot;
 import robot.WallFollower;
+import robot.WallFollower2;
 import sensorThreads.UltrasonicSensorThread;
 import sensorThreads.UltrasonicSensorThread.Modes;
 import util.EscapeThread;
@@ -13,8 +14,10 @@ public class WallFollowerTest {
 		System.out.println("WallFollowerTest:");
 		new EscapeThread().startThread();
 		Robot robot = new Robot();
-		WallFollower wf = new WallFollower(robot);
+		WallFollower2 wf = new WallFollower2(robot);
 		//new TouchSensorListener(wf);
-		wf.followTheWall();
+		while (true) {			
+			wf.stayOnWall();
+		}
 	}
 }

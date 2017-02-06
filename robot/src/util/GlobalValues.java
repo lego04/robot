@@ -9,14 +9,14 @@ public final class GlobalValues {
 	//Line Following
 	public static final float MINLIGHT = 0.05f;		//Test Values (Floor) 
 	public static final float MAXLIGHT = 0.25f;
-	public static final float AVG_LIGHT = 0.15f;
+	public static final float AVG_LIGHT = 0.1f;
 	public static final float LEFT = 1f;
 	public static final float RIGHT = -1f;
 	public static final int LEFT_WHEEL_90_DEGREE = 850;
 	
 	//Wall Following
-	public static int WALL_DIST_MIN = 12;
-	public static int WALL_DIST_MAX = 25;
+	public static int WALL_DIST_MIN = 50;
+	public static int WALL_DIST_MAX = 100;
 	public static int WALL_MID = (int) (WALL_DIST_MAX + WALL_DIST_MIN) / 2; 
 	public static int TRAVEL_DIST_LABYRINTH = 35;
 	
@@ -27,7 +27,7 @@ public final class GlobalValues {
 	public static final int LINETRAVELSPEED = 15; 
 	
 	//Umrechnungsfaktoren
-	public static int floatToInt = 100;
+	public static int floatToInt = 1000;
 	
 	/**
 	 *  degrees the wheels have to to move a distance of 1 cm.
