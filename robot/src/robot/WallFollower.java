@@ -46,8 +46,9 @@ public class WallFollower implements interfaces.Actor {
 	 */
 	public void followTheWall() {
 		movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
-		robot.getPilot().setTravelSpeed(GlobalValues.WALLFOLLOWSPEED);
-		movement.goForward();
+		System.out.println("Speed: " + robot.getLeftWheel().getSpeed());
+		//robot.getPilot().setTravelSpeed(GlobalValues.WALLFOLLOWSPEED);
+		//movement.goForward();
 		while (!robot.isNextStateReady()) {
 			controllTheDistanceToWall();
 		}
@@ -67,6 +68,7 @@ public class WallFollower implements interfaces.Actor {
 		int diff = mustDistance - isDistance;
 		double sin = Math.min(1.0, Math.max(-1.0, diff / hypotenus));
 		double angle = - Math.toDegrees(Math.asin(sin));
+		System.out.println("Speed: " + robot.getLeftWheel().getSpeed());
 		movement.updateWheelSpeeds((int) angle);
 	}
 	

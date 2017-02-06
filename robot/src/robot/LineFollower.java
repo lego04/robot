@@ -85,7 +85,6 @@ public class LineFollower implements Actor {
 		robot.getMovement().stopAll();
 	}
 	
-	
 
 	/**
 	 * shows current light value whenever enter is pressed
