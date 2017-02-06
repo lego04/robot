@@ -49,7 +49,9 @@ public class WallFollower implements interfaces.Actor {
 		System.out.println("Speed: " + robot.getLeftWheel().getSpeed());
 		//robot.getPilot().setTravelSpeed(GlobalValues.WALLFOLLOWSPEED);
 		//movement.goForward();
-		while (!robot.isNextStateReady()) {
+		boolean b = robot.isNextStateReady();
+		while (true) {
+			//System.out.println(b);
 			controllTheDistanceToWall();
 		}
 	}
@@ -64,6 +66,7 @@ public class WallFollower implements interfaces.Actor {
 	
 	/** Controller, that tries to keep the robot at the wall. */
 	private void controllTheDistanceToWall() {
+		System.out.println("control dist to wall");
 		updateDistanceToWall();
 		int diff = mustDistance - isDistance;
 		double sin = Math.min(1.0, Math.max(-1.0, diff / hypotenus));
@@ -86,12 +89,12 @@ public class WallFollower implements interfaces.Actor {
 			Thread.sleep(2000);
 		}
 		catch (Exception e) { }
-		movement.goForward();
+		//movement.goForward();
 		//movement.goBackwardDist(5);
 		//movement.turnOnPointRight(90);
 		//movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
 		//movement.goForwardDist(GlobalValues.TRAVEL_DIST_LABYRINTH);
-		//followTheWall();
+		followTheWall();
 	}
 
 	@Override
