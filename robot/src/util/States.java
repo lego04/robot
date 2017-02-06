@@ -43,10 +43,12 @@ public class States {
 				flf.findLineFirst();
 				break;
 			case BRIDGE:
+// TODO: wenden
 				BridgeFollower bf = new BridgeFollower(robot);
 				bf.start();
 				break;
 			case LINEFOLLOWING_BEFORE_SEESAW:
+// TODO: wenden
 				FindLineFirst flf2 = new FindLineFirst(robot);
 				flf2.findLineFirst();
 				break;
@@ -60,6 +62,7 @@ public class States {
 				flf4.findLineFirst();
 				break;
 			case BOG:
+// TODO: wenden
 // TODO: implement
 				break;
 			case WALLFOLLOWING_TO_ROPE_BRIDGE:
@@ -71,6 +74,7 @@ public class States {
 				bf2.start();
 				break;
 			case BOSS:
+// TODO: wenden?
 // TODO: implement
 				break;
 			default: throw new IllegalStateException("unknown station");

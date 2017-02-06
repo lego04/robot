@@ -37,8 +37,10 @@ public class GyroSensorThread implements Runnable {
 	
 	public void start() {
 		
+		stop();
 		gyro.reset();
 		thread = new Thread(this);
+		active.set(true);
 		thread.start();
 		
 	}
@@ -47,7 +49,6 @@ public class GyroSensorThread implements Runnable {
 		active.set(false);
 	}
 	
-	// DOES NOT WORK !!!
 	@Override
 	public void run() {
 		
