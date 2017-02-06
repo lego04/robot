@@ -1,7 +1,9 @@
 package util;
 
+import robot.BridgeFollower;
 import robot.FindLineFirst;
 import robot.Robot;
+import robot.WallFollower;
 
 public class States {
 	
@@ -14,7 +16,7 @@ public class States {
 	}
 	
 	public void start() {
-		//TODO: implement
+		performState();
 	}
 	
 	public void nextState() {
@@ -23,9 +25,57 @@ public class States {
 	}
 	
 	private void performState() {
+		
+		
+		
 		switch (currentState) {
-		//TODO: call methods
+			case START:
+// TODO: schneller?
+				WallFollower wf = new WallFollower(robot);
+				wf.followTheWall();
+				break;
+			case WALLFOLLOWING:
+				WallFollower wf2 = new WallFollower(robot);
+				wf2.followTheWall();
+				break;
+			case LINEFOLLOWING_BEFORE_BRIDGE:
+				FindLineFirst flf = new FindLineFirst(robot);
+				flf.findLineFirst();
+				break;
+			case BRIDGE:
+				BridgeFollower bf = new BridgeFollower(robot);
+				bf.start();
+				break;
+			case LINEFOLLOWING_BEFORE_SEESAW:
+				FindLineFirst flf2 = new FindLineFirst(robot);
+				flf2.findLineFirst();
+				break;
+			case SEESAW:
+// TODO: langsamer?
+				FindLineFirst flf3 = new FindLineFirst(robot);
+				flf3.findLineFirst();
+				break;
+			case LINEFOLLOWING_BEFORE_BOG:
+				FindLineFirst flf4 = new FindLineFirst(robot);
+				flf4.findLineFirst();
+				break;
+			case BOG:
+// TODO: implement
+				break;
+			case WALLFOLLOWING_TO_ROPE_BRIDGE:
+				WallFollower wf3 = new WallFollower(robot);
+				wf3.followTheWall();
+				break;
+			case ROPE_BRIDGE:
+				BridgeFollower bf2 = new BridgeFollower(robot);
+				bf2.start();
+				break;
+			case BOSS:
+// TODO: implement
+				break;
+			default: throw new IllegalStateException("unknown station");
 		}
+		nextState();
 	}
 	
 	public void startLineFindAndFollow() {

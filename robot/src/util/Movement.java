@@ -227,7 +227,7 @@ public class Movement {
 		}
 	}
 
-	public void turnOnPointRight(int angle) throws InterruptedException {
+	public void turnOnPointRight(int angle) {
 
 		float dist = GlobalValues.DIST_PER_DEGREE * angle;
 		int rotateAngle = (int) (dist * GlobalValues.DEGREE_TO_DIST);
@@ -275,14 +275,16 @@ public class Movement {
 		robot.setUltraSonicBack();
 	}
 	
-	public void setSpeed(int speed) {
-		robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED + ((GlobalValues.WALLFOLLOWSPEED * speed) / 125));
-		robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED - ((GlobalValues.WALLFOLLOWSPEED * speed) / 125));
+	public void updateWheelSpeeds(int angle) {
+		double percent = ((angle * 100.0) / 90.0) / 100.0;
+		int speedChange = (int) Math.floor(GlobalValues.WALLFOLLOWSPEED * percent);
+		robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED + speedChange);
+		robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED - speedChange);
 		if (!reverse) {
-			robot.getLeftWheel().forward();
+			//robot.getMovement().goForward();
 		}
 		else {
-			robot.getRightWheel().backward();
+			//robot.getMovement().goBackward();
 		}
 	}
 }

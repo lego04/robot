@@ -1,16 +1,13 @@
 package robot;
 
-import sensorThreads.LightSensorThread;
 import sensorThreads.UltrasonicSensorThread;
 import sensorThreads.UltrasonicSensorThread.Modes;
-import util.GlobalValues;
 import util.Movement;
 
 public class BridgeFollower {
 	
 	private Robot robot;
 	private UltrasonicSensorThread usSensor;
-	private LightSensorThread lightSensor;
 	private Movement mv;
 	
 // TODO: anpassen
@@ -23,7 +20,6 @@ public class BridgeFollower {
 		this.robot = robot;
 		mv = robot.getMovement();
 		usSensor = new UltrasonicSensorThread(robot);
-		lightSensor = robot.getLightSensorThread();
 		
 	}
 	
@@ -43,8 +39,6 @@ public class BridgeFollower {
 			if (distance <= DISTANCE_LIMIT) {
 				
 				mv.stopAll();
-				
-				mv.stopAll();
 				robot.getLeftWheel().setSpeed(HIGH_SPEED);
 				robot.getRightWheel().setSpeed(LOW_SPEED);
 				mv.goForward();
@@ -58,12 +52,13 @@ public class BridgeFollower {
 				robot.getRightWheel().setSpeed(HIGH_SPEED);
 				robot.getLeftWheel().setSpeed(LOW_SPEED);
 				mv.goForward();
+				
 				while (usSensor.getDistance() > DISTANCE_LIMIT) {
 				}
 				
 			}			
 
-			if (lightSensor.nextStateReady()) {
+			if (robot.isNextStateReady()) {
 				return;
 			}
 			

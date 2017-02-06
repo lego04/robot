@@ -17,8 +17,6 @@ public class GyroSensorThread implements Runnable {
 	
 	public GyroSensorThread(Robot robot) {
 		
-		//thread = new Thread(this);
-		
 		SampleProvider sp = robot.getGyroSensor().getAngleMode();
 		gyro = new GyroscopeAdapter(sp, 1000);
 		
@@ -45,6 +43,7 @@ public class GyroSensorThread implements Runnable {
 		active.set(false);
 	}
 	
+	// DOES NOT WORK !!!
 	@Override
 	public void run() {
 		
@@ -61,7 +60,6 @@ public class GyroSensorThread implements Runnable {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
