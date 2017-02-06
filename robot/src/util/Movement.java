@@ -15,8 +15,11 @@ public class Movement {
 		this.robot = robot;
 		RegulatedMotor motors[] = { robot.getRightWheel() };
 		robot.getLeftWheel().synchronizeWith(motors);
-		this.travelSpeed = speed;
-		
+		this.travelSpeed = speed;	
+	}
+	
+	public void setSpeed(int speed) {
+		travelSpeed = speed;
 	}
 
 	public void goForward() {

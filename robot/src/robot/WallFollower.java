@@ -1,6 +1,8 @@
 package robot;
 
 import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.hardware.sensor.SensorMode;
+import lejos.robotics.TouchAdapter;
 import robot.Robot;
 import sensorThreads.UltrasonicSensorThread;
 import sensorThreads.UltrasonicSensorThread.Modes;
@@ -11,7 +13,7 @@ import util.TouchSensorID;
 /** WallFollwer class is the generalisation of the Left- and RightWallFollower
  * @author Rashad Asgarbayli
  */
-public class WallFollower implements interfaces.Actor {
+public class WallFollower {
 	/** Reference to {@link Robot} */
 	private Robot robot;
 	/** Reference to {@link UltrasonicSensorThread} */
@@ -27,6 +29,9 @@ public class WallFollower implements interfaces.Actor {
 	
 	private Movement movement;
 	
+	private TouchAdapter td;
+	
+	
 	/** Standard constructor of the calls. Needs reference to the {@link Robot} and {@link UltrasonicSensorThread}
 	 * @param robot : {@link Robot}
 	 * @param sensor : {@link UltrasonicSensorThread}
@@ -41,16 +46,23 @@ public class WallFollower implements interfaces.Actor {
 		updateDistanceToWall();
 		this.recoveringFromBump = false;
 		this.movement = robot.getMovement();
+		movement.setSpeed(GlobalValues.WALLFOLLOWSPEED);
 		movement.backwardDirection();
+		td = new TouchAdapter(robot.getTouch1());
 	}
 	
 	/** Robot follows the wall using it as an anchor point to find its way through the labyrinth.
 	 * Robot stays in this state, until it decides, that it is out of the labyrinth.
 	 */
 	public void followTheWall() {
-		movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
+		//movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
 		while (isInLabyrinth()) {
+			recoveringFromBump = td.isPressed();
 			if (!recoveringFromBump) {
+				controllTheDistanceToWall();
+			}
+			else {
+				act();
 				controllTheDistanceToWall();
 			}
 		}
@@ -78,20 +90,21 @@ public class WallFollower implements interfaces.Actor {
 		this.isDistance = distanceSensor.getDistance();
 	}
 
-	@Override
-	public void act(TouchSensorID id) {
+	public void act() {
 		System.out.println("act to bump");
 		//turn right
 		WallFollower.this.recoveringFromBump = true;
 		movement.stopAll();
-		movement.goBackwardDist(10);
-		movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
-		movement.updateWheelSpeeds(-90);
+		movement.goBackwardDist(20);
+		//movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
+		movement.turnOnPointRight(-90);
 		WallFollower.this.recoveringFromBump = false;
 	}
 
+	/*
 	@Override
 	public Robot getRobot() {
 		return robot;
 	}
+	*/
 }

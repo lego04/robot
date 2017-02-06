@@ -14,7 +14,7 @@ public class WallFollowerTest {
 		new EscapeThread().startThread();
 		Robot robot = new Robot();
 		WallFollower wf = new WallFollower(robot);
-		new TouchSensorListener(wf);
+		//new TouchSensorListener(wf);
 		wf.followTheWall();
 	}
 }
