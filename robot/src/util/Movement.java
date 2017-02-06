@@ -274,4 +274,15 @@ public class Movement {
 		reverse = false;
 		robot.setUltraSonicBack();
 	}
+	
+	public void setSpeed(int speed) {
+		robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED + ((GlobalValues.WALLFOLLOWSPEED * speed) / 125));
+		robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED - ((GlobalValues.WALLFOLLOWSPEED * speed) / 125));
+		if (!reverse) {
+			robot.getLeftWheel().forward();
+		}
+		else {
+			robot.getRightWheel().backward();
+		}
+	}
 }

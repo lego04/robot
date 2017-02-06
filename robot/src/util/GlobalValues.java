@@ -20,7 +20,7 @@ public final class GlobalValues {
 	public static int TRAVEL_DIST_LABYRINTH = 35;
 	
 	//Wall Following Travel Speed
-	public static int WALLFOLLOWSPEED = 150;
+	public static int WALLFOLLOWSPEED = 200;
 	
 	//Line Travel Speed
 	public static final int LINETRAVELSPEED = 15; 
@@ -33,7 +33,7 @@ public final class GlobalValues {
 	 *  So to drive x cm you need to rotate both motors x * DEGREETODIST degree
 	 */
 	public static float DEGREE_TO_DIST = 14f;
-	public static float DIST_FOR_POINTROTATE = 40f;
+	public static float DIST_FOR_POINTROTATE = 42f;
 	public static float DIST_PER_DEGREE = DIST_FOR_POINTROTATE / 360;
 	
 	

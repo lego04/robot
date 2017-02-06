@@ -11,16 +11,16 @@ public class MovementTest {
 		Robot robot = new Robot();
 		Movement mov = robot.getMovement();
 		System.out.println("Start Movement Test");
-		/*
+		
 		mov.turnOnPointLeft(90);
 		System.out.println("Turn Left");
 		mov.stopAll();
 		mov.turnOnPointRight(90);
 		System.out.println("Turn Right");
 		mov.stopAll();
-		*/
 		
 		
+		/*
 		System.out.println("Move");
 		mov.goForwardDist(50);
 		System.out.println("Forward");
@@ -29,7 +29,7 @@ public class MovementTest {
 		mov.slowDownLeft(200);
 		mov.goBackward();
 		System.out.println("End");
-		
+		*/
 	}
 	
 }
