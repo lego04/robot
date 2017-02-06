@@ -34,7 +34,7 @@ public class BridgeFollower {
 		
 		while (true) {
 			
-// TODO: standardm‰ﬂig linkskurve, bei abgrund: korrektur
+// TODO: standardm‰ﬂig linkskurve, bei abgrund: korrekturi
 			
 			distance = usSensor.getDistance();
 			System.out.println("OUT: " + distance);
