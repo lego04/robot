@@ -27,14 +27,14 @@ public class TouchSensorListener implements FeatureListener {
 
 	@Override
 	public void featureDetected(Feature feature, FeatureDetector detector) {
-		if (detector.equals(touch1Detector)) {
+//		if (detector.equals(touch1Detector)) {
 			//check whether touch2 is also pressed
 //			if (touch2Detector.scan() != null) {
 //				actor.act(TouchSensorID.BOTH);
 //			} else {
 				actor.act(TouchSensorID.ONE);
 //			}
-		}
+//		}
 //		else {
 //			//check whether touch1 is pressed
 //			if (touch1Detector.scan() != null) {
