@@ -25,7 +25,7 @@ public class WallFollower {
 	/** Current distance to the wall as <b>centimetres (cm)</b>, that read from {@link UltrasonicSensorThread}. */
 	private int isDistance;
 	
-	boolean recoveringFromBump;
+	//boolean recoveringFromBump;
 	
 	private Movement movement;
 	
@@ -44,7 +44,7 @@ public class WallFollower {
 		this.mustDistance = 8; // cm
 		this.isDistance = this.mustDistance; // Just to be sure, that it was also initialised.
 		updateDistanceToWall();
-		this.recoveringFromBump = false;
+		//this.recoveringFromBump = false;
 		this.movement = robot.getMovement();
 		movement.setSpeed(GlobalValues.WALLFOLLOWSPEED);
 		movement.backwardDirection();
@@ -57,14 +57,10 @@ public class WallFollower {
 	public void followTheWall() {
 		//movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
 		while (isInLabyrinth()) {
-			recoveringFromBump = td.isPressed();
-			if (!recoveringFromBump) {
-				controllTheDistanceToWall();
-			}
-			else {
+			if (td.isPressed()) {
 				act();
-				controllTheDistanceToWall();
 			}
+			controllTheDistanceToWall();
 		}
 	}
 	
@@ -93,12 +89,12 @@ public class WallFollower {
 	public void act() {
 		System.out.println("act to bump");
 		//turn right
-		WallFollower.this.recoveringFromBump = true;
+		//WallFollower.this.recoveringFromBump = true;
 		movement.stopAll();
 		movement.goBackwardDist(20);
 		//movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
 		movement.turnOnPointRight(-90);
-		WallFollower.this.recoveringFromBump = false;
+		//WallFollower.this.recoveringFromBump = false;
 	}
 
 	/*
