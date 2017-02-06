@@ -16,6 +16,7 @@ import lejos.robotics.objectdetection.RangeFeatureDetector;
 import lejos.robotics.objectdetection.TouchFeatureDetector;
 import sensorThreads.LightSensorThread;
 import util.Movement;
+import util.States;
 
 /**
  * class representing robot
@@ -63,6 +64,11 @@ public class Robot {
 	private FeatureDetector ultraSonicDetector;
 	private FusorDetector touchDetector;
 	
+	/**
+	 * state machine defining behavior of robot
+	 */
+	private States states;
+	
 	
 	public Robot() {
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel);
@@ -86,6 +92,8 @@ public class Robot {
 		pilot.setTravelSpeed(10);
 		mov = new Movement(this, 150);
 		
+		states = new States(this);
+		
 	}
 	
 	
@@ -97,7 +105,8 @@ public class Robot {
  		//pilot.forward();
 		//pilot.steer(100);
 		LightSensorThread lst = new LightSensorThread(this);
- 		new LineFollower(this, lst).adjustLine();
+ 		//new LineFollower(this, lst).adjustLine();
+		states.start();
 	}
 	
 	// TODO: l�schen? wird nicht mehr gebraucht?
@@ -114,6 +123,13 @@ public class Robot {
 	 */
 	public void setUltraSonicBack() {
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel);
+	}
+	
+	/**
+	 * sets robot to next state according to {@link #states}
+	 */
+	public void nextState() {
+		states.nextState();
 	}
 	
 	//
