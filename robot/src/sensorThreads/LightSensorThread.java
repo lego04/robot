@@ -69,7 +69,12 @@ public class LightSensorThread implements Runnable {
 
 // TODO: implement !!!
 	public boolean nextStateReady() {
-		return false;
+		if (getLastLightValue() < GlobalValues.AVG_LIGHT) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 }
