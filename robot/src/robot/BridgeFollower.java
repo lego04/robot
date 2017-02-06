@@ -14,7 +14,7 @@ public class BridgeFollower {
 // TODO: anpassen
 	private final int DISTANCE_LIMIT = 10;
 	private final int HIGH_SPEED = 200;
-	private final int LOW_SPEED = HIGH_SPEED / 3;
+	private final int LOW_SPEED = HIGH_SPEED / 2;
 	
 	public BridgeFollower(Robot robot) {
 		
@@ -33,6 +33,8 @@ public class BridgeFollower {
 		int distance = 0;
 		
 		while (true) {
+			
+// TODO: standardm‰ﬂig linkskurve, bei abgrund: korrektur
 			
 			distance = usSensor.getDistance();
 			System.out.println("OUT: " + distance);
