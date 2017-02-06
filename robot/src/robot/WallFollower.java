@@ -37,7 +37,7 @@ public class WallFollower implements interfaces.Actor {
 		this.mustDistance = 8; // cm
 		this.isDistance = this.mustDistance; // Just to be sure, that it was also initialised.
 		updateDistanceToWall();
-		this.movement = new Movement(robot, GlobalValues.WALLFOLLOWSPEED);
+		this.movement = robot.getMovement();
 		movement.backwardDirection();
 	}
 	
@@ -46,8 +46,12 @@ public class WallFollower implements interfaces.Actor {
 	 */
 	public void followTheWall() {
 		movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
-		robot.getPilot().setTravelSpeed(GlobalValues.WALLFOLLOWSPEED);
-		while (!robot.isNextStateReady()) {
+		System.out.println("Speed: " + robot.getLeftWheel().getSpeed());
+		//robot.getPilot().setTravelSpeed(GlobalValues.WALLFOLLOWSPEED);
+		//movement.goForward();
+		boolean b = robot.isNextStateReady();
+		while (true) {
+			//System.out.println(b);
 			controllTheDistanceToWall();
 		}
 	}
@@ -62,10 +66,12 @@ public class WallFollower implements interfaces.Actor {
 	
 	/** Controller, that tries to keep the robot at the wall. */
 	private void controllTheDistanceToWall() {
+		System.out.println("control dist to wall");
 		updateDistanceToWall();
 		int diff = mustDistance - isDistance;
 		double sin = Math.min(1.0, Math.max(-1.0, diff / hypotenus));
 		double angle = - Math.toDegrees(Math.asin(sin));
+		System.out.println("Speed: " + robot.getLeftWheel().getSpeed());
 		movement.updateWheelSpeeds((int) angle);
 	}
 	
@@ -79,16 +85,16 @@ public class WallFollower implements interfaces.Actor {
 		System.out.println("act to bump");
 		//turn right
 		movement.stopAll();
-		movement.goBackwardDist(5);
 		try {
-			movement.turnOnPointRight(90);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Thread.sleep(2000);
 		}
-		movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
+		catch (Exception e) { }
+		//movement.goForward();
+		//movement.goBackwardDist(5);
+		//movement.turnOnPointRight(90);
+		//movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
 		//movement.goForwardDist(GlobalValues.TRAVEL_DIST_LABYRINTH);
-		//followTheWall();
+		followTheWall();
 	}
 
 	@Override
