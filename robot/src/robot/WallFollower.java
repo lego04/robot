@@ -23,6 +23,8 @@ public class WallFollower implements interfaces.Actor {
 	/** Current distance to the wall as <b>centimetres (cm)</b>, that read from {@link UltrasonicSensorThread}. */
 	private int isDistance;
 	
+	boolean recoveringFromBump;
+	
 	private Movement movement;
 	
 	/** Standard constructor of the calls. Needs reference to the {@link Robot} and {@link UltrasonicSensorThread}
@@ -37,6 +39,7 @@ public class WallFollower implements interfaces.Actor {
 		this.mustDistance = 8; // cm
 		this.isDistance = this.mustDistance; // Just to be sure, that it was also initialised.
 		updateDistanceToWall();
+		this.recoveringFromBump = false;
 		this.movement = robot.getMovement();
 		movement.backwardDirection();
 	}
@@ -46,13 +49,10 @@ public class WallFollower implements interfaces.Actor {
 	 */
 	public void followTheWall() {
 		movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
-		System.out.println("Speed: " + robot.getLeftWheel().getSpeed());
-		//robot.getPilot().setTravelSpeed(GlobalValues.WALLFOLLOWSPEED);
-		//movement.goForward();
-		boolean b = robot.isNextStateReady();
-		while (true) {
-			//System.out.println(b);
-			controllTheDistanceToWall();
+		while (isInLabyrinth()) {
+			if (!recoveringFromBump) {
+				controllTheDistanceToWall();
+			}
 		}
 	}
 	
@@ -66,12 +66,10 @@ public class WallFollower implements interfaces.Actor {
 	
 	/** Controller, that tries to keep the robot at the wall. */
 	private void controllTheDistanceToWall() {
-		System.out.println("control dist to wall");
 		updateDistanceToWall();
 		int diff = mustDistance - isDistance;
 		double sin = Math.min(1.0, Math.max(-1.0, diff / hypotenus));
 		double angle = - Math.toDegrees(Math.asin(sin));
-		System.out.println("Speed: " + robot.getLeftWheel().getSpeed());
 		movement.updateWheelSpeeds((int) angle);
 	}
 	
@@ -84,17 +82,12 @@ public class WallFollower implements interfaces.Actor {
 	public void act(TouchSensorID id) {
 		System.out.println("act to bump");
 		//turn right
+		WallFollower.this.recoveringFromBump = true;
 		movement.stopAll();
-		try {
-			Thread.sleep(2000);
-		}
-		catch (Exception e) { }
-		//movement.goForward();
-		//movement.goBackwardDist(5);
-		//movement.turnOnPointRight(90);
-		//movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
-		//movement.goForwardDist(GlobalValues.TRAVEL_DIST_LABYRINTH);
-		followTheWall();
+		movement.goBackwardDist(10);
+		movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
+		movement.updateWheelSpeeds(-90);
+		WallFollower.this.recoveringFromBump = false;
 	}
 
 	@Override
