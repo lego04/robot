@@ -42,7 +42,6 @@ public class BridgeFollower {
 				robot.getLeftWheel().setSpeed(HIGH_SPEED);
 				robot.getRightWheel().setSpeed(LOW_SPEED);
 				mv.goForward();
-				
 				while (usSensor.getDistance() <= DISTANCE_LIMIT) {
 				}
 				
@@ -52,16 +51,16 @@ public class BridgeFollower {
 				robot.getRightWheel().setSpeed(HIGH_SPEED);
 				robot.getLeftWheel().setSpeed(LOW_SPEED);
 				mv.goForward();
-				
 				while (usSensor.getDistance() > DISTANCE_LIMIT) {
 				}
 				
 			}			
-
+// TODO: uncomment
+			/*
 			if (robot.isNextStateReady()) {
 				return;
 			}
-			
+			*/
 		}
 				
 	}

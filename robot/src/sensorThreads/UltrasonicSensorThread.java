@@ -47,8 +47,10 @@ public class UltrasonicSensorThread implements Runnable {
 	}
 
 	public void start(Modes mode) {
+		stop();
 		this.mode = mode;
 		usSensorThread = new Thread(this);
+		active.set(true);
 		usSensorThread.start();
 	}
 
@@ -72,14 +74,14 @@ public class UltrasonicSensorThread implements Runnable {
 			if (DEBUG) {
 				System.out.println("left: " + distance.get());
 			}
-			/*
+			
 			try {
 // TODO: change to normal value
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			*/
+			
 		}
 
 	}
