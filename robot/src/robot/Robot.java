@@ -64,6 +64,8 @@ public class Robot {
 	private FeatureDetector ultraSonicDetector;
 	private FusorDetector touchDetector;
 	
+	private LightSensorThread lightSensorThread;
+	
 	/**
 	 * state machine defining behavior of robot
 	 */
@@ -93,6 +95,9 @@ public class Robot {
 		mov = new Movement(this, 150);
 		
 		states = new States(this);
+		
+		lightSensorThread = new LightSensorThread(this);
+// TODO: Light Sensor Thread starten?
 		
 	}
 	
@@ -149,6 +154,10 @@ public class Robot {
 	}
 	public EV3ColorSensor getColorSensor() {
 		return colorSensor;
+	}
+	
+	public LightSensorThread getLightSensorThread() {
+		return lightSensorThread;
 	}
 	
 	public EV3UltrasonicSensor getUSSensor() {
