@@ -227,7 +227,7 @@ public class Movement {
 		}
 	}
 
-	public void turnOnPointRight(int angle) throws InterruptedException {
+	public void turnOnPointRight(int angle) {
 
 		float dist = GlobalValues.DIST_PER_DEGREE * angle;
 		int rotateAngle = (int) (dist * GlobalValues.DEGREE_TO_DIST);
@@ -281,12 +281,10 @@ public class Movement {
 		robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED + speedChange);
 		robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED - speedChange);
 		if (!reverse) {
-			robot.getLeftWheel().forward();
-			robot.getRightWheel().forward();
+			//robot.getMovement().goForward();
 		}
 		else {
-			robot.getLeftWheel().backward();
-			robot.getRightWheel().backward();
+			//robot.getMovement().goBackward();
 		}
 	}
 }
