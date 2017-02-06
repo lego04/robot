@@ -1,5 +1,6 @@
 package robot;
 
+import sensorThreads.LightSensorThread;
 import sensorThreads.UltrasonicSensorThread;
 import sensorThreads.UltrasonicSensorThread.Modes;
 import util.GlobalValues;
@@ -9,6 +10,7 @@ public class BridgeFollower {
 	
 	private Robot robot;
 	private UltrasonicSensorThread usSensor;
+	private LightSensorThread lightSensor;
 	private Movement mv;
 	
 // TODO: anpassen
@@ -21,6 +23,7 @@ public class BridgeFollower {
 		this.robot = robot;
 		mv = robot.getMovement();
 		usSensor = new UltrasonicSensorThread(robot);
+		lightSensor = robot.getLightSensorThread();
 		
 	}
 	
@@ -33,9 +36,7 @@ public class BridgeFollower {
 		int distance = 0;
 		
 		while (true) {
-			
-// TODO: standardmäßig linkskurve, bei abgrund: korrektur
-			
+						
 			distance = usSensor.getDistance();
 			System.out.println("OUT: " + distance);
 			
@@ -60,38 +61,13 @@ public class BridgeFollower {
 				while (usSensor.getDistance() > DISTANCE_LIMIT) {
 				}
 				
-				/*
-				robot.getRightWheel().setSpeed(HIGH_SPEED);
-				robot.getLeftWheel().setSpeed(HIGH_SPEED);
-				mv.goForward();
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				*/
-				
+			}			
+
+			if (lightSensor.nextStateReady()) {
+				return;
 			}
-			
-// TODO: implement
-			/*
-			if (von Brücke runter) {
-				break;
-			}
-			 */
-			
-// TODO: besser?
-			/*
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} */
 			
 		}
-		
-		// nächster Schritt // Linie folgen?
 				
 	}
 

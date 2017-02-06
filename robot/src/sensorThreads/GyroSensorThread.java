@@ -41,6 +41,10 @@ public class GyroSensorThread implements Runnable {
 		
 	}
 	
+	public void stop() {
+		active.set(false);
+	}
+	
 	@Override
 	public void run() {
 		
