@@ -29,6 +29,8 @@ public class LineFollower implements Actor {
 	 */
 	
 	private LightSensorThread lst;
+	
+	private boolean endOfLine = false;
 
 	public LineFollower(Robot robot, LightSensorThread lst) {
 		this.robot = robot;
@@ -37,19 +39,31 @@ public class LineFollower implements Actor {
 	}
 	
 	
-	public void adjustLine() {
-		while (true) {		//TODO: better implementation, now only for testing purpose
+	public void adjustLine()  {
+		while (!endOfLine) {
 			if (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
+				robot.getRightWheel().resetTachoCount();
 				robot.getLeftWheel().resetTachoCount();
 				robot.getMovement().stopAll();
 				robot.getRightWheel().setSpeed(10);
 				robot.getMovement().goForward();
-				while (lst.getLastLightValue() < GlobalValues.MINLIGHT) {	
-					if (robot.getLeftWheel().getTachoCount() > GlobalValues.LEFTWHEEL90DEGREE) {
-						break;
+				while (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) {
+					if (robot.getLeftWheel().getTachoCount() > GlobalValues.LEFT_WHEEL_90_DEGREE) {
+						robot.getMovement().stopAll();
+						System.out.println("Left: " + robot.getLeftWheel().getTachoCount());
+						robot.getLeftWheel().resetTachoCount();
+						while (robot.getLeftWheel().getTachoCount() > - GlobalValues.LEFT_WHEEL_90_DEGREE) {
+							robot.getMovement().goBackward();
+						}
+						robot.getMovement().stopAll();
+						System.out.println("Minus Left: " + robot.getLeftWheel().getTachoCount());
+						endOfLine = true;
 					}
 				}
-				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 10);
+				System.out.println("Notify: " + lst.getLastLightValue());
+				//System.out.println("Left: " + robot.getLeftWheel().getTachoCount());
+				//System.out.println("Right: " + robot.getRightWheel().getTachoCount());
+				if (!endOfLine) robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 10);
 			}
 			else if (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
 				robot.getMovement().stopAll();
@@ -67,8 +81,11 @@ public class LineFollower implements Actor {
 				}
 			}
 		}
-	
+		System.out.println("End of Line reached!");
+		robot.getMovement().stopAll();
 	}
+	
+	
 
 	/**
 	 * shows current light value whenever enter is pressed

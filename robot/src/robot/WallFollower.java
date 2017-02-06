@@ -3,6 +3,7 @@ package robot;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import robot.Robot;
 import sensorThreads.UltrasonicSensorThread;
+import sensorThreads.UltrasonicSensorThread.Modes;
 import util.GlobalValues;
 import util.Movement;
 import util.TouchSensorID;
@@ -28,10 +29,11 @@ public class WallFollower implements interfaces.Actor {
 	 * @param robot : {@link Robot}
 	 * @param sensor : {@link UltrasonicSensorThread}
 	 */
-	public WallFollower(Robot robot, UltrasonicSensorThread sensor) {
+	public WallFollower(Robot robot) {
 		this.robot = robot;
-		this.distanceSensor = sensor;
-		this.hypotenus = 13.0; // cm
+		this.distanceSensor = new UltrasonicSensorThread(robot);
+		this.distanceSensor.start(Modes.Left);
+		this.hypotenus = 13.5; // cm
 		this.mustDistance = 8; // cm
 		this.isDistance = this.mustDistance; // Just to be sure, that it was also initialised.
 		updateDistanceToWall();
@@ -64,7 +66,7 @@ public class WallFollower implements interfaces.Actor {
 		int diff = mustDistance - isDistance;
 		double sin = Math.min(1.0, Math.max(-1.0, diff / hypotenus));
 		double angle = - Math.toDegrees(Math.asin(sin));
-		movement.setSpeed((int) angle);
+		movement.updateWheelSpeeds((int) angle);
 	}
 	
 	/** Updates the <code>distanceToWall</code> - distance between the wall and the robot */
@@ -74,7 +76,9 @@ public class WallFollower implements interfaces.Actor {
 
 	@Override
 	public void act(TouchSensorID id) {
+		System.out.println("act to bump");
 		//turn right
+		movement.stopAll();
 		movement.goBackwardDist(5);
 		try {
 			movement.turnOnPointRight(90);
@@ -82,8 +86,9 @@ public class WallFollower implements interfaces.Actor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		movement.goForwardDist(GlobalValues.TRAVEL_DIST_LABYRINTH);
-		followTheWall();
+		movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
+		//movement.goForwardDist(GlobalValues.TRAVEL_DIST_LABYRINTH);
+		//followTheWall();
 	}
 
 	@Override
