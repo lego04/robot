@@ -67,4 +67,9 @@ public class LightSensorThread implements Runnable {
 		return detector;
 	}
 
+// TODO: implement !!!
+	public boolean nextStateReady() {
+		return false;
+	}
+
 }
