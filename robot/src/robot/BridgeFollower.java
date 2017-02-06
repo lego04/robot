@@ -3,7 +3,6 @@ package robot;
 import sensorThreads.LightSensorThread;
 import sensorThreads.UltrasonicSensorThread;
 import sensorThreads.UltrasonicSensorThread.Modes;
-import util.GlobalValues;
 import util.Movement;
 
 public class BridgeFollower {
