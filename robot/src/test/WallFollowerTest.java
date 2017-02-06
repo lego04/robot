@@ -13,9 +13,7 @@ public class WallFollowerTest {
 		System.out.println("WallFollowerTest:");
 		new EscapeThread().startThread();
 		Robot robot = new Robot();
-		UltrasonicSensorThread us = new UltrasonicSensorThread(robot);
-		us.start(Modes.Left);
-		WallFollower wf = new WallFollower(robot, us);
+		WallFollower wf = new WallFollower(robot);
 		new TouchSensorListener(wf);
 		wf.followTheWall();
 	}
