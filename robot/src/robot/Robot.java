@@ -137,6 +137,10 @@ public class Robot {
 		states.nextState();
 	}
 	
+	public boolean isNextStateReady() {
+		return lightSensorThread.nextStateReady();
+	}
+	
 	//
 	// Getter
 	//

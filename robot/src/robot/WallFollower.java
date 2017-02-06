@@ -45,7 +45,7 @@ public class WallFollower implements interfaces.Actor {
 	public void followTheWall() {
 		movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
 		robot.getPilot().setTravelSpeed(GlobalValues.WALLFOLLOWSPEED);
-		while (isInLabyrinth()) {
+		while (!robot.isNextStateReady()) {
 			controllTheDistanceToWall();
 		}
 	}
