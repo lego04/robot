@@ -12,15 +12,15 @@ public class GyroSensorThread implements Runnable {
 	private Thread thread;
 	private GyroscopeAdapter gyro;
 	
-	AtomicBoolean active;
-	AtomicInteger angle;
+	private AtomicBoolean active;
+	private AtomicInteger angle;
 	
 	public GyroSensorThread(Robot robot) {
 		
 		//thread = new Thread(this);
 		
 		SampleProvider sp = robot.getGyroSensor().getAngleMode();
-		gyro = new GyroscopeAdapter(sp, 1);
+		gyro = new GyroscopeAdapter(sp, 1000);
 		
 		active = new AtomicBoolean(true);
 		angle = new AtomicInteger(0);
@@ -41,17 +41,22 @@ public class GyroSensorThread implements Runnable {
 		
 	}
 	
+	public void stop() {
+		active.set(false);
+	}
+	
 	@Override
 	public void run() {
 		
 		angle.set(0);
 		
 		while (active.get()) {
+			int lastAngle = angle.get();
 			
 			int intAngle = (int) gyro.getAngle();
 			angle.set(intAngle);
 			
-			System.out.println(intAngle);
+			System.out.println(intAngle + "-" + lastAngle + "=" + (intAngle-lastAngle));
 			
 			try {
 				Thread.sleep(500);

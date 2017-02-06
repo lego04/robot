@@ -45,7 +45,7 @@ public class WallFollower implements interfaces.Actor {
 	public void followTheWall() {
 		movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
 		robot.getPilot().setTravelSpeed(GlobalValues.WALLFOLLOWSPEED);
-		while (isInLabyrinth()) {
+		while (!robot.isNextStateReady()) {
 			controllTheDistanceToWall();
 		}
 	}
@@ -74,7 +74,15 @@ public class WallFollower implements interfaces.Actor {
 
 	@Override
 	public void act(TouchSensorID id) {
-		//turnRight();
+		//turn right
+		movement.goBackwardDist(5);
+		try {
+			movement.turnOnPointRight(90);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		movement.goForwardDist(GlobalValues.TRAVEL_DIST_LABYRINTH);
 		followTheWall();
 	}
 
