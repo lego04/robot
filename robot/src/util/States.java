@@ -17,7 +17,7 @@ public class States {
 	}
 	
 	public void start() {
-		//TODO: implement
+		performState();
 	}
 	
 	public void nextState() {
@@ -32,50 +32,51 @@ public class States {
 		switch (currentState) {
 			case START:
 // TODO: schneller?
-				UltrasonicSensorThread ust = new UltrasonicSensorThread(robot);
-				WallFollower wf = new WallFollower(robot, ust);
+				WallFollower wf = new WallFollower(robot);
 				wf.followTheWall();
-				return;
+				break;
 			case WALLFOLLOWING:
-				UltrasonicSensorThread ust2 = new UltrasonicSensorThread(robot);
-				WallFollower wf2 = new WallFollower(robot, ust2);
+				WallFollower wf2 = new WallFollower(robot);
 				wf2.followTheWall();
-				return;
+				break;
 			case LINEFOLLOWING_BEFORE_BRIDGE:
 				FindLineFirst flf = new FindLineFirst(robot);
 				flf.findLineFirst();
-				return;
+				break;
 			case BRIDGE:
 				BridgeFollower bf = new BridgeFollower(robot);
 				bf.start();
-				return;
+				break;
 			case LINEFOLLOWING_BEFORE_SEESAW:
 				FindLineFirst flf2 = new FindLineFirst(robot);
 				flf2.findLineFirst();
+				break;
 			case SEESAW:
 // TODO: langsamer?
 				FindLineFirst flf3 = new FindLineFirst(robot);
 				flf3.findLineFirst();
+				break;
 			case LINEFOLLOWING_BEFORE_BOG:
 				FindLineFirst flf4 = new FindLineFirst(robot);
 				flf4.findLineFirst();
+				break;
 			case BOG:
 // TODO: implement
-				return;
+				break;
 			case WALLFOLLOWING_TO_ROPE_BRIDGE:
-				UltrasonicSensorThread ust3 = new UltrasonicSensorThread(robot);
-				WallFollower wf3 = new WallFollower(robot, ust3);
+				WallFollower wf3 = new WallFollower(robot);
 				wf3.followTheWall();
-				return;
+				break;
 			case ROPE_BRIDGE:
 				BridgeFollower bf2 = new BridgeFollower(robot);
 				bf2.start();
-				return;
+				break;
 			case BOSS:
 // TODO: implement
-				return;
+				break;
 			default: throw new IllegalStateException("unknown station");
 		}
+		nextState();
 	}
 	
 	public void startLineFindAndFollow() {
