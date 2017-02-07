@@ -1,6 +1,7 @@
 package robot;
 
 import lejos.hardware.Button;
+import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.Motor;
 import lejos.hardware.port.Port;
 import lejos.hardware.port.SensorPort;
@@ -87,23 +88,19 @@ public class Robot {
 	}
 
 	/**
-	 * starts the roboo
+	 * starts the robot
 	 * @param raceMode if true robot starts the program but will wait for press of Button.Up to begin
 	 */
 	public void start(boolean raceMode) {
-		// pilot.forward();
-		// pilot.steer(100);
-
-		// TODO: Light Sensor Thread starten?
-
 		// new LineFollower(this, lst).adjustLine();
 		if (raceMode) {
+			LCD.drawString("press UP to start", 0, 0);
 			Button.UP.waitForPress();
+			LCD.clear();
 		}
 		states.start();
 	}
 
-	// TODO: l�schen? wird nicht mehr gebraucht?
 	/**
 	 * ultrasonic sensor is in front of robot. Set pilot to move backwards in
 	 * order to get forwards.
@@ -112,7 +109,6 @@ public class Robot {
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel, true);
 	}
 
-	// TODO: l�schen? wird nicht mehr gebraucht?
 	/**
 	 * ultra sonic sensor is behind of robot. Set pilot to move forward in order
 	 * to get forwards.
@@ -121,12 +117,6 @@ public class Robot {
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel);
 	}
 
-	/**
-	 * sets robot to next state according to {@link #states}
-	 */
-	public void nextState() {
-		states.nextState();
-	}
 
 	//
 	// Getter

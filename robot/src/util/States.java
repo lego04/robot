@@ -6,6 +6,7 @@ import robot.BridgeFollower;
 import robot.FindLineFirst;
 import robot.Robot;
 import robot.WallFollower;
+import sensorThreads.ThreadPool;
 
 public class States {
 	
@@ -112,7 +113,11 @@ public class States {
 	}
 	
 	public void stopAndReset() {
-		//TODO: implemnt, kill threads first so that there won't be any ghost threads running in background forever
+		robot.getMovement().stopAll();
+		ThreadPool pool = robot.getThreadPool();
+		pool.stopLightSensor();
+		pool.stopUltraSonic();
+		pool.stopLightSensor();
 	}
 	
 	/**
@@ -121,6 +126,7 @@ public class States {
 	 */
 	public void startFromState(Station state) {
 		indexOfcurrentState = states.indexOf(state);
+		performState();
 	}
 	
 	public Station getCurrentState() {

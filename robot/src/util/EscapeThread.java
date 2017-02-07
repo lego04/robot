@@ -57,7 +57,7 @@ public class EscapeThread implements Runnable {
 
 	private void runStateSelection() {
 		States states = robot.getStates();
-		states.stopAndReset();
+		stopAndResetInOwnThread();
 		LCD.clear();
 		Station state = robot.getStates().getCurrentState();
 		printStates(state);
@@ -97,7 +97,7 @@ public class EscapeThread implements Runnable {
 		LCD.drawString("-> " + succ.toString(), 0, 2);
 	}
 
-	private void stopAndRestInOwnThread() {
+	private void stopAndResetInOwnThread() {
 		Thread stopThread = new Thread(new Runnable() {
 
 			@Override
@@ -106,6 +106,8 @@ public class EscapeThread implements Runnable {
 
 			}
 		});
+		
+		stopThread.start();
 	}
 	
 	private void startFromStationInOwnThread(final States states, final Station start) {
@@ -116,6 +118,8 @@ public class EscapeThread implements Runnable {
 				states.startFromState(start);
 			}
 		});
+		
+		startThread.start();
 	}
 
 	/**
