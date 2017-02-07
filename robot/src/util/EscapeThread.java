@@ -90,8 +90,8 @@ public class EscapeThread implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		LCD.clear();
-		LCD.drawString("starting: " + state, 0, 0);
+		//LCD.clear();
+		//LCD.drawString("starting: " + state, 0, 0);
 		startFromStationInOwnThread(states, state);
 	}
 
