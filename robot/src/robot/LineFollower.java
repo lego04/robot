@@ -21,13 +21,15 @@ public class LineFollower {
 	private LightSensorThread lst;
 	private GyroSensorThread gst;
 	
+	private int travelSpeed;
+	
 	private boolean endOfLine = false;
 
 	public LineFollower(Robot robot) {
 		this.robot = robot;
 		this.lst = robot.getThreadPool().getLightSensorThread();
 		this.gst = robot.getThreadPool().getGyroSensorThread();
-
+		this.travelSpeed = GlobalValues.LINETRAVELSPEED;
 	}
 	
 	
@@ -44,8 +46,8 @@ public class LineFollower {
 				*/
 				gst.reset();
 				robot.getMovement().stopAll();
-				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED / 2);
-				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED);
+				robot.getRightWheel().setSpeed(travelSpeed / 2);
+				robot.getLeftWheel().setSpeed(travelSpeed);
 				robot.getMovement().turnOnPointRight();
 				while (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) {
 					if (robot.getLeftWheel().getTachoCount() > GlobalValues.LEFT_WHEEL_90_DEGREE) {
@@ -63,19 +65,19 @@ public class LineFollower {
 				System.out.println("Notify: " + lst.getLastLightValue());
 				//System.out.println("Left: " + robot.getLeftWheel().getTachoCount());
 				//System.out.println("Right: " + robot.getRightWheel().getTachoCount());
-				if (!endOfLine) robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED);
+				if (!endOfLine) robot.getRightWheel().setSpeed(travelSpeed);
 			}
 			else if (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
 				robot.getMovement().stopAll();
-				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED / 2);
-				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED);
+				robot.getLeftWheel().setSpeed(travelSpeed / 2);
+				robot.getRightWheel().setSpeed(travelSpeed);
 				robot.getMovement().turnOnPointLeft();
 				while (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
 				}
 			}
 			else {
 				robot.getMovement().stopAll();
-				robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED);
+				robot.getMovement().goForwardSpeed(travelSpeed);
 				while (GlobalValues.MINLIGHT < lst.getLastLightValue() &&
 						lst.getLastLightValue() < GlobalValues.MAXLIGHT) {
 				}
@@ -109,5 +111,8 @@ public class LineFollower {
 			}
 		});
 	}
-
+	
+	public void setTravelSpeed(int travelSpeed) {
+		this.travelSpeed = travelSpeed;
+	}
 }
