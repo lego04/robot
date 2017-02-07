@@ -33,9 +33,11 @@ public class BridgeFollower {
 		int distance = 0;
 		
 		LightSensorThread lst = robot.getThreadPool().getLightSensorThread();
+
+// TODO: uncomment
+//		while (!lst.nextStateReady()) {
+		while(true) {
 		
-		while (!lst.nextStateReady()) {
-						
 			distance = usSensor.getDistance();
 			System.out.println("OUT: " + distance);
 			
