@@ -1,5 +1,7 @@
 package robot;
 
+import lejos.hardware.Button;
+import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.Motor;
 import lejos.hardware.port.Port;
 import lejos.hardware.port.SensorPort;
@@ -7,142 +9,156 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3GyroSensor;
 import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
-import lejos.robotics.RangeFinderAdapter;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.objectdetection.FeatureDetector;
 import lejos.robotics.objectdetection.FusorDetector;
-import lejos.robotics.objectdetection.RangeFeatureDetector;
-import lejos.robotics.objectdetection.TouchFeatureDetector;
 import sensorThreads.LightSensorThread;
+import sensorThreads.ThreadPool;
+import util.Movement;
+import util.States;
 
 /**
  * class representing robot
+ * 
  * @author maik
  *
  */
 public class Robot {
-	
+
 	// wheel properties
-	
-	public static final double wheelDiameter = 5; //TODO
-	public static final double trackWidth = 10; //TODO
-	
+
+	public static final double wheelDiameter = 8.16;
+	public static final double trackWidth = 12;
+
 	public static final float ultraSonicMaxDistanceCM = 40;
 	public static final int ultraSonicDelayMS = 250;
-	
+
 	public static final double ultraSonicStopDistanceM = 0.2;
-	
-	
+
+	private Movement mov;
 
 	private DifferentialPilot pilot;
-	
+
 	// Motors
-	
-	//TODO: Ports der Motoren anpassen
+
+	// TODO: Ports der Motoren anpassen
 	private static final RegulatedMotor leftWheel = Motor.A;
 	private static final RegulatedMotor rightWheel = Motor.B;
 	public static final RegulatedMotor ultrasonicMotor = Motor.C;
-	
-	//Sensors
-	
-	private Port colorSensorPort = SensorPort.S3; //TODO
-	private Port irSensorPort = SensorPort.S4; //TODO
-//	private Port gyroSensorPort = SensorPort.S1; //TODO
-	private Port touchSensor1Port = SensorPort.S1; //TODO
-	private Port touchSensor2Port = SensorPort.S2; //TODO
-	
-	
+
+	// Sensors
+
+	private Port colorSensorPort = SensorPort.S3;
+	private Port irSensorPort = SensorPort.S4;
+	private Port gyroSensorPort = SensorPort.S2;
+	private Port touchSensor = SensorPort.S1;
+	// private Port touchSensor2Port = SensorPort.S2;
+
 	private EV3ColorSensor colorSensor;
 	private EV3UltrasonicSensor usSensor;
 	private EV3GyroSensor gyroSensor;
-	private EV3TouchSensor touch1, touch2;
+	private EV3TouchSensor touch1;
+
+	private ThreadPool threadPool;
 	
-	
-	//Range detectors
-	private FeatureDetector ultraSonicDetector;
-	private FusorDetector touchDetector;
-	
-	
+	/**
+	 * state machine defining behavior of robot
+	 */
+	private States states;
+
 	public Robot() {
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel);
-		/*
-		EV3UltrasonicSensor us = new EV3UltrasonicSensor(irSensorPort);
-		ultraSonicDetector = new RangeFeatureDetector(new RangeFinderAdapter(us), ultraSonicMaxDistanceCM, ultraSonicDelayMS);
-		ultraSonicDetector.addListener(new UltraSonicDistanceListener(pilot, ultraSonicStopDistanceM));
-		ultraSonicDetector.enableDetection(false);
-		*/
+
+		usSensor = new EV3UltrasonicSensor(irSensorPort);
+
 		colorSensor = new EV3ColorSensor(colorSensorPort);
-//		usSensor = new EV3UltrasonicSensor(irSensorPort);
-//		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 
-//		touch1 = new EV3TouchSensor(touchSensor1Port);
-//		touch2 = new EV3TouchSensor(touchSensor2Port);
+		gyroSensor = new EV3GyroSensor(gyroSensorPort);
 
-		touch1 = new EV3TouchSensor(touchSensor1Port);
-		touch2 = new EV3TouchSensor(touchSensor2Port);
-		//touchDetector = new FusorDetector()
+		touch1 = new EV3TouchSensor(touchSensor);
+		// touchDetector = new FusorDetector()
 		pilot.setTravelSpeed(10);
-		
+		mov = new Movement(this, 150);
+
+		states = new States(this);
+
+		threadPool = new ThreadPool(this);
+
 	}
-	
-	
-	
+
 	/**
 	 * starts the robot
+	 * @param raceMode if true robot starts the program but will wait for press of Button.Up to begin
 	 */
-	public void start() {
- 		//pilot.forward();
-		//pilot.steer(100);
-		LightSensorThread lst = new LightSensorThread(this);
-		lst.startThread();
- 		new LineFollower(this, lst).adjustLine();
+	public void start(boolean raceMode) {
+		// new LineFollower(this, lst).adjustLine();
+		if (raceMode) {
+			LCD.drawString("press UP to start", 0, 0);
+			Button.UP.waitForPress();
+			LCD.clear();
+		}
+		states.start();
 	}
-	
+
 	/**
-	 * ultrasonic sensor is in front of robot. Set pilot to move backwards in order to get forwards.
+	 * ultrasonic sensor is in front of robot. Set pilot to move backwards in
+	 * order to get forwards.
 	 */
 	public void setUltraSonicFront() {
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel, true);
 	}
-	
+
 	/**
-	 * ultra sonic sensor is behind of robot. Set pilot to move forward in order to get forwards.
+	 * ultra sonic sensor is behind of robot. Set pilot to move forward in order
+	 * to get forwards.
 	 */
 	public void setUltraSonicBack() {
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel);
 	}
-	
+
+
 	//
 	// Getter
 	//
-	
+
+	public Movement getMovement() {
+		return mov;
+	}
+
 	public RegulatedMotor getLeftWheel() {
 		return leftWheel;
 	}
-	
+
 	public RegulatedMotor getRightWheel() {
 		return rightWheel;
 	}
+
 	public EV3ColorSensor getColorSensor() {
 		return colorSensor;
 	}
-	
+
 	public EV3UltrasonicSensor getUSSensor() {
 		return usSensor;
 	}
-	
+
+	public EV3GyroSensor getGyroSensor() {
+		return gyroSensor;
+	}
+
 	public DifferentialPilot getPilot() {
 		return pilot;
 	}
-	
+
 	public EV3TouchSensor getTouch1() {
 		return touch1;
 	}
-	
-	public EV3TouchSensor getTouch2() {
-		return touch2;
+
+	public States getStates() {
+		return states;
 	}
 	
+	public ThreadPool getThreadPool() {
+		return threadPool;
+	}
 }
-

@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import lejos.robotics.LightDetectorAdaptor;
 import robot.Robot;
-import util.globalValues;
+import util.GlobalValues;
 
 public class LightSensorThread implements Runnable {
 	
@@ -36,7 +36,7 @@ public class LightSensorThread implements Runnable {
 	@Override
 	public void run() {
 		while (active.get()) {
-			int value = (int) (detector.getLightValue() * globalValues.floatToInt);
+			int value = (int) (detector.getLightValue() * GlobalValues.floatToInt);
 			currentValue.set(value);
 		}
 		
@@ -59,12 +59,22 @@ public class LightSensorThread implements Runnable {
 	}
 	
 	public float getLastLightValue() {
-		float floatValue = ((float) currentValue.get()) / globalValues.floatToInt;
+		float floatValue = ((float) currentValue.get()) / GlobalValues.floatToInt;
 		return floatValue;
 	}
 	
 	public LightDetectorAdaptor getDetector() {
 		return detector;
+	}
+
+// TODO: implement !!!
+	public boolean nextStateReady() {
+		if (getLastLightValue() < GlobalValues.AVG_LIGHT) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 }

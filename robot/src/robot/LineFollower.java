@@ -1,22 +1,13 @@
 package robot;
 
-import java.time.*;
-
-import javax.xml.bind.JAXBElement.GlobalScope;
-
-import interfaces.Actor;
-import util.GlobHelpMethods;
-import util.TouchSensorID;
-import util.globalValues;
 import lejos.hardware.Button;
 import lejos.hardware.Key;
 import lejos.hardware.KeyListener;
-import lejos.hardware.motor.Motor;
-import lejos.robotics.LightDetectorAdaptor;
-import listeners.TouchSensorListener;
+import sensorThreads.GyroSensorThread;
 import sensorThreads.LightSensorThread;
+import util.GlobalValues;
 
-public class LineFollower implements Actor {
+public class LineFollower {
 
 	/**
 	 * pointer to robot instance
@@ -28,180 +19,74 @@ public class LineFollower implements Actor {
 	 */
 	
 	private LightSensorThread lst;
+	private GyroSensorThread gst;
+	
+	private int travelSpeed;
+	
+	private boolean endOfLine = false;
 
-	public LineFollower(Robot robot, LightSensorThread lst) {
+	public LineFollower(Robot robot) {
 		this.robot = robot;
-		this.lst = lst;
-		
-		//should be handled by LightSensorThread, remove this lines if it works
-		/*
-		detector = new LightDetectorAdaptor(robot.getColorSensor());
-		detector.setLow(0);
-		detector.setHigh(1);
-		detector.setReflected(true);
-		*/
-
+		this.lst = robot.getThreadPool().getLightSensorThread();
+		this.gst = robot.getThreadPool().getGyroSensorThread();
+		this.travelSpeed = GlobalValues.LINETRAVELSPEED;
 	}
 	
-	//now in FindFirstLine Class
 	
-	/*
-	public void findLineFirst() {		//wird einmal zum Start aufgerufen
-		robot.getPilot().rotate(45);	// um 45 Grad nach rechts drehen
-		robot.getPilot().forward();
-		while (getCurrentLightValue() < globalValues.MINLIGHT
-				) {
-			robot.getPilot().stop();
-		}
-		//if (tastsensor.isActive()) {
-			robot.getPilot().travel(-10);
-			robot.getPilot().rotate(-90);
-			robot.getPilot().forward();
-			while (getCurrentLightValue() < globalValues.MINLIGHT) {
-			}
-			robot.getPilot().stop();
-			leftEdge = false;
-		//}
-		//else {
-			leftEdge = true;
-			robot.getPilot().rotate(-45);
-		//}
-		adjustLine(leftEdge);
-	}
-	*/
-	
-	public void findLine() {
-		int count = 0;
-		robot.getPilot().stop();
-		robot.getPilot().rotate(globalValues.RIGHT * 65);
-		
-		while (lst.getLastLightValue() < globalValues.MINLIGHT) {
-			/*
-			robot.getPilot().forward();	
-			while (lst.getLastLightValue() < globalValues.MINLIGHT) {
-				try {
-					Thread.sleep(50);
-				} catch (Exception e) {}
-				count++;
-				if (count > globalValues.LINETRAVELSPEED * 2) {
-					robot.getPilot().rotate(globalValues.RIGHT * 20);
-					count = 0;
-				}
-			}
-			*/
-		}
-		robot.getPilot().forward();
-		try {
-			Thread.sleep(400);
-		}
-		catch (Exception e) { }
-		robot.getPilot().steer(globalValues.LEFT * 200);
-		while (lst.getLastLightValue() < globalValues.MINLIGHT) {
-		}
-		robot.getPilot().stop();
-	}
-	
-	public void adjustLine() {
-		
-		while (true) {		//for testing purpose
-			if (lst.getLastLightValue() < globalValues.MINLIGHT) {
-				robot.getLeftWheel().setSpeed(globalValues.LINETRAVELSPEED * 25);
-				robot.getRightWheel().setSpeed(globalValues.LINETRAVELSPEED * 15);
-				robot.getLeftWheel().forward();
-				robot.getRightWheel().forward();
-				//robot.getPilot().steer(globalValues.RIGHT * 30);
-				int count = 0;
-				while (lst.getLastLightValue() < globalValues.MINLIGHT) {
-					try {
-						Thread.sleep(100);
-					}
-					catch (Exception e) {
-					}
-					System.out.println("Right: " + lst.getLastLightValue());
-					count++;
-					if (count > globalValues.LINETRAVELSPEED) {
-						//findLine();
-						count = 0;
-					}
-					
-				}
-				//robot.getPilot().stop();
-			}
-			else if (lst.getLastLightValue() > globalValues.MAXLIGHT) {
-				//robot.getLeftWheel().setSpeed(globalValues.LINETRAVELSPEED * 5);
-				//robot.getRightWheel().setSpeed(globalValues.LINETRAVELSPEED * 20);
-				robot.getLeftWheel().stop();
-				//robot.getRightWheel().forward();
-				//Motor.B.forward();
-				//robot.getPilot().steer(globalValues.LEFT * 150);
-				System.out.println("Left: " + lst.getLastLightValue());
-				try {
-					Thread.sleep(300);
-				}
-				catch (Exception e) { }
+	public void adjustLine()  {
+		while (!endOfLine) {
+			if (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
+				
+				robot.getRightWheel().resetTachoCount();
+				robot.getLeftWheel().resetTachoCount();
 				/*
-				robot.getLeftWheel().setSpeed(150);
-				robot.getRightWheel().setSpeed(100);
-				robot.getLeftWheel().forward();
-				robot.getRightWheel().forward();
+				robot.getMovement().stopAll();
+				robot.getRightWheel().setSpeed(1);
+				robot.getMovement().goForward();
 				*/
-				/*
-				while (lst.getLastLightValue() > globalValues.MAXLIGHT) {
-					
-					try {
-						Thread.sleep(100);
+				gst.reset();
+				robot.getMovement().stopAll();
+				robot.getRightWheel().setSpeed(travelSpeed / 2);
+				robot.getLeftWheel().setSpeed(travelSpeed);
+				robot.getMovement().turnOnPointRight();
+				while (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) {
+					if (robot.getLeftWheel().getTachoCount() > GlobalValues.LEFT_WHEEL_90_DEGREE) {
+						robot.getMovement().stopAll();
+						System.out.println("Left: " + robot.getLeftWheel().getTachoCount());
+						robot.getLeftWheel().resetTachoCount();
+						while (robot.getLeftWheel().getTachoCount() > - GlobalValues.LEFT_WHEEL_90_DEGREE) {
+							robot.getMovement().turnOnPointLeft();
+						}
+						robot.getMovement().stopAll();
+						System.out.println("Minus Left: " + robot.getLeftWheel().getTachoCount());
+						endOfLine = true;
 					}
-					catch (Exception e) {
-					}
-					
-
-					
 				}
-			*/
-				//robot.getPilot().stop();
+				System.out.println("Notify: " + lst.getLastLightValue());
+				//System.out.println("Left: " + robot.getLeftWheel().getTachoCount());
+				//System.out.println("Right: " + robot.getRightWheel().getTachoCount());
+				if (!endOfLine) robot.getRightWheel().setSpeed(travelSpeed);
+			}
+			else if (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
+				robot.getMovement().stopAll();
+				robot.getLeftWheel().setSpeed(travelSpeed / 2);
+				robot.getRightWheel().setSpeed(travelSpeed);
+				robot.getMovement().turnOnPointLeft();
+				while (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
+				}
 			}
 			else {
-				//robot.getPilot().forward();
-				//while (globalValues.MINLIGHT < lst.getLastLightValue() &&
-						//lst.getLastLightValue() < globalValues.MAXLIGHT) {
-					/*
-					try {
-						Thread.sleep(100);
-					}
-					catch (Exception e) {
-					}
-					*/
-					System.out.println("Go: " + lst.getLastLightValue());
-					
-				//}
-				//robot.getPilot().stop();
+				robot.getMovement().stopAll();
+				robot.getMovement().goForwardSpeed(travelSpeed);
+				while (GlobalValues.MINLIGHT < lst.getLastLightValue() &&
+						lst.getLastLightValue() < GlobalValues.MAXLIGHT) {
+				}
 			}
 		}
-	
+		System.out.println("End of Line reached!");
+		robot.getMovement().stopAll();
 	}
 	
-	/*
-	public void lineHandle(float lightValue) {
-		if (lightValue < 0.1) {		//Pseudo Werte, TODO
-			//findLine();
-		}
-		else if (lightValue > 0.3) {	//Pseudo Werte, TODO
-			adjustLine();
-		}
-		else {
-			followLine();
-		}
-	}
-	*/
-	
-	// now in own Thread 
-	/*
-	private float getCurrentLightValue() {
-		float lv = lightSensorThread.getLastLightValue();
-		System.out.println(lv);
-		return lv;
-	}
-	*/
 
 	/**
 	 * shows current light value whenever enter is pressed
@@ -226,15 +111,8 @@ public class LineFollower implements Actor {
 			}
 		});
 	}
-
-	@Override
-	public void act(TouchSensorID id) {
-		robot.getPilot().stop();
-		
-	}
-
-	@Override
-	public Robot getRobot() {
-		return robot;
+	
+	public void setTravelSpeed(int travelSpeed) {
+		this.travelSpeed = travelSpeed;
 	}
 }

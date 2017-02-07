@@ -1,103 +1,101 @@
 package robot;
 
+import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.hardware.sensor.SensorMode;
+import lejos.robotics.TouchAdapter;
 import robot.Robot;
-import util.globalValues;
+import sensorThreads.LightSensorThread;
+import sensorThreads.UltrasonicSensorThread;
+import sensorThreads.UltrasonicSensorThread.Modes;
+import util.GlobalValues;
+import util.Movement;
 import util.TouchSensorID;
 
 /** WallFollwer class is the generalisation of the Left- and RightWallFollower
  * @author Rashad Asgarbayli
  */
-public class WallFollower implements interfaces.Actor {
+public class WallFollower {
 	/** Reference to {@link Robot} */
 	private Robot robot;
-	/** Reference to {@link UltrasonicSensor} */
-	private UltrasonicSensor distanceSensor;
-	/** Current distance to the wall as <b>centimetres (cm)</b>, that read from {@link UltrasonicSensor}. */
-	private int distanceToWall;
+	/** Reference to {@link UltrasonicSensorThread} */
+	private UltrasonicSensorThread distanceSensor;
+	/** Distance between the turn axis and {@link EV3UltrasonicSensor} sensor as <b>centimetres (cm)</b> */
+	private final double hypotenus;
+	/** Distance to the wall as <b>centimetres (cm)</b>, that should be between the robot and wall */
+	private final int mustDistance;
+	/** Current distance to the wall as <b>centimetres (cm)</b>, that read from {@link UltrasonicSensorThread}. */
+	private int isDistance;
 	
-	private final float wallToFollow;
+	//boolean recoveringFromBump;
 	
-	/** Standard constructor of the calls. Needs reference to the {@link Robot} and {@link UltrasonicSensor}
+	private Movement movement;
+	
+	private TouchAdapter td;
+	
+	
+	/** Standard constructor of the calls. Needs reference to the {@link Robot} and {@link UltrasonicSensorThread}
 	 * @param robot : {@link Robot}
-	 * @param sensor : {@link UltrasonicSensor}
+	 * @param sensor : {@link UltrasonicSensorThread}
 	 */
-	public WallFollower(Robot robot, UltrasonicSensor sensor, float wallToFollow) {
+	public WallFollower(Robot robot) {
 		this.robot = robot;
-		this.distanceSensor = sensor;
-		this.distanceToWall = 22; // Just to be sure, that it was initialised.
+		this.distanceSensor = robot.getThreadPool().getUltraSonicSensorThread();
+		this.distanceSensor.start(Modes.Left);
+		this.hypotenus = 13.5; // cm
+		this.mustDistance = 8; // cm
+		this.isDistance = this.mustDistance; // Just to be sure, that it was also initialised.
 		updateDistanceToWall();
-		this.wallToFollow = wallToFollow;
+		//this.recoveringFromBump = false;
+		this.movement = robot.getMovement();
+		movement.setSpeed(GlobalValues.WALLFOLLOWSPEED);
+		movement.backwardDirection();
+		td = new TouchAdapter(robot.getTouch1());
 	}
 	
 	/** Robot follows the wall using it as an anchor point to find its way through the labyrinth.
 	 * Robot stays in this state, until it decides, that it is out of the labyrinth.
 	 */
 	public void followTheWall() {
-		while (isInLabyrinth()) {
+		//movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
+		LightSensorThread lst = robot.getThreadPool().getLightSensorThread();
+		while (!lst.nextStateReady()) {
+			if (td.isPressed()) {
+				act();
+			}
 			controllTheDistanceToWall();
-			waitComplete(500);
-			robot.getPilot().travel(10.0);
-			waitComplete(500);
 		}
 	}
 	
-	/** Decides, if the robot still in the labyrinth or not.
-	 * @return <code>true</code>, if the robot still in the labyrinth, else <code>false</code>.
-	 */
-	private boolean isInLabyrinth() {
-		// TODO: Decide to change state, if the robot out of the maze.
-		return true;
-	}
 	
 	/** Controller, that tries to keep the robot at the wall. */
 	private void controllTheDistanceToWall() {
 		updateDistanceToWall();
-		int diff = 22 - distanceToWall;
-		System.out.println("diff: " + diff);
-		double turnRate = (double) wallToFollow * distanceToTurnRate(diff);
-		System.out.println("turnRate: " + turnRate);
-		robot.getPilot().steer(turnRate);
-	}
-	
-	/** Converts distance values read from {@link UltrasonicSensor} to the <code>turnRate</code> values needed for <code>pilot.steer()</code> method.
-	 * @param distance : <code>float</code>, value read from {@link UltrasonicSensor}.
-	 * @return <code>double</code> value for <code>turnRate</code>.
-	 */
-	private double distanceToTurnRate(int distance) {
-		// FIXME; Factor must be set right. 1.0 is wrong.
-		return Math.min(200.0, Math.max(-200.0, 1.0 * distance));
+		int diff = mustDistance - isDistance;
+		double sin = Math.min(1.0, Math.max(-1.0, diff / hypotenus));
+		double angle = - Math.toDegrees(Math.asin(sin));
+		movement.updateWheelSpeeds((int) angle);
 	}
 	
 	/** Updates the <code>distanceToWall</code> - distance between the wall and the robot */
  	private void updateDistanceToWall() {
-		this.distanceToWall = distanceSensor.getLeftDistance();
+		this.isDistance = distanceSensor.getDistance();
 	}
 
-	@Override
-	public void act(TouchSensorID id) {
-		robot.getPilot().stop();
-		robot.getPilot().travel(-10.0);
-		waitComplete(500);
-		robot.getPilot().rotate(wallToFollow * 90.0);
-		waitComplete(500);
-		robot.getPilot().travel(10.0);
-		waitComplete(500);
-	}
-	
-	/** Stops the execution for the given time. 
-	 * @param millis : <code>long</code>, is the milliseconds for the thread to sleep.
-	 */
-	private void waitComplete(long millis) {
-		try {
-			Thread.sleep(millis);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void act() {
+		System.out.println("act to bump");
+		//turn right
+		//WallFollower.this.recoveringFromBump = true;
+		movement.stopAll();
+		movement.goBackwardDist(20);
+		//movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
+		movement.turnOnPointRight(-90);
+		//WallFollower.this.recoveringFromBump = false;
 	}
 
+	/*
 	@Override
 	public Robot getRobot() {
 		return robot;
 	}
+	*/
 }

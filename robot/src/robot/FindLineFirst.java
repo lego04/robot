@@ -1,55 +1,38 @@
 package robot;
 
-import interfaces.Actor;
-import lejos.robotics.LightDetectorAdaptor;
-import listeners.TouchSensorListener;
 import sensorThreads.LightSensorThread;
-import util.*;
+import util.GlobalValues;
 
-public class FindLineFirst implements Actor {
+public class FindLineFirst {
 
 	private Robot robot;
-	private LightDetectorAdaptor detector;
 	private LightSensorThread lst;
+	//private boolean seesaw;
 	
 	public FindLineFirst(Robot robot) {
 		this.robot = robot;
-		
-		detector = new LightDetectorAdaptor(robot.getColorSensor());
-		detector.setLow(0);
-		detector.setHigh(1);
-		detector.setReflected(true);
-		new TouchSensorListener(this);
-		lst = new LightSensorThread(robot);
-		lst.startThread();
+		lst = robot.getThreadPool().getLightSensorThread();
 	}
 	
-	public void findLineFirst() {		// wird einmal zum Start aufgerufen
-		robot.getPilot().rotate(globalValues.RIGHT * 45);	// um 45 Grad nach rechts drehen
-		robot.getPilot().forward();
-		while (lst.getLastLightValue() < globalValues.MINLIGHT) {
-		}
-		robot.getPilot().rotate(globalValues.LEFT * 45);
-		new LineFollower(robot, lst).adjustLine();
-	}
-	
-	
-	
-	@Override
-	public void act(TouchSensorID id) {
-		robot.getPilot().stop();
-		robot.getPilot().travel(-10);
-		robot.getPilot().rotate(globalValues.LEFT * 90);
-		robot.getPilot().forward();
-		while (lst.getLastLightValue() < globalValues.MINLIGHT) {
-		}
-		robot.getPilot().stop();
-	}
 
-	@Override
-	public Robot getRobot() {
-		// TODO Auto-generated method stub
-		return robot;
+	public void findLineFirst() {		// wird einmal zum Start aufgerufen
+		//lst.startThread();
+		robot.getMovement().setSpeed(GlobalValues.LINETRAVELSPEED);
+		robot.getMovement().turnOnPointRight(30);	// um 45 Grad nach rechts drehen
+		robot.getMovement().goForward();
+		while (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) {
+		}
+		robot.getPilot().rotate(GlobalValues.LEFT * 45);
+		new LineFollower(robot).adjustLine();
 	}
+	
+	public void findStraightLine() {
+		robot.getMovement().setSpeed(GlobalValues.LINETRAVELSPEED);
+		robot.getMovement().goForwardDist(15);
+		
+		robot.getLeftWheel().getTachoCount();
+		robot.getMovement().turnOnPointLeft();
+	}
+	
 	
 }
