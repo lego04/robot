@@ -12,7 +12,7 @@ public class BridgeFollower {
 	private Movement mv;
 	
 // TODO: anpassen
-	private final int DISTANCE_LIMIT = 10;
+	private final int DISTANCE_LIMIT = 100;
 	private final int HIGH_SPEED = 200;
 	private final int LOW_SPEED = HIGH_SPEED / 2;
 	

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import robot.BridgeFollower;
 import robot.FindLineFirst;
 import robot.Robot;
+import robot.RopeBridgeWallFollower;
 import robot.WallFollower;
 import sensorThreads.ThreadPool;
 
@@ -86,6 +87,8 @@ public class States {
 				robot.getThreadPool().stopUltraSonic();
 				break;
 			case ROPE_BRIDGE:
+				RopeBridgeWallFollower rbfw = new RopeBridgeWallFollower(robot);
+				rbfw.startFollowing();
 				BridgeFollower bf2 = new BridgeFollower(robot);
 				bf2.start();
 				robot.getThreadPool().stopUltraSonic();
