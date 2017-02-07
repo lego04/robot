@@ -27,7 +27,16 @@ public class RopeBridgeWallFollower extends WallFollower2 {
 		}
 		robot.getMovement().stopAll();
 		robot.getMovement().turnOnPointLeft(10);
-		robot.getMovement().goForwardDist(10);
+		robot.getLeftWheel().setSpeed(SPEED);
+		robot.getRightWheel().setSpeed(SPEED);
+		robot.getMovement().goForward();
+		try {
+			Thread.sleep(1500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		robot.getMovement().stopAll();
 		distanceSensor.rotateSensor(90);
 	}
 	
