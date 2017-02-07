@@ -1,5 +1,6 @@
 package robot;
 
+import sensorThreads.LightSensorThread;
 import sensorThreads.UltrasonicSensorThread;
 import sensorThreads.UltrasonicSensorThread.Modes;
 import util.Movement;
@@ -31,7 +32,9 @@ public class BridgeFollower {
 		
 		int distance = 0;
 		
-		while (true) {
+		LightSensorThread lst = robot.getThreadPool().getLightSensorThread();
+		
+		while (!lst.nextStateReady()) {
 						
 			distance = usSensor.getDistance();
 			System.out.println("OUT: " + distance);

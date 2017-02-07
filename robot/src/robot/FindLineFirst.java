@@ -15,7 +15,7 @@ public class FindLineFirst {
 	}
 	
 	public void findLineFirst(boolean seesaw) {		// wird einmal zum Start aufgerufen
-		lst.startThread();
+		//lst.startThread();
 		robot.getMovement().setSpeed(GlobalValues.LINETRAVELSPEED);
 		robot.getMovement().turnOnPointLeft();	// um 45 Grad nach rechts drehen
 		robot.getPilot().forward();

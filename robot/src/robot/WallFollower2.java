@@ -1,6 +1,7 @@
 package robot; 
 
 import lejos.robotics.TouchAdapter;
+import sensorThreads.LightSensorThread;
 import sensorThreads.UltrasonicSensorThread;
 import sensorThreads.UltrasonicSensorThread.Modes;
 import util.GlobalValues;
@@ -24,7 +25,8 @@ public class WallFollower2 {
 	}
 	
 	public void startFollowing() {
-		while (true) {
+		LightSensorThread lst = robot.getThreadPool().getLightSensorThread();
+		while (!lst.nextStateReady()) {
 			isPressed = td.isPressed();
 			if (isPressed) {
 				robot.getMovement().goBackwardDist(5);
