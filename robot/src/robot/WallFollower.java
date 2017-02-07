@@ -1,7 +1,6 @@
 package robot;
 
 import lejos.hardware.sensor.EV3UltrasonicSensor;
-import lejos.hardware.sensor.SensorMode;
 import lejos.robotics.TouchAdapter;
 import robot.Robot;
 import sensorThreads.LightSensorThread;
@@ -9,7 +8,6 @@ import sensorThreads.UltrasonicSensorThread;
 import sensorThreads.UltrasonicSensorThread.Modes;
 import util.GlobalValues;
 import util.Movement;
-import util.TouchSensorID;
 
 /** WallFollwer class is the generalisation of the Left- and RightWallFollower
  * @author Rashad Asgarbayli
