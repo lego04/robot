@@ -23,13 +23,15 @@ public class LineFollower {
 	
 	private boolean limited = false;
 	
+	private int travelSpeed;
+	
 	private boolean endOfLine = false;
 
 	public LineFollower(Robot robot) {
 		this.robot = robot;
 		this.lst = robot.getThreadPool().getLightSensorThread();
 		this.gst = robot.getThreadPool().getGyroSensorThread();
-
+		this.travelSpeed = GlobalValues.LINETRAVELSPEED;
 	}
 	
 	public void adjustLine(boolean limited) {
@@ -74,7 +76,7 @@ public class LineFollower {
 				System.out.println("Notify: " + lst.getLastLightValue());
 				//System.out.println("Left: " + robot.getLeftWheel().getTachoCount());
 				//System.out.println("Right: " + robot.getRightWheel().getTachoCount());
-				if (!endOfLine) robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED);
+				if (!endOfLine) robot.getRightWheel().setSpeed(travelSpeed);
 			}
 			else if (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
 				robot.getMovement().stopAll();
@@ -86,7 +88,7 @@ public class LineFollower {
 			}
 			else {
 				robot.getMovement().stopAll();
-				robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED);
+				robot.getMovement().goForwardSpeed(travelSpeed);
 				while (GlobalValues.MINLIGHT < lst.getLastLightValue() &&
 						lst.getLastLightValue() < GlobalValues.MAXLIGHT) {
 				}
@@ -120,5 +122,8 @@ public class LineFollower {
 			}
 		});
 	}
-
+	
+	public void setTravelSpeed(int travelSpeed) {
+		this.travelSpeed = travelSpeed;
+	}
 }
