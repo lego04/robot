@@ -8,6 +8,7 @@ import robot.FindLineFirst;
 import robot.Robot;
 import robot.RopeBridgeWallFollower;
 import robot.WallFollower;
+import robot.WallFollower2;
 import sensorThreads.ThreadPool;
 
 public class States {
@@ -39,13 +40,13 @@ public class States {
 		switch (currentState) {
 			case START:
 // TODO: schneller?
-				WallFollower wf = new WallFollower(robot);
-				wf.followTheWall();
+				WallFollower2 wf = new WallFollower2(robot);
+				wf.startFollowing();
 				robot.getThreadPool().stopUltraSonic();
 				break;
 			case WALLFOLLOWING:
-				WallFollower wf2 = new WallFollower(robot);
-				wf2.followTheWall();
+				WallFollower2 wf2 = new WallFollower2(robot);
+				wf2.startFollowing();
 				robot.getThreadPool().stopUltraSonic();
 				break;
 			case LINEFOLLOWING_BEFORE_BRIDGE:
