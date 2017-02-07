@@ -11,6 +11,7 @@ public class FindLineFirst implements Actor {
 	private Robot robot;
 	private LightDetectorAdaptor detector;
 	private LightSensorThread lst;
+	private boolean seesaw;
 	
 	public FindLineFirst(Robot robot) {
 		this.robot = robot;
@@ -18,10 +19,10 @@ public class FindLineFirst implements Actor {
 		lst = new LightSensorThread(robot);
 	}
 	
-	public void findLineFirst() {		// wird einmal zum Start aufgerufen
+	public void findLineFirst(boolean seesaw) {		// wird einmal zum Start aufgerufen
 		lst.startThread();
-		robot.getPilot().setTravelSpeed(GlobalValues.LINETRAVELSPEED);
-		robot.getPilot().rotate(GlobalValues.RIGHT * 45);	// um 45 Grad nach rechts drehen
+		robot.getMovement().setSpeed(GlobalValues.LINETRAVELSPEED);
+		robot.getMovement().turnOnPointLeft();	// um 45 Grad nach rechts drehen
 		robot.getPilot().forward();
 		while (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
 		}

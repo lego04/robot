@@ -63,19 +63,19 @@ public class LineFollower implements Actor {
 				System.out.println("Notify: " + lst.getLastLightValue());
 				//System.out.println("Left: " + robot.getLeftWheel().getTachoCount());
 				//System.out.println("Right: " + robot.getRightWheel().getTachoCount());
-				if (!endOfLine) robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 10);
+				if (!endOfLine) robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED);
 			}
 			else if (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
 				robot.getMovement().stopAll();
-				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 5);
-				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 5);
+				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED / 2);
+				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED / 2);
 				robot.getMovement().turnOnPointLeft();
 				while (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
 				}
 			}
 			else {
 				robot.getMovement().stopAll();
-				robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED * 10);
+				robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED);
 				while (GlobalValues.MINLIGHT < lst.getLastLightValue() &&
 						lst.getLastLightValue() < GlobalValues.MAXLIGHT) {
 				}
