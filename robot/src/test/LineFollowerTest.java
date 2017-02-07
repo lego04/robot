@@ -12,8 +12,8 @@ public class LineFollowerTest {
 	public static void main(String args[]) throws InterruptedException {
 		new EscapeThread().startThread();
 		Robot robot = new Robot();
-		LightSensorThread lst = new LightSensorThread(robot);
-		lst.startThread();
+		robot.getThreadPool().getLightSensorThread().startThread();
+		robot.getThreadPool().getGyroSensorThread().start();
 		
 		robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED);
 		new LineFollower(robot).adjustLine();
