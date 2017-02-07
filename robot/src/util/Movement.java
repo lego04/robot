@@ -20,6 +20,8 @@ public class Movement {
 	
 	public void setSpeed(int speed) {
 		travelSpeed = speed;
+		robot.getLeftWheel().setSpeed(travelSpeed);
+		robot.getRightWheel().setSpeed(travelSpeed);
 	}
 
 	public void goForward() {
@@ -74,7 +76,8 @@ public class Movement {
 	public void goBackwardDist(int dist) {
 		robot.getLeftWheel().resetTachoCount();
 		goBackward();
-		while (robot.getLeftWheel().getTachoCount() < dist * GlobalValues.DEGREE_TO_DIST) {
+		while (robot.getLeftWheel().getTachoCount() > dist * GlobalValues.DEGREE_TO_DIST) {
+			System.out.println("Dist: " + robot.getLeftWheel().getTachoCount());
 		}
 		stopAll();
 	}
