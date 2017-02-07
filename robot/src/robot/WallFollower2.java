@@ -42,28 +42,28 @@ public class WallFollower2 {
 		if (isDistance < GlobalValues.WALL_DIST_MIN) {
 			if (isDistance < GlobalValues.WALL_DIST_CRITICAL) {
 				robot.getLeftWheel().setSpeed(50);
-				System.out.println("Critical: " + isDistance);
+				//System.out.println("Critical: " + isDistance);
 			}
 			else {
 				robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED - 50);
 				robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
-				System.out.println("Too close: " + isDistance);
+				//System.out.println("Too close: " + isDistance);
 			}
 		}
 		else if (isDistance > GlobalValues.WALL_DIST_MAX) {
 			if (isDistance > GlobalValues.LAB_LEFT_CURVE) {
-				System.out.println("Left Curve: " + isDistance);
+				//System.out.println("Left Curve: " + isDistance);
 				robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED - 120);
 				robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED + 120);
 			}
 			else {
-				System.out.println("Too far: " + isDistance);
+				//System.out.println("Too far: " + isDistance);
 				robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
 				robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED + 50);				
 			}
 		}
 		else if (GlobalValues.WALL_DIST_MIN < isDistance && isDistance < GlobalValues.WALL_DIST_MAX) {
-			System.out.println("All right: " + isDistance);
+			//System.out.println("All right: " + isDistance);
 			//int diff = isDistance - oldDistance;
 			robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
 			robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
