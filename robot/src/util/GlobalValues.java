@@ -12,7 +12,8 @@ public final class GlobalValues {
 	public static final float AVG_LIGHT = 0.1f;
 	public static final float LEFT = 1f;
 	public static final float RIGHT = -1f;
-	public static final int LEFT_WHEEL_90_DEGREE = 850;
+	public static final int LEFT_WHEEL_90_DEGREE = 600;
+	public static final int GYRO_RIGHT = -120;
 	
 	//Wall Following
 	public static int WALL_DIST_CRITICAL = 70;
