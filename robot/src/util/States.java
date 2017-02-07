@@ -2,6 +2,7 @@ package util;
 
 import java.util.LinkedList;
 
+import robot.Boss;
 import robot.BridgeFollower;
 import robot.FindLineFirst;
 import robot.Robot;
@@ -94,8 +95,8 @@ public class States {
 				robot.getThreadPool().stopUltraSonic();
 				break;
 			case BOSS:
-// TODO: wenden?
-// TODO: implement
+				Boss boss = new Boss(robot);
+				boss.fightBossTillDeath();
 				break;
 			default: throw new IllegalStateException("unknown station");
 		}
