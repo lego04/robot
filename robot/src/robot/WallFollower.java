@@ -36,7 +36,7 @@ public class WallFollower {
 		this.distanceSensor = robot.getThreadPool().getUltraSonicSensorThread();
 		this.distanceSensor.start(Modes.Left);
 		this.hypotenus = 13.5; // cm
-		this.mustDistance = 10; // cm
+		this.mustDistance = 15; // cm
 		this.isDistance = this.mustDistance; // Just to be sure, that it was also initialised.
 		updateDistanceToWall();
 		this.recoveringFromBump = false;
@@ -86,7 +86,7 @@ public class WallFollower {
 
 	private void act() {
 		System.out.print("act to bump");
-		goBackward(5);
+		goBackward(3);
 		robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
 		robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
 		robot.getLeftWheel().resetTachoCount();
@@ -94,7 +94,7 @@ public class WallFollower {
 		robot.getRightWheel().backward();
 		robot.getLeftWheel().forward();
 		robot.getLeftWheel().endSynchronization();
-		while (robot.getLeftWheel().getTachoCount() < 110) {}
+		while (robot.getLeftWheel().getTachoCount() < 135) {}
 		this.recoveringFromBump = false;
 		System.out.println("...DONE");
 		goForward();
