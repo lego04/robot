@@ -15,11 +15,12 @@ public final class GlobalValues {
 	public static final int LEFT_WHEEL_90_DEGREE = 850;
 	
 	//Wall Following
+	public static int WALL_DIST_CRITICAL = 50;
 	public static int WALL_DIST_MIN = 100;
 	public static int WALL_DIST_MAX = 120;
 	public static int WALL_MID = (int) (WALL_DIST_MAX + WALL_DIST_MIN) / 2; 
 	public static int TRAVEL_DIST_LABYRINTH = 35;
-	public static int LAB_LEFT_CURVE = 350;
+	public static int LAB_LEFT_CURVE = 250;
 	
 	//Wall Following Travel Speed
 	public static int WALLFOLLOWSPEED = 270;
