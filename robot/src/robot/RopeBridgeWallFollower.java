@@ -40,8 +40,8 @@ public class RopeBridgeWallFollower extends WallFollower2 {
 				System.out.println("Critical: " + isDistance);
 			}
 			else {
-				robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED - 80);
-				robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
+				robot.getLeftWheel().setSpeed(SPEED - 80);
+				robot.getRightWheel().setSpeed(SPEED);
 				System.out.println("Too close: " + isDistance);
 			}
 		}
@@ -52,14 +52,14 @@ public class RopeBridgeWallFollower extends WallFollower2 {
 				return;
 			} else {
 				System.out.println("Too far: " + isDistance);
-				robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
-				robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED + 80);
+				robot.getRightWheel().setSpeed(SPEED);
+				robot.getLeftWheel().setSpeed(SPEED + 80);
 			}
 		}
 		else if (GlobalValues.WALL_DIST_MIN < isDistance && isDistance < GlobalValues.WALL_DIST_MAX) {
 			System.out.println("All right: " + isDistance);
-			robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
-			robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
+			robot.getLeftWheel().setSpeed(SPEED);
+			robot.getRightWheel().setSpeed(SPEED);
 		}
 		robot.getMovement().goForward();
 	}
