@@ -1,5 +1,7 @@
 package util;
 
+import java.util.LinkedList;
+
 import robot.BridgeFollower;
 import robot.FindLineFirst;
 import robot.Robot;
@@ -8,11 +10,14 @@ import robot.WallFollower;
 public class States {
 	
 	private Robot robot;
-	private Station currentState;
+	private int indexOfcurrentState;
+	private LinkedList<Station> states;
 	
 	public States (Robot robot) {
 		this.robot = robot;
-		currentState = Station.START;
+		indexOfcurrentState = 0; //should be START
+		states = new LinkedList<>();
+		initializeStates();
 	}
 	
 	public void start() {
@@ -20,13 +25,13 @@ public class States {
 	}
 	
 	public void nextState() {
-		currentState = getNextState();
+		indexOfcurrentState = getNextState();
 		performState();
 	}
 	
 	private void performState() {
 		
-		
+		Station currentState = states.get(indexOfcurrentState);
 		
 		switch (currentState) {
 			case START:
@@ -86,31 +91,29 @@ public class States {
 		new FindLineFirst(robot).findLineFirst();
 	}
 	
-	private Station getNextState() {
-		switch (currentState) {
-		case START:
-			return Station.WALLFOLLOWING;
-		case WALLFOLLOWING:
-			return Station.LINEFOLLOWING_BEFORE_BRIDGE;
-		case LINEFOLLOWING_BEFORE_BRIDGE:
-			return Station.BRIDGE;
-		case BRIDGE:
-			return Station.LINEFOLLOWING_BEFORE_SEESAW;
-		case LINEFOLLOWING_BEFORE_SEESAW:
-			return Station.SEESAW;
-		case SEESAW:
-			return Station.LINEFOLLOWING_BEFORE_BOG;
-		case LINEFOLLOWING_BEFORE_BOG:
-			return Station.BOG;
-		case BOG:
-			return Station.WALLFOLLOWING_TO_ROPE_BRIDGE;
-		case WALLFOLLOWING_TO_ROPE_BRIDGE:
-			return Station.ROPE_BRIDGE;
-		case ROPE_BRIDGE:
-			return Station.BOSS;
-		case BOSS:
-			return Station.BOSS; //stay in Boss forever
-		default: throw new IllegalStateException("unknown station");
+	private int getNextState() {
+		if (indexOfcurrentState >= states.size()) {
+			//if we reached the last station (e.g. BOSS) stay there forever
+			return indexOfcurrentState;
+		} else {
+			return indexOfcurrentState + 1;
 		}
+	}
+	
+	/**
+	 * defines sequence of stations
+	 */
+	private void initializeStates() {
+		states.add(Station.START);
+		states.add(Station.WALLFOLLOWING);
+		states.add(Station.LINEFOLLOWING_BEFORE_BRIDGE);
+		states.add(Station.BRIDGE);
+		states.add(Station.LINEFOLLOWING_BEFORE_SEESAW);
+		states.add(Station.SEESAW);
+		states.add(Station.LINEFOLLOWING_BEFORE_BOG);
+		states.add(Station.BOG);
+		states.add(Station.WALLFOLLOWING_TO_ROPE_BRIDGE);
+		states.add(Station.ROPE_BRIDGE);
+		states.add(Station.BOSS);
 	}
 }
