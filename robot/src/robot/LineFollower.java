@@ -45,7 +45,7 @@ public class LineFollower implements Actor {
 				robot.getRightWheel().resetTachoCount();
 				robot.getLeftWheel().resetTachoCount();
 				robot.getMovement().stopAll();
-				robot.getRightWheel().setSpeed(10);
+				robot.getRightWheel().setSpeed(1);
 				robot.getMovement().goForward();
 				while (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) {
 					if (robot.getLeftWheel().getTachoCount() > GlobalValues.LEFT_WHEEL_90_DEGREE) {
