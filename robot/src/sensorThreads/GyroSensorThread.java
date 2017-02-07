@@ -49,6 +49,12 @@ public class GyroSensorThread implements Runnable {
 		active.set(false);
 	}
 	
+	public void reset() {
+		gyro.reset();
+		filter.reset();
+		angle.set(0);
+	}
+	
 	@Override
 	public void run() {
 		

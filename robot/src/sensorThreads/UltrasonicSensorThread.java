@@ -57,6 +57,13 @@ public class UltrasonicSensorThread implements Runnable {
 	public void stop() {
 		active.set(false);
 	}
+	
+	/**
+	 * Only use this if you know what you're doing !!!
+	 */
+	public void rotateSensor(int angle) {
+		usMotor.rotate(angle);
+	}
 
 	@Override
 	public void run() {

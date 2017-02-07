@@ -1,23 +1,12 @@
 package robot;
 
-import java.time.*;
-
-import javax.xml.bind.JAXBElement.GlobalScope;
-
-import interfaces.Actor;
-import util.GlobHelpMethods;
-import util.TouchSensorID;
-import util.GlobalValues;
 import lejos.hardware.Button;
 import lejos.hardware.Key;
 import lejos.hardware.KeyListener;
-import lejos.hardware.lcd.LCD;
-import lejos.hardware.motor.Motor;
-import lejos.robotics.LightDetectorAdaptor;
-import listeners.TouchSensorListener;
 import sensorThreads.LightSensorThread;
+import util.GlobalValues;
 
-public class LineFollower implements Actor {
+public class LineFollower {
 
 	/**
 	 * pointer to robot instance
@@ -42,18 +31,25 @@ public class LineFollower implements Actor {
 	public void adjustLine()  {
 		while (!endOfLine) {
 			if (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
+				
 				robot.getRightWheel().resetTachoCount();
 				robot.getLeftWheel().resetTachoCount();
+				/*
 				robot.getMovement().stopAll();
 				robot.getRightWheel().setSpeed(1);
 				robot.getMovement().goForward();
+				*/
+				robot.getMovement().stopAll();
+				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED / 2);
+				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED);
+				robot.getMovement().turnOnPointRight();
 				while (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) {
 					if (robot.getLeftWheel().getTachoCount() > GlobalValues.LEFT_WHEEL_90_DEGREE) {
 						robot.getMovement().stopAll();
 						System.out.println("Left: " + robot.getLeftWheel().getTachoCount());
 						robot.getLeftWheel().resetTachoCount();
 						while (robot.getLeftWheel().getTachoCount() > - GlobalValues.LEFT_WHEEL_90_DEGREE) {
-							robot.getMovement().goBackward();
+							robot.getMovement().turnOnPointLeft();
 						}
 						robot.getMovement().stopAll();
 						System.out.println("Minus Left: " + robot.getLeftWheel().getTachoCount());
@@ -63,19 +59,19 @@ public class LineFollower implements Actor {
 				System.out.println("Notify: " + lst.getLastLightValue());
 				//System.out.println("Left: " + robot.getLeftWheel().getTachoCount());
 				//System.out.println("Right: " + robot.getRightWheel().getTachoCount());
-				if (!endOfLine) robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 10);
+				if (!endOfLine) robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED);
 			}
 			else if (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
 				robot.getMovement().stopAll();
-				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 5);
-				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED * 5);
+				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED / 2);
+				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED);
 				robot.getMovement().turnOnPointLeft();
 				while (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
 				}
 			}
 			else {
 				robot.getMovement().stopAll();
-				robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED * 10);
+				robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED);
 				while (GlobalValues.MINLIGHT < lst.getLastLightValue() &&
 						lst.getLastLightValue() < GlobalValues.MAXLIGHT) {
 				}
@@ -110,14 +106,4 @@ public class LineFollower implements Actor {
 		});
 	}
 
-	@Override
-	public void act(TouchSensorID id) {
-		robot.getPilot().stop();
-		
-	}
-
-	@Override
-	public Robot getRobot() {
-		return robot;
-	}
 }

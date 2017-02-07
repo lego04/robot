@@ -4,6 +4,7 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorMode;
 import lejos.robotics.TouchAdapter;
 import robot.Robot;
+import sensorThreads.LightSensorThread;
 import sensorThreads.UltrasonicSensorThread;
 import sensorThreads.UltrasonicSensorThread.Modes;
 import util.GlobalValues;
@@ -38,7 +39,7 @@ public class WallFollower {
 	 */
 	public WallFollower(Robot robot) {
 		this.robot = robot;
-		this.distanceSensor = new UltrasonicSensorThread(robot);
+		this.distanceSensor = robot.getThreadPool().getUltraSonicSensorThread();
 		this.distanceSensor.start(Modes.Left);
 		this.hypotenus = 13.5; // cm
 		this.mustDistance = 8; // cm
@@ -56,7 +57,8 @@ public class WallFollower {
 	 */
 	public void followTheWall() {
 		//movement.goForwardSpeed(GlobalValues.WALLFOLLOWSPEED);
-		while (isInLabyrinth()) {
+		LightSensorThread lst = robot.getThreadPool().getLightSensorThread();
+		while (!lst.nextStateReady()) {
 			if (td.isPressed()) {
 				act();
 			}
@@ -64,13 +66,6 @@ public class WallFollower {
 		}
 	}
 	
-	/** Decides, if the robot still in the labyrinth or not.
-	 * @return <code>true</code>, if the robot still in the labyrinth, else <code>false</code>.
-	 */
-	private boolean isInLabyrinth() {
-		// TODO: Decide to change state, if the robot out of the maze.
-		return true;
-	}
 	
 	/** Controller, that tries to keep the robot at the wall. */
 	private void controllTheDistanceToWall() {

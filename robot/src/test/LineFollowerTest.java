@@ -15,7 +15,7 @@ public class LineFollowerTest {
 		LightSensorThread lst = new LightSensorThread(robot);
 		lst.startThread();
 		
-		robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED * 10);
+		robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED);
 		new LineFollower(robot, lst).adjustLine();
 		/*
 		while (true) {

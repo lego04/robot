@@ -1,22 +1,23 @@
 package robot; 
 
 import lejos.robotics.TouchAdapter;
+import sensorThreads.LightSensorThread;
 import sensorThreads.UltrasonicSensorThread;
 import sensorThreads.UltrasonicSensorThread.Modes;
 import util.GlobalValues;
 
 public class WallFollower2 {
 	
-	private Robot robot;
+	protected Robot robot;
 	private int oldDistance;
-	private int isDistance;
-	private UltrasonicSensorThread distanceSensor;
+	protected int isDistance;
+	protected UltrasonicSensorThread distanceSensor;
 	private TouchAdapter td;
-	boolean isPressed;
+	private boolean isPressed;
 	
 	public WallFollower2(Robot robot) {
 		this.robot = robot;
-		distanceSensor = new UltrasonicSensorThread(robot);
+		distanceSensor = robot.getThreadPool().getUltraSonicSensorThread();
 		distanceSensor.start(Modes.Left);
 		robot.getMovement().backwardDirection();
 		robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
@@ -24,11 +25,12 @@ public class WallFollower2 {
 	}
 	
 	public void startFollowing() {
-		while (true) {
+		LightSensorThread lst = robot.getThreadPool().getLightSensorThread();
+		while (!lst.nextStateReady()) {
 			isPressed = td.isPressed();
 			if (isPressed) {
 				robot.getMovement().goBackwardDist(5);
-				robot.getMovement().turnOnPointLeft(110);
+				robot.getMovement().turnOnPointLeft(120);
 			}
 			stayOnWall();
 		}
@@ -69,7 +71,7 @@ public class WallFollower2 {
 		robot.getMovement().goForward();
 	}
 	
-	private void updateDistanceToWall() {
+	protected void updateDistanceToWall() {
 		this.isDistance = distanceSensor.getDistance();
 	}
 }
