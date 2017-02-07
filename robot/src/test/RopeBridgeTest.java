@@ -15,7 +15,9 @@ public class RopeBridgeTest {
 		RopeBridgeWallFollower rbwf = new RopeBridgeWallFollower(robot);
 		BridgeFollower bf = new BridgeFollower(robot);
 		
+		System.out.println("WALL");
 		rbwf.startFollowing();
+		System.out.println("BRIDGE");
 		bf.start();
 		
 	}

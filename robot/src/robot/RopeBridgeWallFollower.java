@@ -1,8 +1,6 @@
 package robot;
 
-import com.jcraft.jsch.UserAuthGSSAPIWithMIC;
-
-import test.USSensorTest;
+//import sensorThreads.GyroSensorThread;
 import util.GlobalValues;
 
 public class RopeBridgeWallFollower extends WallFollower2 {
@@ -12,12 +10,15 @@ public class RopeBridgeWallFollower extends WallFollower2 {
 	private int MIN_DIST = 80;
 	private int MAX_DIST = 130;
 	private int INF_DIST = 500;
-	private int CRITICAL_DIST = 25;
+	private int CRITICAL_DIST = 50;
 	private int SPEED = 150;
+	
+//	private GyroSensorThread gyro;
 	
 	public RopeBridgeWallFollower(Robot robot) {
 		super(robot);
 		active = true;
+		//gyro = robot.getThreadPool().getGyroSensorThread();
 	}
 	
 	@Override
@@ -31,12 +32,12 @@ public class RopeBridgeWallFollower extends WallFollower2 {
 		robot.getRightWheel().setSpeed(SPEED);
 		robot.getMovement().goForward();
 		try {
-			Thread.sleep(1500);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		robot.getMovement().stopAll();
+		//robot.getMovement().stopAll();
 		distanceSensor.rotateSensor(90);
 	}
 	
@@ -45,11 +46,11 @@ public class RopeBridgeWallFollower extends WallFollower2 {
 		updateDistanceToWall();
 		if (isDistance < MIN_DIST) {
 			if (isDistance < CRITICAL_DIST) {
-				robot.getLeftWheel().setSpeed(50);
+				robot.getLeftWheel().setSpeed(25);
 				System.out.println("Critical: " + isDistance);
 			}
 			else {
-				robot.getLeftWheel().setSpeed(SPEED - 80);
+				robot.getLeftWheel().setSpeed(SPEED - 50);
 				robot.getRightWheel().setSpeed(SPEED);
 				System.out.println("Too close: " + isDistance);
 			}
@@ -62,10 +63,10 @@ public class RopeBridgeWallFollower extends WallFollower2 {
 			} else {
 				System.out.println("Too far: " + isDistance);
 				robot.getRightWheel().setSpeed(SPEED);
-				robot.getLeftWheel().setSpeed(SPEED + 80);
+				robot.getLeftWheel().setSpeed(SPEED + 50);
 			}
 		}
-		else if (GlobalValues.WALL_DIST_MIN < isDistance && isDistance < GlobalValues.WALL_DIST_MAX) {
+		else {
 			System.out.println("All right: " + isDistance);
 			robot.getLeftWheel().setSpeed(SPEED);
 			robot.getRightWheel().setSpeed(SPEED);
