@@ -73,8 +73,10 @@ public class WallFollower {
 		int min = (int) (GlobalValues.WALLFOLLOWSPEED * 0.40);
 		robot.getLeftWheel().setSpeed(Math.max(min, GlobalValues.WALLFOLLOWSPEED - speedChange));
 		robot.getRightWheel().setSpeed(Math.max(min, GlobalValues.WALLFOLLOWSPEED + speedChange));
+		robot.getLeftWheel().startSynchronization();
 		robot.getLeftWheel().backward();
 		robot.getRightWheel().backward();
+		robot.getLeftWheel().endSynchronization();
 	}
 	
 	/** Updates the <code>distanceToWall</code> - distance between the wall and the robot */
@@ -88,8 +90,10 @@ public class WallFollower {
 		robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
 		robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
 		robot.getLeftWheel().resetTachoCount();
+		robot.getLeftWheel().startSynchronization();
 		robot.getRightWheel().backward();
 		robot.getLeftWheel().forward();
+		robot.getLeftWheel().endSynchronization();
 		while (robot.getLeftWheel().getTachoCount() < 110) {}
 		this.recoveringFromBump = false;
 		System.out.println("...DONE");
@@ -97,24 +101,34 @@ public class WallFollower {
 	}
 	
 	private void goForward() {
+		robot.getLeftWheel().startSynchronization();
 		robot.getLeftWheel().stop();
 		robot.getRightWheel().stop();
+		robot.getLeftWheel().endSynchronization();
 		robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
 		robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
+		robot.getLeftWheel().startSynchronization();
 		robot.getLeftWheel().backward();
 		robot.getRightWheel().backward();
+		robot.getLeftWheel().endSynchronization();
 	}
 	
 	private void goBackward(int distance) {
 		robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
 		robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
+		robot.getLeftWheel().startSynchronization();
 		robot.getLeftWheel().stop();
 		robot.getRightWheel().stop();
+		robot.getLeftWheel().endSynchronization();
 		robot.getLeftWheel().resetTachoCount();
+		robot.getLeftWheel().startSynchronization();
 		robot.getLeftWheel().forward();
 		robot.getRightWheel().forward();
+		robot.getLeftWheel().endSynchronization();
 		while (robot.getLeftWheel().getTachoCount() < distance * GlobalValues.DEGREE_TO_DIST) {};
+		robot.getLeftWheel().startSynchronization();
 		robot.getLeftWheel().stop();
 		robot.getRightWheel().stop();
+		robot.getLeftWheel().endSynchronization();
 	}
 }
