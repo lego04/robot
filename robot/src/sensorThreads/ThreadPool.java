@@ -11,6 +11,7 @@ public class ThreadPool {
 	public ThreadPool(Robot robot) {
 		ultraSonic = new UltrasonicSensorThread(robot);
 		lightSensor = new LightSensorThread(robot);
+		lightSensor.startThread(); //light sensor is active the whole time
 		gyroThread = new GyroSensorThread(robot);
 	}
 	

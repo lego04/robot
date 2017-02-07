@@ -14,6 +14,7 @@ public class FindLineFirst {
 		lst = robot.getThreadPool().getLightSensorThread();
 	}
 	
+
 	public void findLineFirst() {		// wird einmal zum Start aufgerufen
 		//lst.startThread();
 		robot.getMovement().setSpeed(GlobalValues.LINETRAVELSPEED);

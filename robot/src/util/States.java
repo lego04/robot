@@ -50,7 +50,7 @@ public class States {
 			case LINEFOLLOWING_BEFORE_BRIDGE:
 				FindLineFirst flf = new FindLineFirst(robot);
 				flf.findLineFirst();
-				robot.getThreadPool().stopLightSensor();
+				//robot.getThreadPool().stopLightSensor();
 				break;
 			case BRIDGE:
 // TODO: wenden
@@ -64,18 +64,18 @@ public class States {
 				robot.getMovement().turnOnPointLeft(180);
 				FindLineFirst flf2 = new FindLineFirst(robot);
 				flf2.findLineFirst();
-				robot.getThreadPool().stopLightSensor();
+				//robot.getThreadPool().stopLightSensor();
 				break;
 			case SEESAW:
 // TODO: langsamer?
 				FindLineFirst flf3 = new FindLineFirst(robot);
 				flf3.findLineFirst();
-				robot.getThreadPool().stopLightSensor();
+				//robot.getThreadPool().stopLightSensor();
 				break;
 			case LINEFOLLOWING_BEFORE_BOG:
 				FindLineFirst flf4 = new FindLineFirst(robot);
 				flf4.findLineFirst();
-				robot.getThreadPool().stopLightSensor();
+				//robot.getThreadPool().stopLightSensor();
 				break;
 			case BOG:
 // TODO: wenden
