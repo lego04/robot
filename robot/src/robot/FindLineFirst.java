@@ -14,15 +14,24 @@ public class FindLineFirst {
 		lst = robot.getThreadPool().getLightSensorThread();
 	}
 	
-	public void findLineFirst(boolean seesaw) {		// wird einmal zum Start aufgerufen
+
+	public void findLineFirst() {		// wird einmal zum Start aufgerufen
 		//lst.startThread();
 		robot.getMovement().setSpeed(GlobalValues.LINETRAVELSPEED);
-		robot.getMovement().turnOnPointLeft();	// um 45 Grad nach rechts drehen
-		robot.getPilot().forward();
-		while (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
+		robot.getMovement().turnOnPointRight(30);	// um 45 Grad nach rechts drehen
+		robot.getMovement().goForward();
+		while (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) {
 		}
 		robot.getPilot().rotate(GlobalValues.LEFT * 45);
-		new LineFollower(robot, lst).adjustLine();
+		new LineFollower(robot).adjustLine();
+	}
+	
+	public void findStraightLine() {
+		robot.getMovement().setSpeed(GlobalValues.LINETRAVELSPEED);
+		robot.getMovement().goForwardDist(15);
+		
+		robot.getLeftWheel().getTachoCount();
+		robot.getMovement().turnOnPointLeft();
 	}
 	
 	

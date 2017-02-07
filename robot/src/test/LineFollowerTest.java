@@ -16,7 +16,7 @@ public class LineFollowerTest {
 		lst.startThread();
 		
 		robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED);
-		new LineFollower(robot, lst).adjustLine();
+		new LineFollower(robot).adjustLine();
 		/*
 		while (true) {
 			if (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
