@@ -7,12 +7,12 @@ import util.GlobalValues;
 
 public class WallFollower2 {
 	
-	private Robot robot;
+	protected Robot robot;
 	private int oldDistance;
-	private int isDistance;
-	private UltrasonicSensorThread distanceSensor;
+	protected int isDistance;
+	protected UltrasonicSensorThread distanceSensor;
 	private TouchAdapter td;
-	boolean isPressed;
+	private boolean isPressed;
 	
 	public WallFollower2(Robot robot) {
 		this.robot = robot;
@@ -63,7 +63,7 @@ public class WallFollower2 {
 		robot.getMovement().goForward();
 	}
 	
-	private void updateDistanceToWall() {
+	protected void updateDistanceToWall() {
 		this.isDistance = distanceSensor.getDistance();
 	}
 }

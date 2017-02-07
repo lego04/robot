@@ -3,6 +3,7 @@ package util;
 import robot.BridgeFollower;
 import robot.FindLineFirst;
 import robot.Robot;
+import robot.RopeBridgeWallFollower;
 import robot.WallFollower;
 
 public class States {
@@ -70,6 +71,8 @@ public class States {
 				wf3.followTheWall();
 				break;
 			case ROPE_BRIDGE:
+				RopeBridgeWallFollower rbfw = new RopeBridgeWallFollower(robot);
+				rbfw.startFollowing();
 				BridgeFollower bf2 = new BridgeFollower(robot);
 				bf2.start();
 				break;
