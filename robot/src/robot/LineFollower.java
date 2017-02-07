@@ -59,14 +59,15 @@ public class LineFollower {
 				robot.getRightWheel().setSpeed(1);
 				robot.getMovement().goForward();
 				//robot.getMovement().stopAll();
-				while (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
+				while (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) {
 					System.out.println("Gyro: " + (offset - gst.getAngle()));
-					if ((offset - gst.getAngle()) < GlobalValues.GYRO_RIGHT) {
+					if ((offset - gst.getAngle()) > GlobalValues.GYRO_RIGHT) {
 						robot.getMovement().stopAll();
-						System.out.println("Left: " + robot.getLeftWheel().getTachoCount());
-						robot.getLeftWheel().resetTachoCount();
-						while ((offset - gst.getAngle()) < 0) {
-							robot.getMovement().turnOnPointLeft();
+						System.out.println("Back: " + (offset - gst.getAngle()));
+						//robot.getLeftWheel().resetTachoCount();
+						robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED / 2);
+						robot.getMovement().goBackward();
+						while ((offset - gst.getAngle()) > 0) {
 						}
 						robot.getMovement().stopAll();
 						//System.out.println("Minus Left: " + robot.getLeftWheel().getTachoCount());
@@ -96,6 +97,22 @@ public class LineFollower {
 		}
 		System.out.println("End of Line reached!");
 		robot.getMovement().stopAll();
+	}
+	
+	public void adjustLineSeesaw() {
+		int i = 0;
+		while (i < 100) {
+			if (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) {
+				robot.getLeftWheel().setSpeed(robot.getRightWheel().getSpeed() + 30);
+				robot.getMovement().goForward();
+			}
+			else if (lst.getLastLightValue() > GlobalValues.AVG_LIGHT) {
+				robot.getLeftWheel().setSpeed(robot.getRightWheel().getSpeed() - 100);
+				robot.getMovement().goForward();
+			}
+			i++;
+			System.out.println(i);
+		}
 	}
 	
 
