@@ -100,6 +100,48 @@ public class States {
 		}
 	}
 	
+	public void stopAndReset() {
+		//TODO: implemnt, kill threads first so that there won't be any ghost threads running in background forever
+	}
+	
+	/**
+	 * resets robot to given state. Robot will behave like it started from given staten and behaves as defined.
+	 * @param state
+	 */
+	public void startFromState(Station state) {
+		indexOfcurrentState = states.indexOf(state);
+	}
+	
+	public Station getCurrentState() {
+		return states.get(indexOfcurrentState);
+	}
+	
+	/**
+	 * get station perceeding given state
+	 * @param state
+	 * @return
+	 */
+	public Station getPredecessorOf(Station state) {
+		if (state.equals(Station.START)) {
+			return state;
+		}
+		int index = states.indexOf(state);
+		return states.get(index - 1);
+	}
+	
+	/**
+	 * get station following given state
+	 * @param state
+	 * @return
+	 */
+	public Station getSuccessorOf(Station state) {
+		if (state.equals(Station.BOSS)) {
+			return state;
+		}
+		int index = states.indexOf(state);
+		return states.get(index + 1);
+	}
+	
 	/**
 	 * defines sequence of stations
 	 */
