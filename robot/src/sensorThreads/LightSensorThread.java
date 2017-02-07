@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import lejos.robotics.LightDetectorAdaptor;
+import lejos.utility.Delay;
 import robot.Robot;
 import util.GlobalValues;
 
@@ -70,6 +71,7 @@ public class LightSensorThread implements Runnable {
 // TODO: implement !!!
 	public boolean nextStateReady() {
 		if (getLastLightValue() > GlobalValues.AVG_LIGHT) {
+			Delay.msDelay(1000);
 			return true;
 		}
 		else {

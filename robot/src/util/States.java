@@ -43,6 +43,7 @@ public class States {
 				WallFollower2 wf = new WallFollower2(robot);
 				wf.startFollowing();
 				robot.getThreadPool().stopUltraSonic();
+				robot.getMovement().stopAll();
 				break;
 			case WALLFOLLOWING:
 				WallFollower2 wf2 = new WallFollower2(robot);
@@ -50,8 +51,10 @@ public class States {
 				robot.getThreadPool().stopUltraSonic();
 				break;
 			case LINEFOLLOWING_BEFORE_BRIDGE:
+				robot.getThreadPool().getGyroSensorThread().start();
 				FindLineFirst flf = new FindLineFirst(robot);
 				flf.findLineFirst();
+				robot.getThreadPool().getGyroSensorThread().stop();
 				//robot.getThreadPool().stopLightSensor();
 				break;
 			case BRIDGE:
@@ -63,9 +66,11 @@ public class States {
 				break;
 			case LINEFOLLOWING_BEFORE_SEESAW:
 // TODO: wenden
+				robot.getThreadPool().getGyroSensorThread().start();
 				robot.getMovement().turnOnPointLeft(180);
 				FindLineFirst flf2 = new FindLineFirst(robot);
 				flf2.findLineFirst();
+				robot.getThreadPool().getGyroSensorThread().stop();
 				//robot.getThreadPool().stopLightSensor();
 				break;
 			case SEESAW:
@@ -75,8 +80,10 @@ public class States {
 				//robot.getThreadPool().stopLightSensor();
 				break;
 			case LINEFOLLOWING_BEFORE_BOG:
+				robot.getThreadPool().getGyroSensorThread().start();
 				FindLineFirst flf4 = new FindLineFirst(robot);
 				flf4.findLineFirst();
+				robot.getThreadPool().getGyroSensorThread().stop();
 				//robot.getThreadPool().stopLightSensor();
 				break;
 			case BOG:
