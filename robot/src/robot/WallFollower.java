@@ -38,7 +38,7 @@ public class WallFollower {
 	 */
 	public WallFollower(Robot robot) {
 		this.robot = robot;
-		this.distanceSensor = new UltrasonicSensorThread(robot);
+		this.distanceSensor = robot.getThreadPool().getUltraSonicSensorThread();
 		this.distanceSensor.start(Modes.Left);
 		this.hypotenus = 13.5; // cm
 		this.mustDistance = 8; // cm

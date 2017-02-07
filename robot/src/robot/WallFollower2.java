@@ -16,7 +16,7 @@ public class WallFollower2 {
 	
 	public WallFollower2(Robot robot) {
 		this.robot = robot;
-		distanceSensor = new UltrasonicSensorThread(robot);
+		distanceSensor = robot.getThreadPool().getUltraSonicSensorThread();
 		distanceSensor.start(Modes.Left);
 		robot.getMovement().backwardDirection();
 		robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
@@ -28,7 +28,7 @@ public class WallFollower2 {
 			isPressed = td.isPressed();
 			if (isPressed) {
 				robot.getMovement().goBackwardDist(5);
-				robot.getMovement().turnOnPointLeft(110);
+				robot.getMovement().turnOnPointLeft(120);
 			}
 			stayOnWall();
 		}

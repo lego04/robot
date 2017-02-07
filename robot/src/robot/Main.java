@@ -7,9 +7,11 @@ import util.EscapeThread;
 public class Main {
 
 	public static void main(String[] args) {
-		startEscapeThread();
+		EscapeThread escape = new EscapeThread();
+		escape.startThread();
 		Robot robot = new Robot();
-		robot.start();
+		escape.setRobot(robot);
+		robot.start(true);
 		//System.out.println("Hello World");
 		//Button.ESCAPE.waitForPress();
 		//stop();
@@ -19,8 +21,5 @@ public class Main {
 		Button.ESCAPE.simulateEvent(Key.KEY_PRESSED_AND_RELEASED);
 	}
 	
-	private static void startEscapeThread() {
-		new EscapeThread().startThread();
-	}
 
 }

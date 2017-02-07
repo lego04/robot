@@ -19,7 +19,7 @@ public class BridgeFollower {
 		
 		this.robot = robot;
 		mv = robot.getMovement();
-		usSensor = new UltrasonicSensorThread(robot);
+		usSensor = robot.getThreadPool().getUltraSonicSensorThread();
 		
 	}
 	

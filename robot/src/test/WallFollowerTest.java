@@ -1,11 +1,7 @@
 package test;
 
-import listeners.TouchSensorListener;
 import robot.Robot;
-import robot.WallFollower;
 import robot.WallFollower2;
-import sensorThreads.UltrasonicSensorThread;
-import sensorThreads.UltrasonicSensorThread.Modes;
 import util.EscapeThread;
 
 public class WallFollowerTest {
