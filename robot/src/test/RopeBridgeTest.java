@@ -13,11 +13,11 @@ public class RopeBridgeTest {
 		Robot robot = new Robot();
 		
 		RopeBridgeWallFollower rbwf = new RopeBridgeWallFollower(robot);
-		rbwf.startFollowing();
+		BridgeFollower bf = new BridgeFollower(robot);
 		
-		//BridgeFollower bf = new BridgeFollower(robot);
-		//bf.start();
-		//
+		rbwf.startFollowing();
+		bf.start();
+		
 	}
 	
 }
