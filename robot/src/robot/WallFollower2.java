@@ -28,7 +28,7 @@ public class WallFollower2 {
 			isPressed = td.isPressed();
 			if (isPressed) {
 				robot.getMovement().goBackwardDist(5);
-				robot.getMovement().turnOnPointLeft(110);
+				robot.getMovement().turnOnPointLeft(120);
 			}
 			stayOnWall();
 		}

@@ -31,18 +31,25 @@ public class LineFollower {
 	public void adjustLine()  {
 		while (!endOfLine) {
 			if (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
+				
 				robot.getRightWheel().resetTachoCount();
 				robot.getLeftWheel().resetTachoCount();
+				/*
 				robot.getMovement().stopAll();
 				robot.getRightWheel().setSpeed(1);
 				robot.getMovement().goForward();
+				*/
+				robot.getMovement().stopAll();
+				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED / 2);
+				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED);
+				robot.getMovement().turnOnPointRight();
 				while (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) {
 					if (robot.getLeftWheel().getTachoCount() > GlobalValues.LEFT_WHEEL_90_DEGREE) {
 						robot.getMovement().stopAll();
 						System.out.println("Left: " + robot.getLeftWheel().getTachoCount());
 						robot.getLeftWheel().resetTachoCount();
 						while (robot.getLeftWheel().getTachoCount() > - GlobalValues.LEFT_WHEEL_90_DEGREE) {
-							robot.getMovement().goBackward();
+							robot.getMovement().turnOnPointLeft();
 						}
 						robot.getMovement().stopAll();
 						System.out.println("Minus Left: " + robot.getLeftWheel().getTachoCount());
@@ -57,7 +64,7 @@ public class LineFollower {
 			else if (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
 				robot.getMovement().stopAll();
 				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED / 2);
-				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED / 2);
+				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED);
 				robot.getMovement().turnOnPointLeft();
 				while (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
 				}
