@@ -1,23 +1,12 @@
 package robot;
 
-import java.time.*;
-
-import javax.xml.bind.JAXBElement.GlobalScope;
-
-import interfaces.Actor;
-import util.GlobHelpMethods;
-import util.TouchSensorID;
-import util.GlobalValues;
 import lejos.hardware.Button;
 import lejos.hardware.Key;
 import lejos.hardware.KeyListener;
-import lejos.hardware.lcd.LCD;
-import lejos.hardware.motor.Motor;
-import lejos.robotics.LightDetectorAdaptor;
-import listeners.TouchSensorListener;
 import sensorThreads.LightSensorThread;
+import util.GlobalValues;
 
-public class LineFollower implements Actor {
+public class LineFollower {
 
 	/**
 	 * pointer to robot instance
@@ -110,14 +99,4 @@ public class LineFollower implements Actor {
 		});
 	}
 
-	@Override
-	public void act(TouchSensorID id) {
-		robot.getPilot().stop();
-		
-	}
-
-	@Override
-	public Robot getRobot() {
-		return robot;
-	}
 }

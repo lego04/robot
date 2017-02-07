@@ -38,35 +38,42 @@ public class States {
 // TODO: schneller?
 				WallFollower wf = new WallFollower(robot);
 				wf.followTheWall();
+				robot.getThreadPool().stopUltraSonic();
 				break;
 			case WALLFOLLOWING:
 				WallFollower wf2 = new WallFollower(robot);
 				wf2.followTheWall();
+				robot.getThreadPool().stopUltraSonic();
 				break;
 			case LINEFOLLOWING_BEFORE_BRIDGE:
 				FindLineFirst flf = new FindLineFirst(robot);
 				flf.findLineFirst(false);
+				robot.getThreadPool().stopLightSensor();
 				break;
 			case BRIDGE:
 // TODO: wenden
 				robot.getMovement().turnOnPointLeft(180);
 				BridgeFollower bf = new BridgeFollower(robot);
 				bf.start();
+				robot.getThreadPool().stopUltraSonic();
 				break;
 			case LINEFOLLOWING_BEFORE_SEESAW:
 // TODO: wenden
 				robot.getMovement().turnOnPointLeft(180);
 				FindLineFirst flf2 = new FindLineFirst(robot);
 				flf2.findLineFirst(false);
+				robot.getThreadPool().stopLightSensor();
 				break;
 			case SEESAW:
 // TODO: langsamer?
 				FindLineFirst flf3 = new FindLineFirst(robot);
 				flf3.findLineFirst(true);
+				robot.getThreadPool().stopLightSensor();
 				break;
 			case LINEFOLLOWING_BEFORE_BOG:
 				FindLineFirst flf4 = new FindLineFirst(robot);
 				flf4.findLineFirst(false);
+				robot.getThreadPool().stopLightSensor();
 				break;
 			case BOG:
 // TODO: wenden
@@ -75,10 +82,12 @@ public class States {
 			case WALLFOLLOWING_TO_ROPE_BRIDGE:
 				WallFollower wf3 = new WallFollower(robot);
 				wf3.followTheWall();
+				robot.getThreadPool().stopUltraSonic();
 				break;
 			case ROPE_BRIDGE:
 				BridgeFollower bf2 = new BridgeFollower(robot);
 				bf2.start();
+				robot.getThreadPool().stopUltraSonic();
 				break;
 			case BOSS:
 // TODO: wenden?

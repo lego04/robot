@@ -13,6 +13,7 @@ import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.objectdetection.FeatureDetector;
 import lejos.robotics.objectdetection.FusorDetector;
 import sensorThreads.LightSensorThread;
+import sensorThreads.ThreadPool;
 import util.Movement;
 import util.States;
 
@@ -58,12 +59,8 @@ public class Robot {
 	private EV3GyroSensor gyroSensor;
 	private EV3TouchSensor touch1;
 
-	// Range detectors
-	private FeatureDetector ultraSonicDetector;
-	private FusorDetector touchDetector;
-
-	private LightSensorThread lightSensorThread;
-
+	private ThreadPool threadPool;
+	
 	/**
 	 * state machine defining behavior of robot
 	 */
@@ -85,7 +82,7 @@ public class Robot {
 
 		states = new States(this);
 
-		lightSensorThread = new LightSensorThread(this);
+		threadPool = new ThreadPool(this);
 
 	}
 
@@ -131,10 +128,6 @@ public class Robot {
 		states.nextState();
 	}
 
-	public boolean isNextStateReady() {
-		return lightSensorThread.nextStateReady();
-	}
-
 	//
 	// Getter
 	//
@@ -173,5 +166,9 @@ public class Robot {
 
 	public States getStates() {
 		return states;
+	}
+	
+	public ThreadPool getThreadPool() {
+		return threadPool;
 	}
 }
