@@ -1,5 +1,6 @@
 package robot;
 
+import lejos.robotics.geometry.Line;
 import sensorThreads.LightSensorThread;
 import util.GlobalValues;
 
@@ -17,21 +18,27 @@ public class FindLineFirst {
 
 	public void findLineFirst() {		// wird einmal zum Start aufgerufen
 		//lst.startThread();
+		robot.getMovement().backwardDirection();
 		robot.getMovement().setSpeed(GlobalValues.LINETRAVELSPEED);
 		robot.getMovement().turnOnPointRight(30);	// um 45 Grad nach rechts drehen
 		robot.getMovement().goForward();
 		while (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) {
 		}
-		robot.getPilot().rotate(GlobalValues.LEFT * 45);
+		robot.getMovement().turnOnPointRight();
+		while (lst.getLastLightValue() < GlobalValues.MAXLIGHT) {
+		}
+		robot.getMovement().forwardDirection();
 		new LineFollower(robot).adjustLine();
 	}
 	
-	public void findStraightLine() {
+	public void findLineAfterBridge() {
 		robot.getMovement().setSpeed(GlobalValues.LINETRAVELSPEED);
-		robot.getMovement().goForwardDist(15);
-		
-		robot.getLeftWheel().getTachoCount();
-		robot.getMovement().turnOnPointLeft();
+		robot.getMovement().turnOnPointRight(110);
+		robot.getMovement().forwardDirection();
+		robot.getMovement().goForward();
+		while (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) { }
+		robot.getMovement().turnOnPointLeft(60);
+		new LineFollower(robot).adjustLine();
 	}
 	
 	
