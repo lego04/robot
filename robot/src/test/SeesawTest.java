@@ -13,6 +13,7 @@ public class SeesawTest {
 		LightSensorThread lst = new LightSensorThread(robot);
 		lst.startThread();
 		
+		new LineFollower(robot).adjustLine();
 		new LineFollower(robot).adjustLine(true);
 		robot.getMovement().setSpeed(GlobalValues.LINETRAVELSPEED / 2);
 		robot.getMovement().goForwardDist(10);
