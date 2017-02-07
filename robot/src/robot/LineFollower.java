@@ -3,6 +3,7 @@ package robot;
 import lejos.hardware.Button;
 import lejos.hardware.Key;
 import lejos.hardware.KeyListener;
+import sensorThreads.GyroSensorThread;
 import sensorThreads.LightSensorThread;
 import util.GlobalValues;
 
@@ -18,12 +19,14 @@ public class LineFollower {
 	 */
 	
 	private LightSensorThread lst;
+	private GyroSensorThread gst;
 	
 	private boolean endOfLine = false;
 
-	public LineFollower(Robot robot, LightSensorThread lst) {
+	public LineFollower(Robot robot) {
 		this.robot = robot;
-		this.lst = lst;
+		this.lst = robot.getThreadPool().getLightSensorThread();
+		this.gst = robot.getThreadPool().getGyroSensorThread();
 
 	}
 	
@@ -39,6 +42,7 @@ public class LineFollower {
 				robot.getRightWheel().setSpeed(1);
 				robot.getMovement().goForward();
 				*/
+				gst.reset();
 				robot.getMovement().stopAll();
 				robot.getRightWheel().setSpeed(GlobalValues.LINETRAVELSPEED / 2);
 				robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED);

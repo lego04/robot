@@ -1,43 +1,34 @@
 package robot; 
 
-import lejos.robotics.TouchAdapter;
-import sensorThreads.LightSensorThread;
 import sensorThreads.UltrasonicSensorThread;
 import sensorThreads.UltrasonicSensorThread.Modes;
 import util.GlobalValues;
 
-public class WallFollower2 {
+public class SumpfFollower {
 	
-	protected Robot robot;
-	private int oldDistance;
-	protected int isDistance;
-	protected UltrasonicSensorThread distanceSensor;
-	private TouchAdapter td;
-	private boolean isPressed;
+	private Robot robot;
+	private int isDistance;
+	private UltrasonicSensorThread distanceSensor;
+	boolean isPressed;
+	int sumpfSpeed;
 	
-	public WallFollower2(Robot robot) {
+	public SumpfFollower(Robot robot) {
 		this.robot = robot;
-		distanceSensor = robot.getThreadPool().getUltraSonicSensorThread();
+		distanceSensor = new UltrasonicSensorThread(robot);
 		distanceSensor.start(Modes.Left);
-		robot.getMovement().backwardDirection();
+		this.sumpfSpeed = GlobalValues.WALLFOLLOWSPEED;
+		robot.getMovement().forwardDirection();
+		robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
 		robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
-		td = new TouchAdapter(robot.getTouch1());
 	}
 	
 	public void startFollowing() {
-		LightSensorThread lst = robot.getThreadPool().getLightSensorThread();
-		while (!lst.nextStateReady()) {
-			isPressed = td.isPressed();
-			if (isPressed) {
-				robot.getMovement().goBackwardDist(5);
-				robot.getMovement().turnOnPointLeft(110);
-			}
+		while (true) {
 			stayOnWall();
 		}
 	}
 	
-	public void stayOnWall() {
-		oldDistance = isDistance;
+	private void stayOnWall() {
 		updateDistanceToWall();
 		if (isDistance < GlobalValues.WALL_DIST_MIN) {
 			if (isDistance < GlobalValues.WALL_DIST_CRITICAL) {
@@ -45,7 +36,7 @@ public class WallFollower2 {
 				System.out.println("Critical: " + isDistance);
 			}
 			else {
-				robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED - 50);
+				robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED - 80);
 				robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
 				System.out.println("Too close: " + isDistance);
 			}
@@ -53,25 +44,24 @@ public class WallFollower2 {
 		else if (isDistance > GlobalValues.WALL_DIST_MAX) {
 			if (isDistance > GlobalValues.LAB_LEFT_CURVE) {
 				System.out.println("Left Curve: " + isDistance);
-				robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED - 120);
-				robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED + 120);
+				robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED - 110);
+				robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED + 110);
 			}
 			else {
 				System.out.println("Too far: " + isDistance);
 				robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
-				robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED + 50);				
+				robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED + 80);				
 			}
 		}
 		else if (GlobalValues.WALL_DIST_MIN < isDistance && isDistance < GlobalValues.WALL_DIST_MAX) {
 			System.out.println("All right: " + isDistance);
-			//int diff = isDistance - oldDistance;
 			robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
 			robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED);
 		}
 		robot.getMovement().goForward();
 	}
 	
-	protected void updateDistanceToWall() {
+	private void updateDistanceToWall() {
 		this.isDistance = distanceSensor.getDistance();
 	}
 }
