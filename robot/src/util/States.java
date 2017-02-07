@@ -2,11 +2,13 @@ package util;
 
 import java.util.LinkedList;
 
+import robot.Boss;
 import robot.BridgeFollower;
 import robot.FindLineFirst;
 import robot.Robot;
 import robot.RopeBridgeWallFollower;
 import robot.WallFollower;
+import robot.WallFollower2;
 import sensorThreads.ThreadPool;
 
 public class States {
@@ -38,18 +40,21 @@ public class States {
 		switch (currentState) {
 			case START:
 // TODO: schneller?
-				WallFollower wf = new WallFollower(robot);
-				wf.followTheWall();
+				WallFollower2 wf = new WallFollower2(robot);
+				wf.startFollowing();
 				robot.getThreadPool().stopUltraSonic();
+				robot.getMovement().stopAll();
 				break;
 			case WALLFOLLOWING:
-				WallFollower wf2 = new WallFollower(robot);
-				wf2.followTheWall();
+				WallFollower2 wf2 = new WallFollower2(robot);
+				wf2.startFollowing();
 				robot.getThreadPool().stopUltraSonic();
 				break;
 			case LINEFOLLOWING_BEFORE_BRIDGE:
+				robot.getThreadPool().getGyroSensorThread().start();
 				FindLineFirst flf = new FindLineFirst(robot);
 				flf.findLineFirst();
+				robot.getThreadPool().getGyroSensorThread().stop();
 				//robot.getThreadPool().stopLightSensor();
 				break;
 			case BRIDGE:
@@ -61,9 +66,11 @@ public class States {
 				break;
 			case LINEFOLLOWING_BEFORE_SEESAW:
 // TODO: wenden
+				robot.getThreadPool().getGyroSensorThread().start();
 				robot.getMovement().turnOnPointLeft(180);
 				FindLineFirst flf2 = new FindLineFirst(robot);
 				flf2.findLineFirst();
+				robot.getThreadPool().getGyroSensorThread().stop();
 				//robot.getThreadPool().stopLightSensor();
 				break;
 			case SEESAW:
@@ -73,8 +80,10 @@ public class States {
 				//robot.getThreadPool().stopLightSensor();
 				break;
 			case LINEFOLLOWING_BEFORE_BOG:
+				robot.getThreadPool().getGyroSensorThread().start();
 				FindLineFirst flf4 = new FindLineFirst(robot);
 				flf4.findLineFirst();
+				robot.getThreadPool().getGyroSensorThread().stop();
 				//robot.getThreadPool().stopLightSensor();
 				break;
 			case BOG:
@@ -94,8 +103,8 @@ public class States {
 				robot.getThreadPool().stopUltraSonic();
 				break;
 			case BOSS:
-// TODO: wenden?
-// TODO: implement
+				Boss boss = new Boss(robot);
+				boss.fightBossTillDeath();
 				break;
 			default: throw new IllegalStateException("unknown station");
 		}

@@ -83,8 +83,15 @@ public class EscapeThread implements Runnable {
 				// enter is pressed
 				break;
 			}
-
+	
+			try {
+				Thread.sleep(600);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
+		//LCD.clear();
+		//LCD.drawString("starting: " + state, 0, 0);
 		startFromStationInOwnThread(states, state);
 	}
 

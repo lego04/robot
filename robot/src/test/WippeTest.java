@@ -7,16 +7,19 @@ import sensorThreads.LightSensorThread;
 import util.EscapeThread;
 import util.GlobalValues;
 
-public class LineFollowerTest {
+public class WippeTest {
 	
 	public static void main(String args[]) throws InterruptedException {
 		new EscapeThread().startThread();
 		Robot robot = new Robot();
-		robot.getThreadPool().getLightSensorThread().startThread();
-		robot.getThreadPool().getGyroSensorThread().start();
+		LightSensorThread lst = new LightSensorThread(robot);
+		lst.startThread();
 		
 		robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED);
-		new LineFollower(robot).adjustLine();
+		LineFollower lf = new LineFollower(robot);
+		lf.setTravelSpeed(GlobalValues.LINETRAVELSPEED * 2);
+		lf.adjustLine();
+		
 		/*
 		while (true) {
 			if (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {
