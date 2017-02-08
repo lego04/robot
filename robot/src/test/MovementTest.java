@@ -12,7 +12,9 @@ public class MovementTest {
 		Movement mov = robot.getMovement();
 		System.out.println("Start Movement Test");
 		
-		mov.goBackwardDist(30);
+		mov.backwardDirection();
+		mov.setSpeed(500);
+		mov.goForward();
 		
 		/*
 		mov.turnOnPointLeft(90);
