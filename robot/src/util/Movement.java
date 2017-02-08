@@ -80,7 +80,7 @@ public class Movement {
 	public void goBackwardDist(int dist) {
 		robot.getLeftWheel().resetTachoCount();
 		goBackward();
-		while (robot.getLeftWheel().getTachoCount() > - (dist * GlobalValues.DEGREE_TO_DIST)) {
+		while (Math.abs(robot.getLeftWheel().getTachoCount()) < dist * GlobalValues.DEGREE_TO_DIST) {
 			//System.out.println("Dist: " + dist * GlobalValues.DEGREE_TO_DIST);
 		}
 		stopAll();
