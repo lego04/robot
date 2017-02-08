@@ -81,6 +81,7 @@ public class EscapeThread implements Runnable {
 				System.exit(0);
 			} else {
 				// enter is pressed
+				LCD.clear();
 				break;
 			}
 
