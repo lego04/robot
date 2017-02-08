@@ -48,7 +48,7 @@ public class FindLineFirst {
 	public void findStraightLine(boolean seesaw) {
 		robot.getMovement().setSpeed(GlobalValues.LINETRAVELSPEED);
 		robot.getMovement().forwardDirection();
-		robot.getMovement().goForwardDist(10);
+		robot.getMovement().goForwardDist(15);
 		if (lst.getLastLightValue() > GlobalValues.AVG_LIGHT) {
 			new LineFollower(robot).adjustLine();
 		}

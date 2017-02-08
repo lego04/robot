@@ -113,6 +113,7 @@ public class LineFollower {
 			i++;
 			System.out.println(i);
 		}
+		adjustLine();
 	}
 	
 
