@@ -20,12 +20,12 @@ public class FindLineFirst {
 		//lst.startThread();
 		robot.getMovement().backwardDirection();
 		robot.getMovement().setSpeed(GlobalValues.LINETRAVELSPEED);
-		robot.getMovement().turnOnPointRight(30);	// um 45 Grad nach rechts drehen
+		robot.getMovement().turnOnPointLeft(30);	// um 45 Grad nach rechts drehen
 		robot.getMovement().goForward();
 		while (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) {
 		}
-		robot.getMovement().turnOnPointRight(30);
-		robot.getMovement().turnOnPointRight();
+		robot.getMovement().turnOnPointLeft(30);
+		robot.getMovement().turnOnPointLeft();
 		while (lst.getLastLightValue() < GlobalValues.MAXLIGHT) {
 		}
 		robot.getMovement().forwardDirection();

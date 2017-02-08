@@ -101,7 +101,7 @@ public class LineFollower {
 	
 	public void adjustLineSeesaw() {
 		int i = 0;
-		while (i < 100) {
+		while (i < 110) {
 			if (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) {
 				robot.getLeftWheel().setSpeed(robot.getRightWheel().getSpeed() + 30);
 				robot.getMovement().goForward();
