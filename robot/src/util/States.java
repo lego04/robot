@@ -89,7 +89,7 @@ public class States {
 				robot.getThreadPool().getGyroSensorThread().start();
 				robot.getMovement().turnOnPointLeft(180);
 				FindLineFirst flf2 = new FindLineFirst(robot);
-				flf2.findLineFirst();
+				flf2.findLineAfterBridge();
 				robot.getThreadPool().getGyroSensorThread().stop();
 				//robot.getThreadPool().stopLightSensor();
 				break;
@@ -97,14 +97,14 @@ public class States {
 // TODO: langsamer?
 				debug("seesaw");
 				FindLineFirst flf3 = new FindLineFirst(robot);
-				flf3.findLineFirst();
+				flf3.findStraightLine();
 				//robot.getThreadPool().stopLightSensor();
 				break;
 			case LINEFOLLOWING_BEFORE_BOG:
 				debug("linefollowing before bog");
 				robot.getThreadPool().getGyroSensorThread().start();
 				FindLineFirst flf4 = new FindLineFirst(robot);
-				flf4.findLineFirst();
+				flf4.findStraightLine();
 				robot.getThreadPool().getGyroSensorThread().stop();
 				//robot.getThreadPool().stopLightSensor();
 				break;
@@ -157,7 +157,7 @@ public class States {
 	public void stopAndReset() {
 		robot.interrupt();
 		ThreadPool pool = robot.getThreadPool();
-		pool.stopLightSensor();
+		//pool.stopLightSensor();
 		pool.stopUltraSonic();
 		pool.stopLightSensor();
 	}
@@ -219,6 +219,6 @@ public class States {
 	}
 	
 	private void debug(String msg) {
-		//System.out.println(msg);
+		System.out.println(msg);
 	}
 }
