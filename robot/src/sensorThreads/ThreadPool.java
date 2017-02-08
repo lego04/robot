@@ -28,7 +28,7 @@ public class ThreadPool {
 	}
 	
 	public GyroSensorThread getGyroSensorThread() {
-		gyroThread.start();
+		gyroThread.stop();
 		gyroThread = new GyroSensorThread(robot);
 		return gyroThread;
 	}
