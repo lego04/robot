@@ -61,7 +61,7 @@ public class LineFollower {
 				//robot.getMovement().stopAll();
 				while (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) {
 					//System.out.println("Gyro: " + (offset - gst.getAngle()));
-					if ((offset - gst.getAngle()) > GlobalValues.GYRO_RIGHT) {
+					if (Math.abs(offset - gst.getAngle()) > GlobalValues.GYRO_RIGHT) {
 						robot.getMovement().stopAll();
 						//System.out.println("Back: " + (offset - gst.getAngle()));
 						//robot.getLeftWheel().resetTachoCount();

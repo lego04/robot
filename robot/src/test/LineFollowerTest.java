@@ -1,6 +1,7 @@
 package test;
 
 import lejos.robotics.LightDetectorAdaptor;
+import robot.FindLineFirst;
 import robot.LineFollower;
 import robot.Robot;
 import sensorThreads.LightSensorThread;
@@ -16,7 +17,7 @@ public class LineFollowerTest {
 		robot.getThreadPool().getGyroSensorThread().start();
 		
 		robot.getMovement().goForwardSpeed(GlobalValues.LINETRAVELSPEED);
-		new LineFollower(robot).adjustLine();
+		new FindLineFirst(robot).findLineFirst();
 		/*
 		while (true) {
 			if (lst.getLastLightValue() > GlobalValues.MAXLIGHT) {

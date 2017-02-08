@@ -56,8 +56,8 @@ public class WallFollower2 {
 		else if (isDistance > GlobalValues.WALL_DIST_MAX) {
 			if (isDistance > GlobalValues.LAB_LEFT_CURVE) {
 				//System.out.println("Left Curve: " + isDistance);
-				robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED - 120);
-				robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED + 120);
+				robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED - 110);
+				robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED + 110);
 			}
 			else {
 				//System.out.println("Too far: " + isDistance);

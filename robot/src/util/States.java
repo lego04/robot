@@ -47,6 +47,7 @@ public class States {
 			case START:
 // TODO: schneller?
 				debug("start");
+				robot.getMovement().setSpeed(GlobalValues.WALLFOLLOWSPEED * 2);
 				WallFollower2 wf = new WallFollower2(robot);
 				wf.startFollowing();
 				robot.getThreadPool().stopUltraSonic();
@@ -80,7 +81,7 @@ public class States {
 // TODO: wenden
 				debug("bridge");
 				robot.getThreadPool().getUltraSonicSensorThread().rotateSensor(90);
-				robot.getMovement().turnOnPointLeft(180);
+				//robot.getMovement().turnOnPointLeft(180);
 				BridgeFollower bf = new BridgeFollower(robot);
 				bf.start();
 				robot.getThreadPool().stopUltraSonic();
