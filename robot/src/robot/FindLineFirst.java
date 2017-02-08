@@ -24,6 +24,7 @@ public class FindLineFirst {
 		robot.getMovement().goForward();
 		while (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) {
 		}
+		robot.getMovement().stopAll();
 		robot.getMovement().turnOnPointLeft(30);
 		robot.getMovement().turnOnPointLeft();
 		while (lst.getLastLightValue() < GlobalValues.MAXLIGHT) {
