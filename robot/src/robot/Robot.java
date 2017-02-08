@@ -127,9 +127,14 @@ public class Robot {
 		isInterrupted.set(true);
 	}
 	
+	public void setInterruptedFalse() {
+		isInterrupted.set(false);
+	}
+	
 	public AtomicBoolean isInterrupted() {
 		return isInterrupted;
 	}
+	
 
 
 	//

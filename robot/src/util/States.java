@@ -31,6 +31,7 @@ public class States {
 	
 	public void nextState() {
 		if (robot.isInterrupted().get()) {
+			robot.getMovement().stopAll(); //stop when interrupted
 			return;
 		}
 		indexOfcurrentState = getNextState();
@@ -44,17 +45,20 @@ public class States {
 		switch (currentState) {
 			case START:
 // TODO: schneller?
+				debug("start");
 				WallFollower2 wf = new WallFollower2(robot);
 				wf.startFollowing();
 				robot.getThreadPool().stopUltraSonic();
-				robot.getMovement().stopAll();
+				//robot.getMovement().stopAll();
 				break;
 			case WALLFOLLOWING:
+				debug("wallfollowing");
 				WallFollower2 wf2 = new WallFollower2(robot);
 				wf2.startFollowing();
 				robot.getThreadPool().stopUltraSonic();
 				break;
 			case LINEFOLLOWING_BEFORE_BRIDGE:
+				debug("linefollowing before brige");
 				robot.getThreadPool().getGyroSensorThread().start();
 				FindLineFirst flf = new FindLineFirst(robot);
 				flf.findLineFirst();
@@ -73,6 +77,7 @@ public class States {
 				break;
 			case BRIDGE:
 // TODO: wenden
+				debug("bridge");
 				robot.getMovement().turnOnPointLeft(180);
 				BridgeFollower bf = new BridgeFollower(robot);
 				bf.start();
@@ -80,36 +85,42 @@ public class States {
 				break;
 			case LINEFOLLOWING_BEFORE_SEESAW:
 // TODO: wenden
+				debug("linefollowiing before seesaw");
 				robot.getThreadPool().getGyroSensorThread().start();
 				robot.getMovement().turnOnPointLeft(180);
 				FindLineFirst flf2 = new FindLineFirst(robot);
-				flf2.findLineFirst();
+				flf2.findLineAfterBridge();
 				robot.getThreadPool().getGyroSensorThread().stop();
 				//robot.getThreadPool().stopLightSensor();
 				break;
 			case SEESAW:
 // TODO: langsamer?
+				debug("seesaw");
 				FindLineFirst flf3 = new FindLineFirst(robot);
-				flf3.findLineFirst();
+				flf3.findStraightLine();
 				//robot.getThreadPool().stopLightSensor();
 				break;
 			case LINEFOLLOWING_BEFORE_BOG:
+				debug("linefollowing before bog");
 				robot.getThreadPool().getGyroSensorThread().start();
 				FindLineFirst flf4 = new FindLineFirst(robot);
-				flf4.findLineFirst();
+				flf4.findStraightLine();
 				robot.getThreadPool().getGyroSensorThread().stop();
 				//robot.getThreadPool().stopLightSensor();
 				break;
 			case BOG:
 // TODO: wenden
 // TODO: implement
+				debug("bug");
 				break;
 			case WALLFOLLOWING_TO_ROPE_BRIDGE:
+				debug("wallfollowing to rope bridge");
 				WallFollower wf3 = new WallFollower(robot);
 				wf3.followTheWall();
 				robot.getThreadPool().stopUltraSonic();
 				break;
 			case ROPE_BRIDGE:
+				debug("rope bridge");
 				RopeBridgeWallFollower rbfw = new RopeBridgeWallFollower(robot);
 				rbfw.startFollowing();
 				BridgeFollower bf2 = new BridgeFollower(robot);
@@ -117,6 +128,7 @@ public class States {
 				robot.getThreadPool().stopUltraSonic();
 				break;
 			case BOSS:
+				debug("boss");
 				Boss boss = new Boss(robot);
 				boss.fightBossTillDeath();
 				break;
@@ -145,7 +157,7 @@ public class States {
 	public void stopAndReset() {
 		robot.interrupt();
 		ThreadPool pool = robot.getThreadPool();
-		pool.stopLightSensor();
+		//pool.stopLightSensor();
 		pool.stopUltraSonic();
 		pool.stopLightSensor();
 	}
@@ -204,5 +216,9 @@ public class States {
 		states.add(Station.WALLFOLLOWING_TO_ROPE_BRIDGE);
 		states.add(Station.ROPE_BRIDGE);
 		states.add(Station.BOSS);
+	}
+	
+	private void debug(String msg) {
+		System.out.println(msg);
 	}
 }
