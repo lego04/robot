@@ -42,7 +42,7 @@ public class LineFollower {
 	
 	public void adjustLine()  {
 		int i = 0;
-		while (!endOfLine && i < 20) {
+		while ((!endOfLine && i < 20) && !robot.isInterrupted().get()) {
 			if (limited) {
 				System.out.println("i: " + i);
 				i++;
@@ -143,4 +143,6 @@ public class LineFollower {
 	public void setTravelSpeed(int travelSpeed) {
 		this.travelSpeed = travelSpeed;
 	}
+	
+	
 }
