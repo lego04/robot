@@ -1,5 +1,6 @@
 package test;
 
+import robot.FindLineFirst;
 import robot.Robot;
 import util.EscapeThread;
 import util.Movement;
@@ -12,10 +13,13 @@ public class MovementTest {
 		Movement mov = robot.getMovement();
 		System.out.println("Start Movement Test");
 		
+		new FindLineFirst(robot).findLineFirst();
+		
+		/*
 		mov.backwardDirection();
 		mov.setSpeed(500);
 		mov.goForward();
-		
+		*/
 		/*
 		mov.turnOnPointLeft(90);
 		System.out.println("Turn Left");

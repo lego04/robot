@@ -20,12 +20,13 @@ public class FindLineFirst {
 		//lst.startThread();
 		robot.getMovement().backwardDirection();
 		robot.getMovement().setSpeed(GlobalValues.LINETRAVELSPEED);
-		robot.getMovement().turnOnPointLeft(30);	// um 45 Grad nach rechts drehen
+		robot.getMovement().turnOnPointLeft(20);	// um 45 Grad nach rechts drehen
 		robot.getMovement().goForward();
 		while (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) {
 		}
 		robot.getMovement().stopAll();
-		robot.getMovement().turnOnPointLeft(30);
+		robot.getMovement().goBackwardDist(7);
+		robot.getMovement().setSpeed(GlobalValues.LINETRAVELSPEED / 2);
 		robot.getMovement().turnOnPointLeft();
 		while (lst.getLastLightValue() < GlobalValues.MAXLIGHT) {
 		}
@@ -44,7 +45,7 @@ public class FindLineFirst {
 		new LineFollower(robot).adjustLine();
 	}
 	
-	public void findStraightLine() {
+	public void findStraightLine(boolean seesaw) {
 		robot.getMovement().setSpeed(GlobalValues.LINETRAVELSPEED);
 		robot.getMovement().forwardDirection();
 		robot.getMovement().goForwardDist(10);
@@ -54,7 +55,12 @@ public class FindLineFirst {
 		robot.getMovement().turnOnPointLeft();
 		while (lst.getLastLightValue() > GlobalValues.AVG_LIGHT) {
 		}
-		new LineFollower(robot).adjustLine();
+		if (seesaw) {
+			new LineFollower(robot).adjustLineSeesaw();
+		}
+		else {			
+			new LineFollower(robot).adjustLine();
+		}
 	}
 	
 	
