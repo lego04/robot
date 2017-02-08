@@ -34,7 +34,7 @@ public class RopeBridgeWallFollower extends WallFollower2 {
 			stayOnWall();
 		}
 		
-		System.out.println("END OF WALL FOLLOWING");
+		// System.out.println("END OF WALL FOLLOWING");
 		
 		robot.getMovement().turnOnPointLeft(21);
 		/*System.out.println("GYRO RESET");
@@ -89,7 +89,7 @@ public class RopeBridgeWallFollower extends WallFollower2 {
 	@Override
 	public void stayOnWall() {		
 		updateDistanceToWall();
-		System.out.println(isDistance);
+		// System.out.println(isDistance);
 		int diff = IDEAL_DIST - isDistance;
 		//System.out.println(diff);
 		int minusSpeed = (int) SPEED - (diff);
@@ -121,7 +121,7 @@ public class RopeBridgeWallFollower extends WallFollower2 {
 	}
 	
 	private void goForwardAndHopeForTheBest() {
-		System.out.println("FORWARD");
+		// System.out.println("FORWARD");
 		robot.getMovement().turnOnPointRight(10);
 		robot.getLeftWheel().setSpeed(SPEED);
 		robot.getRightWheel().setSpeed(SPEED);
