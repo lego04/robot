@@ -2,6 +2,7 @@ package util;
 
 import javax.crypto.spec.SecretKeySpec;
 
+import lejos.hardware.lcd.LCD;
 import lejos.robotics.RegulatedMotor;
 import robot.Robot;
 
@@ -264,6 +265,16 @@ public class Movement {
 		robot.getLeftWheel().flt();
 		robot.getRightWheel().flt();
 		robot.getLeftWheel().endSynchronization();
+		LCD.clear();
+		LCD.drawString("stopHard", 0, 0);
+	}
+	
+	public void stopHard() {
+		robot.getLeftWheel().stop();
+		robot.getRightWheel().stop();
+		//Thread.currentThread().interrupt();
+		LCD.clear();
+		LCD.drawString("stopHard", 0, 0);
 	}
 
 	public void endSync() {

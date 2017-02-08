@@ -9,6 +9,7 @@ import robot.Robot;
 import robot.RopeBridgeWallFollower;
 import robot.WallFollower;
 import robot.WallFollower2;
+import sensorThreads.LightSensorThread;
 import sensorThreads.ThreadPool;
 
 public class States {
@@ -56,6 +57,16 @@ public class States {
 				flf.findLineFirst();
 				robot.getThreadPool().getGyroSensorThread().stop();
 				//robot.getThreadPool().stopLightSensor();
+				turn180();
+				robot.getMovement().backwardDirection();
+				robot.getMovement().goForward();
+				
+				LightSensorThread lst = robot.getThreadPool().getLightSensorThread();
+				while (!lst.nextStateReady()) {
+					//do nothing
+				}
+				robot.getMovement().stopAll();
+				robot.getMovement().goForwardDist(GlobalValues.TRAVEL_DIST_LABYRINTH);
 				break;
 			case BRIDGE:
 // TODO: wenden
@@ -122,6 +133,10 @@ public class States {
 		} else {
 			return indexOfcurrentState + 1;
 		}
+	}
+	
+	private void turn180() {
+		robot.getMovement().turnOnPointRight(180);
 	}
 	
 	public void stopAndReset() {
