@@ -4,6 +4,7 @@ import robot.BridgeFollower;
 import robot.Robot;
 import robot.RopeBridgeWallFollower;
 import util.EscapeThread;
+import util.Station;
 
 public class RopeBridgeTest {
 	
@@ -11,7 +12,8 @@ public class RopeBridgeTest {
 		
 		new EscapeThread().startThread();
 		Robot robot = new Robot();
-		
+		robot.getStates().startFromState(Station.ROPE_BRIDGE);
+		/*
 		RopeBridgeWallFollower rbwf = new RopeBridgeWallFollower(robot);
 		BridgeFollower bf = new BridgeFollower(robot);
 		
@@ -19,6 +21,7 @@ public class RopeBridgeTest {
 		rbwf.startFollowing();
 		System.out.println("BRIDGE");
 		bf.start();
+		*/
 		
 	}
 	

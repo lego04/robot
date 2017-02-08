@@ -124,6 +124,8 @@ public class EscapeThread implements Runnable {
 			@Override
 			public void run() {
 				states.startFromState(start);
+				//robot = new Robot();
+				//robot.getStates().startFromState(start);
 			}
 		});
 

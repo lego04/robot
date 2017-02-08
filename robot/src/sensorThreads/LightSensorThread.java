@@ -70,7 +70,7 @@ public class LightSensorThread implements Runnable {
 
 // TODO: implement !!!
 	public boolean nextStateReady() {
-		if (getLastLightValue() > GlobalValues.AVG_LIGHT) {
+		if (getLastLightValue() > (GlobalValues.AVG_LIGHT + GlobalValues.MAXLIGHT) / 2) {
 			Delay.msDelay(1000);
 			return true;
 		}

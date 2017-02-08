@@ -2,6 +2,7 @@ package util;
 
 import java.util.LinkedList;
 
+import lejos.robotics.TouchAdapter;
 import robot.Boss;
 import robot.BridgeFollower;
 import robot.FindLineFirst;
@@ -110,7 +111,12 @@ public class States {
 				break;
 			case BOG:
 // TODO: wenden
-// TODO: implement
+				TouchAdapter ta = new TouchAdapter(robot.getTouch1());
+				robot.getMovement().goForward();
+				while (!ta.isPressed() && !robot.isInterrupted().get()) {
+					//do nothing
+				}
+				robot.getMovement().stopAll();
 				debug("bug");
 				break;
 			case WALLFOLLOWING_TO_ROPE_BRIDGE:
@@ -159,7 +165,7 @@ public class States {
 		ThreadPool pool = robot.getThreadPool();
 		//pool.stopLightSensor();
 		pool.stopUltraSonic();
-		pool.stopLightSensor();
+		pool.stopGyro();
 	}
 	
 	/**
