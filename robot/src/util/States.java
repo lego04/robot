@@ -98,14 +98,14 @@ public class States {
 // TODO: langsamer?
 				debug("seesaw");
 				FindLineFirst flf3 = new FindLineFirst(robot);
-				flf3.findStraightLine();
+				flf3.findStraightLine(true);
 				//robot.getThreadPool().stopLightSensor();
 				break;
 			case LINEFOLLOWING_BEFORE_BOG:
 				debug("linefollowing before bog");
 				robot.getThreadPool().getGyroSensorThread().start();
 				FindLineFirst flf4 = new FindLineFirst(robot);
-				flf4.findStraightLine();
+				flf4.findStraightLine(false);
 				robot.getThreadPool().getGyroSensorThread().stop();
 				//robot.getThreadPool().stopLightSensor();
 				break;

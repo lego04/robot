@@ -45,7 +45,7 @@ public class FindLineFirst {
 		new LineFollower(robot).adjustLine();
 	}
 	
-	public void findStraightLine() {
+	public void findStraightLine(boolean seesaw) {
 		robot.getMovement().setSpeed(GlobalValues.LINETRAVELSPEED);
 		robot.getMovement().forwardDirection();
 		robot.getMovement().goForwardDist(10);
@@ -55,7 +55,12 @@ public class FindLineFirst {
 		robot.getMovement().turnOnPointLeft();
 		while (lst.getLastLightValue() > GlobalValues.AVG_LIGHT) {
 		}
-		new LineFollower(robot).adjustLine();
+		if (seesaw) {
+			new LineFollower(robot).adjustLineSeesaw();
+		}
+		else {			
+			new LineFollower(robot).adjustLine();
+		}
 	}
 	
 	
