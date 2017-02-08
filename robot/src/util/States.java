@@ -79,6 +79,7 @@ public class States {
 			case BRIDGE:
 // TODO: wenden
 				debug("bridge");
+				robot.getThreadPool().getUltraSonicSensorThread().rotateSensor(90);
 				robot.getMovement().turnOnPointLeft(180);
 				BridgeFollower bf = new BridgeFollower(robot);
 				bf.start();
@@ -225,6 +226,6 @@ public class States {
 	}
 	
 	private void debug(String msg) {
-		System.out.println(msg);
+		//System.out.println(msg);
 	}
 }
