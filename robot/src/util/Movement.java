@@ -268,17 +268,8 @@ public class Movement {
 		robot.getLeftWheel().flt();
 		robot.getRightWheel().flt();
 		robot.getLeftWheel().endSynchronization();
-		LCD.clear();
-		LCD.drawString("stopHard", 0, 0);
 	}
 	
-	public void stopHard() {
-		robot.getLeftWheel().stop();
-		robot.getRightWheel().stop();
-		//Thread.currentThread().interrupt();
-		LCD.clear();
-		LCD.drawString("stopHard", 0, 0);
-	}
 
 	public void endSync() {
 		robot.getLeftWheel().endSynchronization();

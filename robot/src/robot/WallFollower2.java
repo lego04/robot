@@ -26,14 +26,17 @@ public class WallFollower2 {
 	
 	public void startFollowing() {
 		LightSensorThread lst = robot.getThreadPool().getLightSensorThread();
-		while (!lst.nextStateReady()) {
+		boolean isInterupted = false;
+		while (!lst.nextStateReady() && !isInterupted) {
 			isPressed = td.isPressed();
 			if (isPressed) {
 				robot.getMovement().goBackwardDist(5);
 				robot.getMovement().turnOnPointLeft(110);
 			}
 			stayOnWall();
+			isInterupted = robot.isInterrupted().get();
 		}
+		robot.getMovement().stopAll();
 	}
 	
 	public void stayOnWall() {
