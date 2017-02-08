@@ -1,5 +1,7 @@
 package robot;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.Motor;
@@ -39,6 +41,8 @@ public class Robot {
 	private Movement mov;
 
 	private DifferentialPilot pilot;
+	
+	private AtomicBoolean isInterrupted;
 
 	// Motors
 
@@ -84,6 +88,8 @@ public class Robot {
 		states = new States(this);
 
 		threadPool = new ThreadPool(this);
+		
+		isInterrupted = new AtomicBoolean(false);
 
 	}
 
@@ -115,6 +121,14 @@ public class Robot {
 	 */
 	public void setUltraSonicBack() {
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftWheel, rightWheel);
+	}
+	
+	public void interrupt() {
+		isInterrupted.set(true);
+	}
+	
+	public AtomicBoolean isInterrupted() {
+		return isInterrupted;
 	}
 
 

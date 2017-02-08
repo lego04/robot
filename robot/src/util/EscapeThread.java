@@ -47,9 +47,9 @@ public class EscapeThread implements Runnable {
 				System.exit(0);
 			}
 			if (Button.ENTER.isDown() && (robot != null)) {
-				//System.out.println("Button enter pressed!");
-				//LCD.clearDisplay();
-				//LCD.drawString("lcd output", 0, 0);
+				// System.out.println("Button enter pressed!");
+				// LCD.clearDisplay();
+				// LCD.drawString("lcd output", 0, 0);
 				runStateSelection();
 			}
 		}
@@ -83,15 +83,15 @@ public class EscapeThread implements Runnable {
 				// enter is pressed
 				break;
 			}
-	
+
 			try {
 				Thread.sleep(600);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		//LCD.clear();
-		//LCD.drawString("starting: " + state, 0, 0);
+		// LCD.clear();
+		// LCD.drawString("starting: " + state, 0, 0);
 		startFromStationInOwnThread(states, state);
 	}
 
@@ -113,19 +113,19 @@ public class EscapeThread implements Runnable {
 
 			}
 		});
-		
+
 		stopThread.start();
 	}
-	
+
 	private void startFromStationInOwnThread(final States states, final Station start) {
 		Thread startThread = new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				states.startFromState(start);
 			}
 		});
-		
+
 		startThread.start();
 	}
 

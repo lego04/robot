@@ -30,6 +30,9 @@ public class States {
 	}
 	
 	public void nextState() {
+		if (robot.isInterrupted().get()) {
+			return;
+		}
 		indexOfcurrentState = getNextState();
 		performState();
 	}
@@ -140,7 +143,7 @@ public class States {
 	}
 	
 	public void stopAndReset() {
-		robot.getMovement().stopAll();
+		robot.interrupt();
 		ThreadPool pool = robot.getThreadPool();
 		pool.stopLightSensor();
 		pool.stopUltraSonic();
