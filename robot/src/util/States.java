@@ -2,6 +2,7 @@ package util;
 
 import java.util.LinkedList;
 
+import lejos.hardware.lcd.LCD;
 import lejos.robotics.TouchAdapter;
 import robot.Boss;
 import robot.BridgeFollower;
@@ -116,6 +117,7 @@ public class States {
 				robot.getMovement().turnOnPointRight(180);
 				robot.getMovement().backwardDirection();
 				TouchAdapter ta = new TouchAdapter(robot.getTouch1());
+				robot.getMovement().setSpeed(GlobalValues.WALLFOLLOWSPEED * 2);
 				robot.getMovement().goForward();
 				while (!ta.isPressed() && !robot.isInterrupted().get()) {
 					//do nothing
@@ -230,6 +232,6 @@ public class States {
 	}
 	
 	private void debug(String msg) {
-		//System.out.println(msg);
+		LCD.drawString("currentState: " + msg, 0, 7);
 	}
 }
