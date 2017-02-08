@@ -44,7 +44,7 @@ public class LineFollower {
 		int i = 0;
 		while ((!endOfLine && i < 20) && !robot.isInterrupted().get()) {
 			if (limited) {
-				System.out.println("i: " + i);
+				//System.out.println("i: " + i);
 				i++;
 			}
 			if (lst.getLastLightValue() < GlobalValues.MINLIGHT) {
@@ -60,10 +60,10 @@ public class LineFollower {
 				robot.getMovement().goForward();
 				//robot.getMovement().stopAll();
 				while (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) {
-					System.out.println("Gyro: " + (offset - gst.getAngle()));
+					//System.out.println("Gyro: " + (offset - gst.getAngle()));
 					if ((offset - gst.getAngle()) > GlobalValues.GYRO_RIGHT) {
 						robot.getMovement().stopAll();
-						System.out.println("Back: " + (offset - gst.getAngle()));
+						//System.out.println("Back: " + (offset - gst.getAngle()));
 						//robot.getLeftWheel().resetTachoCount();
 						robot.getLeftWheel().setSpeed(GlobalValues.LINETRAVELSPEED / 2);
 						robot.getMovement().goBackward();
@@ -74,7 +74,7 @@ public class LineFollower {
 						endOfLine = true;
 					}
 				}
-				System.out.println("Notify: " + lst.getLastLightValue());
+				//System.out.println("Notify: " + lst.getLastLightValue());
 				//System.out.println("Left: " + robot.getLeftWheel().getTachoCount());
 				//System.out.println("Right: " + robot.getRightWheel().getTachoCount());
 				if (!endOfLine) robot.getRightWheel().setSpeed(travelSpeed);
@@ -95,7 +95,7 @@ public class LineFollower {
 				}
 			}
 		}
-		System.out.println("End of Line reached!");
+		//System.out.println("End of Line reached!");
 		robot.getMovement().stopAll();
 	}
 	
@@ -111,7 +111,7 @@ public class LineFollower {
 				robot.getMovement().goForward();
 			}
 			i++;
-			System.out.println(i);
+			//System.out.println(i);
 		}
 		adjustLine();
 	}
@@ -134,7 +134,7 @@ public class LineFollower {
 			public void keyPressed(Key k) {
 				if (k.getId() == Button.ID_ENTER) {
 					float light = lst.getDetector().getLightValue();
-					System.out.println(light);
+					//System.out.println(light);
 				}
 
 			}

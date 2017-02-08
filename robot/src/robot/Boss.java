@@ -1,6 +1,7 @@
 package robot;
 
 import lejos.robotics.TouchAdapter;
+import util.GlobalValues;
 
 public class Boss {
 	
@@ -26,7 +27,10 @@ public class Boss {
 		while (!touch.isPressed()) {
 			//do nothing
 		}
-		//TODO: it is dead, what now? WallFollowing?
+		robot.getMovement().turnOnPointLeft(90);
+		robot.getLeftWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED * 3);
+		robot.getRightWheel().setSpeed(GlobalValues.WALLFOLLOWSPEED * 2);
+		robot.getMovement().goForward();
 		
 	}
 }

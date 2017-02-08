@@ -18,8 +18,8 @@ public class ThreadPool {
 	}
 	
 	public UltrasonicSensorThread getUltraSonicSensorThread() {
-		ultraSonic.stop();
-		ultraSonic = new UltrasonicSensorThread(robot);
+		//ultraSonic.stop();
+		//ultraSonic = new UltrasonicSensorThread(robot);
 		return ultraSonic;
 	}
 	
@@ -28,8 +28,8 @@ public class ThreadPool {
 	}
 	
 	public GyroSensorThread getGyroSensorThread() {
-		gyroThread.start();
-		gyroThread = new GyroSensorThread(robot);
+		//gyroThread.stop();
+		//gyroThread = new GyroSensorThread(robot);
 		return gyroThread;
 	}
 	

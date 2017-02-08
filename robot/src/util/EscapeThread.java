@@ -130,7 +130,7 @@ public class EscapeThread implements Runnable {
 		});
 
 		robot.setInterruptedFalse();
-		LCD.drawString(robot.isInterrupted().toString(), 0, 7);
+		//LCD.drawString(robot.isInterrupted().toString(), 0, 7);
 		startThread.start();
 	}
 

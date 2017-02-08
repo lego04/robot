@@ -79,6 +79,7 @@ public class States {
 			case BRIDGE:
 // TODO: wenden
 				debug("bridge");
+				robot.getThreadPool().getUltraSonicSensorThread().rotateSensor(90);
 				robot.getMovement().turnOnPointLeft(180);
 				BridgeFollower bf = new BridgeFollower(robot);
 				bf.start();
@@ -111,20 +112,23 @@ public class States {
 				break;
 			case BOG:
 // TODO: wenden
+				robot.getMovement().turnOnPointRight(180);
+				robot.getMovement().backwardDirection();
 				TouchAdapter ta = new TouchAdapter(robot.getTouch1());
 				robot.getMovement().goForward();
 				while (!ta.isPressed() && !robot.isInterrupted().get()) {
 					//do nothing
 				}
 				robot.getMovement().stopAll();
+				robot.getMovement().turnOnPointLeft(90);
 				debug("bug");
 				break;
 			case WALLFOLLOWING_TO_ROPE_BRIDGE:
-				debug("wallfollowing to rope bridge");
+				/*debug("wallfollowing to rope bridge");
 				WallFollower wf3 = new WallFollower(robot);
 				wf3.followTheWall();
 				robot.getThreadPool().stopUltraSonic();
-				break;
+				break;*/
 			case ROPE_BRIDGE:
 				debug("rope bridge");
 				RopeBridgeWallFollower rbfw = new RopeBridgeWallFollower(robot);
@@ -225,6 +229,6 @@ public class States {
 	}
 	
 	private void debug(String msg) {
-		System.out.println(msg);
+		//System.out.println(msg);
 	}
 }
