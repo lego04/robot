@@ -115,6 +115,7 @@ public class States {
 				robot.getMovement().turnOnPointRight(180);
 				robot.getMovement().backwardDirection();
 				TouchAdapter ta = new TouchAdapter(robot.getTouch1());
+				robot.getMovement().setSpeed(GlobalValues.WALLFOLLOWSPEED * 2);
 				robot.getMovement().goForward();
 				while (!ta.isPressed() && !robot.isInterrupted().get()) {
 					//do nothing
