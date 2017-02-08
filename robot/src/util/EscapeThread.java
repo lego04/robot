@@ -127,6 +127,7 @@ public class EscapeThread implements Runnable {
 			}
 		});
 
+		robot.setInterruptedFalse();
 		startThread.start();
 	}
 
