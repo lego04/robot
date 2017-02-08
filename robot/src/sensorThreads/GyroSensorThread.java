@@ -70,10 +70,10 @@ public class GyroSensorThread implements Runnable {
 			int intAngle = (int) filter.getMean()[0];
 			angle.set(intAngle);
 			
-			// System.out.println(intAngle);
+			//System.out.println(intAngle);
 			
 			try {
-				Thread.sleep(500);
+				Thread.sleep(200);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
