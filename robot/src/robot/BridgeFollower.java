@@ -40,7 +40,7 @@ public class BridgeFollower {
 			
 		
 			distance = usSensor.getDistance();
-			System.out.println("OUT: " + distance);
+			// System.out.println("OUT: " + distance);
 			
 			if (distance <= DISTANCE_LIMIT) {
 				
