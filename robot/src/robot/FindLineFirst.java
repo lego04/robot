@@ -37,8 +37,8 @@ public class FindLineFirst {
 	public void findLineAfterBridge() {
 		robot.getMovement().forwardDirection();
 		robot.getMovement().setSpeed(GlobalValues.LINETRAVELSPEED);
-		robot.getMovement().turnOnPointRight(110);
-		robot.getMovement().forwardDirection();
+		//robot.getMovement().turnOnPointRight(110);
+		//robot.getMovement().forwardDirection();
 		robot.getMovement().goForward();
 		while (lst.getLastLightValue() < GlobalValues.AVG_LIGHT) { }
 		robot.getMovement().turnOnPointLeft(60);
